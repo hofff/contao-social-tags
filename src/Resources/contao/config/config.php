@@ -1,6 +1,6 @@
 <?php
 
-$GLOBALS['BE_MOD']['design']['page']['bbit_st_facebookLint'] = ['ContaoOpenGraphBackend', 'keyFacebookLint'];
+$GLOBALS['BE_MOD']['design']['page']['bbit_st_facebookLint'] = ['Hofff\Contao\SocialTags\Action\FacebookLintAction', 'keyFacebookLint'];
 
 $GLOBALS['TL_HOOKS']['generatePage'][] = [
     \Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsInjectionListener::class,

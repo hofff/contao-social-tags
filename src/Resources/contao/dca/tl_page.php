@@ -1,5 +1,7 @@
 <?php
 
+use Hofff\Contao\SocialTags\Action\FacebookLintAction;
+
 $this->loadLanguageFile('bbit_st');
 
 $GLOBALS['TL_DCA']['tl_page']['list']['operations']['bbit_st_facebookLint'] = [
@@ -58,7 +60,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_type'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'website',
-    'options'   => ContaoOpenGraphBackend::getInstance()->getTypeOptions(),
+    'options'   => FacebookLintAction::getInstance()->getTypeOptions(),
     'reference' => &$GLOBALS['TL_LANG']['bbit_st']['types'],
     'eval'      => [
         'mandatory'      => true,

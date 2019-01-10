@@ -2,13 +2,10 @@
 
 namespace Hofff\Contao\SocialTags\OpenGraph;
 
-use Hofff\Contao\SocialTags\OpenGraph\AbstractOpenGraphData;
 use ArrayIterator;
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
 
 class OpenGraphProtocol extends AbstractOpenGraphData
 {
-
     const NS_OG = 'http://ogp.me/ns#';
     const NS_MUSIC = 'http://ogp.me/ns/music#';
     const NS_VIDEO = 'http://ogp.me/ns/video#';
@@ -35,12 +32,12 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         return $return;
     }
 
-    public function add(OpenGraphProperty $property)
+    public function add(OpenGraphProperty $property): void
     {
         $this->properties[] = $property;
     }
 
-    public function append(OpenGraphData $data)
+    public function append(OpenGraphData $data): void
     {
         foreach ($data as $property) {
             $this->add(clone $property);
@@ -52,12 +49,12 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         return $this->properties[$i];
     }
 
-    public function remove($i)
+    public function remove($i): void
     {
         array_splice($this->properties, $i, 1);
     }
 
-    public function clear()
+    public function clear(): void
     {
         $this->properties = [];
     }

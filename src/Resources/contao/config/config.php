@@ -1,18 +1,21 @@
 <?php
 
-$GLOBALS['BE_MOD']['design']['page']['bbit_og_facebookLint'] = array('ContaoOpenGraphBackend', 'keyFacebookLint');
+$GLOBALS['BE_MOD']['design']['page']['bbit_st_facebookLint'] = ['ContaoOpenGraphBackend', 'keyFacebookLint'];
 
-$GLOBALS['TL_HOOKS']['generatePage'][] = array('ContaoOpenGraphFrontend', 'inject');
+$GLOBALS['TL_HOOKS']['generatePage'][] = [
+    \Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsInjectionListener::class,
+    'onGeneratePage',
+];
 
-$GLOBALS['BBIT_OG']['TYPES'][] = 'website';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'article';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'profile';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'book';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'music.song';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'music.album';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'music.playlist';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'music.radio_station';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'video.movie';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'video.episode';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'video.tv_show';
-$GLOBALS['BBIT_OG']['TYPES'][] = 'video.other';
+$GLOBALS['bbit_st']['TYPES'][] = 'website';
+$GLOBALS['bbit_st']['TYPES'][] = 'article';
+$GLOBALS['bbit_st']['TYPES'][] = 'profile';
+$GLOBALS['bbit_st']['TYPES'][] = 'book';
+$GLOBALS['bbit_st']['TYPES'][] = 'music.song';
+$GLOBALS['bbit_st']['TYPES'][] = 'music.album';
+$GLOBALS['bbit_st']['TYPES'][] = 'music.playlist';
+$GLOBALS['bbit_st']['TYPES'][] = 'music.radio_station';
+$GLOBALS['bbit_st']['TYPES'][] = 'video.movie';
+$GLOBALS['bbit_st']['TYPES'][] = 'video.episode';
+$GLOBALS['bbit_st']['TYPES'][] = 'video.tv_show';
+$GLOBALS['bbit_st']['TYPES'][] = 'video.other';

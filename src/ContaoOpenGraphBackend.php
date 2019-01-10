@@ -31,7 +31,7 @@ class ContaoOpenGraphBackend extends Backend
     public function getTypeOptions()
     {
         $arrOptions = [];
-        foreach ($GLOBALS['BBIT_OG']['TYPES'] as $strType) {
+        foreach ($GLOBALS['bbit_st']['TYPES'] as $strType) {
             if (strpos($strType, ' ') === false) {
                 list($strGroup, $strName) = explode('.', $strType);
                 strlen($strName) || $strGroup = 'general';

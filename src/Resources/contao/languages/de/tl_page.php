@@ -1,31 +1,31 @@
 <?php
 
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_facebookLint']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_facebookLint']
     = ['OpenGraph Daten validieren', 'Die OpenGraph Daten dieser Seite mit dem Facebook URL Linter validieren.'];
 
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_legend'] = 'OpenGraph Metadaten';
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_legend'] = 'OpenGraph Metadaten';
 
-$GLOBALS['TL_LANG']['tl_page']['bbit_og']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st']
                                                  = ['OpenGraph Auszeichnungen', ''];
-$GLOBALS['TL_LANG']['tl_page']['bbit_ogOptions'] = [
+$GLOBALS['TL_LANG']['tl_page']['bbit_stOptions'] = [
     ''                    => 'Automatisch',
-    'bbit_og_page'        => 'Für diese Seite festlegen',
-    'bbit_og_tree'        => 'Für diesen Seitenbaum festlegen',
-    'bbit_og_parent'      => 'Von Elternseiten übernehmen',
-    'bbit_og_root'        => 'Von Wurzelseite übernehmen',
-    'bbit_og_disablePage' => 'Für diese Seite deaktivieren',
-    'bbit_og_disableTree' => 'Für diesen Seitenbaum deaktivieren',
+    'bbit_st_page'        => 'Für diese Seite festlegen',
+    'bbit_st_tree'        => 'Für diesen Seitenbaum festlegen',
+    'bbit_st_parent'      => 'Von Elternseiten übernehmen',
+    'bbit_st_root'        => 'Von Wurzelseite übernehmen',
+    'bbit_st_disablePage' => 'Für diese Seite deaktivieren',
+    'bbit_st_disableTree' => 'Für diesen Seitenbaum deaktivieren',
 ];
 
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_title']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_title']
     = ['Titel', 'Wenn frei, wird der Seitentitel bzw. der Seitenname verwendet.'];
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_site']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_site']
     = ['Webseite', 'Wenn frei, wird der Seitentitel bzw. der Seitenname verwendet der Wurzelseite verwendet.'];
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_url']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_url']
     = ['Kanonische URL', 'Wenn frei, wird die URL dieser Seite verwendet.'];
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_image']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_image']
     = ['Bild', ''];
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_imageSize']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_imageSize']
     = ['Bildgröße', ''];
-$GLOBALS['TL_LANG']['tl_page']['bbit_og_description']
+$GLOBALS['TL_LANG']['tl_page']['bbit_st_description']
     = ['Beschreibung', 'Wenn frei, wird die Meta-Beschreibung verwendet.'];

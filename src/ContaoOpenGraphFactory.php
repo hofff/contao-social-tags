@@ -26,29 +26,29 @@ class ContaoOpenGraphFactory extends Controller
             return $objOGBD;
         }
 
-        $arrModes = ['bbit_og_tree'];
+        $arrModes = ['bbit_st_tree'];
         $arrTrail = $objPage->trail;
 
-        switch ($objPage->bbit_og) {
-            case 'bbit_og_disablePage':
-            case 'bbit_og_disableTree':
+        switch ($objPage->bbit_st) {
+            case 'bbit_st_disablePage':
+            case 'bbit_st_disableTree':
                 return $objOGBD;
                 break;
 
-            case 'bbit_og_page':
-            case 'bbit_og_tree':
+            case 'bbit_st_page':
+            case 'bbit_st_tree':
                 // data in current page available
                 break;
 
-            case 'bbit_og_root':
+            case 'bbit_st_root':
                 $arrTrail = array_slice($arrTrail, 0, 1);
-            case 'bbit_og_parent':
-                $arrModes[] = 'bbit_og_page';
+            case 'bbit_st_parent':
+                $arrModes[] = 'bbit_st_page';
                 unset($objPage);
                 break;
 
             default:
-                $arrModes[] = 'bbit_og_disableTree';
+                $arrModes[] = 'bbit_st_disableTree';
                 unset($objPage);
                 break;
         }
@@ -61,12 +61,12 @@ class ContaoOpenGraphFactory extends Controller
                 'SELECT	p.*
 				FROM	tl_page AS p
 				WHERE	p.id IN (' . $strTrailWildcards . ')
-				AND		p.bbit_og IN (' . $strModeWildcards . ')
-				AND		(p.bbit_og != \'bbit_og_disableTree\' OR FIND_IN_SET(p.id, ?) > (
+				AND		p.bbit_st IN (' . $strModeWildcards . ')
+				AND		(p.bbit_st != \'bbit_st_disableTree\' OR FIND_IN_SET(p.id, ?) > (
 							SELECT	COALESCE(MAX(FIND_IN_SET(p2.id, ?)), -1)
 							FROM	tl_page AS p2
 							WHERE	p2.id IN (' . $strTrailWildcards . ')
-							AND		p2.bbit_og = \'bbit_og_parent\'
+							AND		p2.bbit_st = \'bbit_st_parent\'
 						))
 				ORDER BY FIND_IN_SET(p.id, ?) DESC
 				LIMIT	1'
@@ -82,13 +82,13 @@ class ContaoOpenGraphFactory extends Controller
             );
         }
 
-        if (!$objPage || (!($objPage instanceof \Model) && !$objPage->numRows) || $objPage->bbit_og == 'bbit_og_disableTree') {
+        if (!$objPage || (!($objPage instanceof \Model) && !$objPage->numRows) || $objPage->bbit_st == 'bbit_st_disableTree') {
             return $objOGBD;
         }
 
 
-        if (strlen($objPage->bbit_og_title)) {
-            $strTitle = $this->replaceInsertTags($objPage->bbit_og_title);
+        if (strlen($objPage->bbit_st_title)) {
+            $strTitle = $this->replaceInsertTags($objPage->bbit_st_title);
         } elseif (strlen($objOrigin->pageTitle)) {
             $strTitle = $objOrigin->pageTitle;
         } else {
@@ -96,8 +96,8 @@ class ContaoOpenGraphFactory extends Controller
         }
         $objOGBD->setTitle($strTitle);
 
-        if (strlen($objPage->bbit_og_type)) {
-            list($strNamespace, $strType) = explode(' ', $objPage->bbit_og_type, 2);
+        if (strlen($objPage->bbit_st_type)) {
+            list($strNamespace, $strType) = explode(' ', $objPage->bbit_st_type, 2);
             if (!strlen($strType)) {
                 $strType = $strNamespace;
                 unset($strNamespace);
@@ -107,10 +107,10 @@ class ContaoOpenGraphFactory extends Controller
         }
         $objOGBD->setType(new OpenGraphType($strType, $strNamespace));
 
-        $objOGBD->setImageData($this->generateImageData($objPage->bbit_og_image, $objPage->bbit_og_imageSize));
+        $objOGBD->setImageData($this->generateImageData($objPage->bbit_st_image, $objPage->bbit_st_imageSize));
 
-        if (strlen($objPage->bbit_og_url)) {
-            $strURL = $this->replaceInsertTags($objPage->bbit_og_url);
+        if (strlen($objPage->bbit_st_url)) {
+            $strURL = $this->replaceInsertTags($objPage->bbit_st_url);
         } elseif ($objOrigin->id == $GLOBALS['objPage']->id) {
             $strURL = $this->Environment->base . $this->Environment->request;
         } else {
@@ -118,16 +118,16 @@ class ContaoOpenGraphFactory extends Controller
         }
         $objOGBD->setURL($strURL);
 
-        if (strlen($objPage->bbit_og_description)) {
-            $strDescription = $this->replaceInsertTags($objPage->bbit_og_description);
+        if (strlen($objPage->bbit_st_description)) {
+            $strDescription = $this->replaceInsertTags($objPage->bbit_st_description);
         } else {
             $strDescription = $objOrigin->description;
         }
         $strDescription = trim(str_replace(["\n", "\r"], [' ', ''], $strDescription));
         strlen($strDescription) && $objOGBD->setDescription($strDescription);
 
-        if (strlen($objPage->bbit_og_site)) {
-            $strSiteName = $this->replaceInsertTags($objPage->bbit_og_site);
+        if (strlen($objPage->bbit_st_site)) {
+            $strSiteName = $this->replaceInsertTags($objPage->bbit_st_site);
         } else {
             $strSiteName = strip_tags($objOrigin->rootTitle);
         }

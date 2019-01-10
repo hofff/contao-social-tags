@@ -1,65 +1,65 @@
 <?php
 
-$this->loadLanguageFile('bbit_og');
+$this->loadLanguageFile('bbit_st');
 
-$GLOBALS['TL_DCA']['tl_page']['list']['operations']['bbit_og_facebookLint'] = [
-    'label'      => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_facebookLint'],
-    'icon'       => 'system/modules/backboneit_opengraph/html/images/og.png',
-    'href'       => 'key=bbit_og_facebookLint',
+$GLOBALS['TL_DCA']['tl_page']['list']['operations']['bbit_st_facebookLint'] = [
+    'label'      => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_facebookLint'],
+    'icon'       => 'bundles/hofffcontaosocialtags/html/images/og.png',
+    'href'       => 'key=bbit_st_facebookLint',
     'attributes' => ' onclick="window.open(this.href); return false;"',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'bbit_og';
+$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'bbit_st';
 
 foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $strKey => &$strPalette) {
     if ($strKey != '__selector__') {
         $strPalette = preg_replace(
             '@(\{meta_legend\}[^;]*;)@',
-            '$1{bbit_og_legend},bbit_og;',
+            '$1{bbit_st_legend},bbit_st;',
             $strPalette
         );
     }
 }
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_og_bbit_og_page'] =
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_og_bbit_og_tree']
-    = 'bbit_og_type'
-    . ',bbit_og_title,bbit_og_site'
-    . ',bbit_og_url'
-    . ',bbit_og_image,bbit_og_imageSize'
-    . ',bbit_og_description'//	. ',bbit_og_curies,bbit_og_custom'
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_st_bbit_st_page'] =
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_st_bbit_st_tree']
+    = 'bbit_st_type'
+    . ',bbit_st_title,bbit_st_site'
+    . ',bbit_st_url'
+    . ',bbit_st_image,bbit_st_imageSize'
+    . ',bbit_st_description'//	. ',bbit_st_curies,bbit_st_custom'
 ;
 
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st'],
     'exclude'   => true,
     'inputType' => 'select',
     'options'   => [
-        'bbit_og_page',
-        'bbit_og_tree',
-        'bbit_og_parent',
-        'bbit_og_root',
-        'bbit_og_disablePage',
-        'bbit_og_disableTree',
+        'bbit_st_page',
+        'bbit_st_tree',
+        'bbit_st_parent',
+        'bbit_st_root',
+        'bbit_st_disablePage',
+        'bbit_st_disableTree',
     ],
-    'reference' => &$GLOBALS['TL_LANG']['tl_page']['bbit_ogOptions'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_page']['bbit_stOptions'],
     'eval'      => [
         'chosen'             => true,
         'submitOnChange'     => true,
         'includeBlankOption' => true,
-        'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_page']['bbit_ogOptions'][''],
+        'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_page']['bbit_stOptions'][''],
         'tl_class'           => '',
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_type'] = [
-    'label'     => &$GLOBALS['TL_LANG']['bbit_og']['type'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_type'] = [
+    'label'     => &$GLOBALS['TL_LANG']['bbit_st']['type'],
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'website',
     'options'   => ContaoOpenGraphBackend::getInstance()->getTypeOptions(),
-    'reference' => &$GLOBALS['TL_LANG']['bbit_og']['types'],
+    'reference' => &$GLOBALS['TL_LANG']['bbit_st']['types'],
     'eval'      => [
         'mandatory'      => true,
         'chosen'         => true,
@@ -68,8 +68,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_type'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_title'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_title'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_title'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_title'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -79,8 +79,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_title'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_site'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_site'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_site'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_site'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -90,8 +90,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_site'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_url'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_url'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -102,8 +102,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_url'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_image'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_image'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_image'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',
     'eval'      => [
@@ -116,8 +116,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_image'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_imageSize'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_imageSize'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_imageSize'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_imageSize'],
     'exclude'   => true,
     'inputType' => 'imageSize',
     'options'   => $GLOBALS['TL_CROP'],
@@ -130,8 +130,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_imageSize'] = [
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_og_description'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_og_description'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st_description'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
     'eval'      => [

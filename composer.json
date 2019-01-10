@@ -1,46 +1,54 @@
 {
-	"name" : "hofff/contao-opengraph",
-	"description" : "Define OpenGraph meta data in Contao",
-	"keywords" : [
-		"facebook",
-		"share",
-		"like",
-		"social",
-		"opengraph",
-		"tags",
-		"micro data",
-		"meta data",
-		"contao"
-	],
-	"type" : "contao-module",
-	"license" : "LGPL-3.0+",
-	"authors" : [{
-			"name" : "Oliver Hoff",
-			"email" : "oliver@hofff.com",
-			"homepage" : "http://hofff.com/",
-			"role" : "Developer"
-		}
-	],
-	"support" : {
-		"issues" : "https://github.com/backbone87/contao-opengraph/issues",
-		"forum" : "https://community.contao.org/de/showthread.php?18871-backboneit_opengraph-OpenGraph-Metadaten-in-Contao-definieren",
-		"irc" : "irc://irc.freenode.org/contao.dev",
-		"source" : "https://github.com/backbone87/contao-opengraph"
-	},
-	"require" : {
-		"php" : "^5.6 || ^7.0",
-		"contao/core-bundle" : "^3.2 || ^4.2",
-		"contao-community-alliance/composer-plugin" : "^2.4 || ^3.0"
-	},
-	"replace" : {
-		"backboneit/contao-opengraph" : "self.version",
-		"contao-legacy/backboneit_opengraph" : "self.version"
-	},
-	"extra" : {
-		"contao" : {
-			"sources" : {
-				"TL_ROOT/system/modules/backboneit_opengraph" : "system/modules/backboneit_opengraph"
-			}
-		}
-	}
+  "name": "hofff/contao-social-tags",
+  "description": "Define OpenGraph/twitter cards meta data in Contao",
+  "keywords": [
+    "facebook",
+    "share",
+    "like",
+    "social",
+    "opengraph",
+    "twitter cards",
+    "tags",
+    "micro data",
+    "meta data",
+    "contao"
+  ],
+  "type": "contao-bundle",
+  "license": "LGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Nicky Hoff",
+      "homepage": "https://www.hofff.com",
+      "email": "nick@hofff.com",
+      "role": "Manager"
+    },
+    {
+      "name": "David Molineus",
+      "email": "david@hofff.com",
+      "homepage": "https://www.hofff.com",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/hofff/contao-social-tags/issues",
+    "irc": "irc://irc.freenode.org/contao.dev",
+    "source": "https://github.com/hofff/contao-social-tags"
+  },
+  "require": {
+    "php": "^7.1",
+    "contao/core-bundle": "^4.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Hofff\\Contao\\SocialTags\\": "src/"
+    }
+  },
+  "conflict": {
+    "backboneit/contao-opengraph": "*"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  }
 }

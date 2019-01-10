@@ -1,5 +1,11 @@
 <?php
 
+namespace Hofff\Contao\SocialTags\OpenGraph;
+
+use Hofff\Contao\SocialTags\OpenGraph\AbstractOpenGraphData;
+use ArrayIterator;
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
+
 class OpenGraphProtocol extends AbstractOpenGraphData
 {
 

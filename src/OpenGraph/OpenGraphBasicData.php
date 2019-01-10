@@ -1,5 +1,9 @@
 <?php
 
+namespace Hofff\Contao\SocialTags\OpenGraph;
+
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
+
 class OpenGraphBasicData extends AbstractOpenGraphData
 {
 

@@ -1,5 +1,7 @@
 <?php
 
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphData;
+
 class ContaoOpenGraphFrontend extends Controller
 {
     private final function __clone()

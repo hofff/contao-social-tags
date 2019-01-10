@@ -1,5 +1,10 @@
 <?php
 
+namespace Hofff\Contao\SocialTags\OpenGraph;
+
+use Countable;
+use IteratorAggregate;
+
 interface OpenGraphData extends IteratorAggregate, Countable
 {
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Hofff\Contao\SocialTags\OpenGraph;
+
 class OpenGraphProperty
 {
 

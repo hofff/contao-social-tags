@@ -1,5 +1,9 @@
 <?php
 
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphBasicData;
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphImageData;
+use Hofff\Contao\SocialTags\OpenGraph\OpenGraphType;
+
 class ContaoOpenGraphFactory extends Controller
 {
 

@@ -1,5 +1,7 @@
 <?php
 
+namespace Hofff\Contao\SocialTags\OpenGraph;
+
 abstract class AbstractOpenGraphData implements OpenGraphData
 {
 

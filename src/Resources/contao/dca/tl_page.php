@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Hofff\Contao\SocialTags\Action\FacebookLintAction;
 
 $this->loadLanguageFile('bbit_st');
@@ -14,24 +16,23 @@ $GLOBALS['TL_DCA']['tl_page']['list']['operations']['bbit_st_facebookLint'] = [
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'bbit_st';
 
 foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $strKey => &$strPalette) {
-    if ($strKey != '__selector__') {
-        $strPalette = preg_replace(
-            '@(\{meta_legend\}[^;]*;)@',
-            '$1{bbit_st_legend},bbit_st;',
-            $strPalette
-        );
+    if ($strKey === '__selector__') {
+        continue;
     }
+
+    $strPalette = preg_replace(
+        '@(\{meta_legend\}[^;]*;)@',
+        '$1{bbit_st_legend},bbit_st;',
+        $strPalette
+    );
 }
 
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_st_bbit_st_page'] =
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_st_bbit_st_tree']
-    = 'bbit_st_type'
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['bbit_st_bbit_st_tree'] = 'bbit_st_type'
     . ',bbit_st_title,bbit_st_site'
     . ',bbit_st_url'
     . ',bbit_st_image,bbit_st_imageSize'
-    . ',bbit_st_description'//	. ',bbit_st_curies,bbit_st_custom'
-;
-
+    . ',bbit_st_description';// . ',bbit_st_curies,bbit_st_custom'
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['bbit_st'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_page']['bbit_st'],

@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
+use Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsInjectionListener;
+
 $GLOBALS['BE_MOD']['design']['page']['bbit_st_facebookLint'] = ['Hofff\Contao\SocialTags\Action\FacebookLintAction', 'keyFacebookLint'];
 
 $GLOBALS['TL_HOOKS']['generatePage'][] = [
-    \Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsInjectionListener::class,
+    SocialTagsInjectionListener::class,
     'onGeneratePage',
 ];
 

@@ -12,11 +12,11 @@ use Hofff\Contao\SocialTags\HofffContaoSocialTagsBundle;
 
 final class Plugin implements BundlePluginInterface
 {
-    public function getBundles(ParserInterface $parser): array
+    /** @return BundleConfig[] */
+    public function getBundles(ParserInterface $parser) : array
     {
-        return [
-            BundleConfig::create(HofffContaoSocialTagsBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class])
+        return [BundleConfig::create(HofffContaoSocialTagsBundle::class)
+                ->setLoadAfter([ContaoCoreBundle::class]),
         ];
     }
 }

@@ -1,41 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\OpenGraph;
 
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
+use function sprintf;
 
 class OpenGraphType extends OpenGraphProperty
 {
-
+    /** @var string|null */
     private $type;
 
+    /** @var string|null */
     private $typeNamespace;
 
+    /** @var string|null */
     private $typePrefix;
 
-    public function __construct($type = null, $typeNamespace = null, $typePrefix = null)
+    public function __construct(?string $type = null, ?string $typeNamespace = null, ?string $typePrefix = null)
     {
         parent::__construct();
+
         parent::setNamespace(OpenGraphProtocol::NS_OG);
         parent::setName('type');
+
         $this->setType($type);
         $this->setTypeNamespace($typeNamespace);
         $this->setTypePrefix($typePrefix);
     }
 
-    public function getMetaTag($prefix = true)
+    public function getMetaTag() : string
     {
-        if ($prefix) {
-            $prefix = $this->getTypeNamespaceDeclaration();
-            $prefix && $prefix = ' ' . $prefix;
-            $prefix = sprintf(
-                ' prefix="%s%s"',
-                specialchars($this->getNamespaceDeclaration()),
-                specialchars($prefix)
-            );
-        } else {
-            $prefix = '';
-        }
+        $prefix            = $this->getTypeNamespaceDeclaration();
+        $prefix && $prefix = ' ' . $prefix;
+        $prefix            = sprintf(
+            ' prefix="%s%s"',
+            specialchars($this->getNamespaceDeclaration()),
+            specialchars($prefix)
+        );
 
         return sprintf(
             '<meta%s property="%s" content="%s" />',
@@ -45,29 +47,24 @@ class OpenGraphType extends OpenGraphProperty
         );
     }
 
-    public function setType($type)
+    public function setType(?string $type) : self
     {
-        $type = strval($type);
-        if (strlen($type)) {
-            $this->type = $type;
-        } else {
-            unset($this->type);
-        }
+        $this->type = $type;
 
         return $this;
     }
 
-    public function hasType()
+    public function hasType() : bool
     {
         return isset($this->type);
     }
 
-    public function getType()
+    public function getType() : ?string
     {
         return $this->type;
     }
 
-    public function getTypeNamespaceDeclaration()
+    public function getTypeNamespaceDeclaration() : string
     {
         return $this->hasTypeNamespace() ? sprintf(
             '%s: %s',
@@ -76,68 +73,64 @@ class OpenGraphType extends OpenGraphProperty
         ) : '';
     }
 
-    public function setTypeNamespace($typeNamespace)
+    public function setTypeNamespace(?string $typeNamespace) : self
     {
-        $typeNamespace = strval($typeNamespace);
-        if (strlen($typeNamespace)) {
-            $this->typeNamespace = $typeNamespace;
-        } else {
-            unset($this->typeNamespace);
-        }
+        $this->typeNamespace = $typeNamespace;
 
         return $this;
     }
 
-    public function hasTypeNamespace()
+    public function hasTypeNamespace() : bool
     {
         return isset($this->typeNamespace);
     }
 
-    public function getTypeNamespace()
+    public function getTypeNamespace() : ?string
     {
         return $this->typeNamespace;
     }
 
-    public function setTypePrefix($typePrefix)
+    public function setTypePrefix(?string $typePrefix) : self
     {
-        $typePrefix       = strval($typePrefix);
-        $this->typePrefix = strlen($typePrefix) ? $typePrefix : 't';
+        $this->typePrefix = $typePrefix ?: 't';
 
         return $this;
     }
 
-    public function getTypePrefix()
+    public function getTypePrefix() : ?string
     {
         return $this->typePrefix;
     }
 
-    public function setNamespace($namespace)
+    /** @return $this */
+    public function setNamespace(?string $namespace) : OpenGraphProperty
     {
         return $this;
     }
 
-    public function setName($name)
+    /** @return $this */
+    public function setName(?string $name) : OpenGraphProperty
     {
         return $this;
     }
 
-    public function setContent($content)
+    /** @return $this */
+    public function setContent(?string $content) : OpenGraphProperty
     {
         $this->setType($content);
 
         return $this;
     }
 
-    public function hasContent()
+    public function hasContent() : bool
     {
         return $this->hasType();
     }
 
-    public function getContent()
+    public function getContent() : ?string
     {
         return $this->hasTypeNamespace()
             ? sprintf('%s:%s', $this->getTypePrefix(), $this->getType())
             : $this->getType();
     }
-
 }

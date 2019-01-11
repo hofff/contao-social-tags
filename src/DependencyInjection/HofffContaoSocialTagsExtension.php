@@ -11,13 +11,15 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class HofffContaoSocialTagsExtension extends Extension
 {
-    public function load(array $configs, ContainerBuilder $container): void
+    /** @param mixed[][] $configs */
+    public function load(array $configs, ContainerBuilder $container) : void
     {
         $loader = new XmlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../Resources/config')
         );
 
+        $loader->load('config.xml');
         $loader->load('services.xml');
     }
 }

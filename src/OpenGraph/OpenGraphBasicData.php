@@ -1,46 +1,65 @@
 <?php
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+declare(strict_types=1);
 
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
+namespace Hofff\Contao\SocialTags\OpenGraph;
 
 class OpenGraphBasicData extends AbstractOpenGraphData
 {
+    /** @var string|null */
+    protected $site;
 
-    public function __construct($title = null, OpenGraphType $type = null, $image = null, $url = null)
-    {
-        parent::__construct();
-        $this->setTitle($title);
-        $this->setType($type);
-        $image instanceof OpenGraphImageData ? $this->setImageData($image) : $this->setImage($image);
-        $this->setURL($url);
-    }
-
+    /** @var string|null */
     protected $title;
 
-    public function setTitle($title)
+    /** @var string|null */
+    protected $url;
+
+    /** @var OpenGraphImageData|null */
+    protected $image;
+
+    /** @var string|null */
+    protected $type;
+
+    /** @var string|null */
+    protected $description;
+
+    public function __construct(
+        ?string $title = null,
+        ?OpenGraphType $type = null,
+        ?OpenGraphImageData $image = null,
+        ?string $url = null
+    ) {
+        parent::__construct();
+
+        $this->title = $title;
+        $this->type  = $type;
+        $this->image = $image;
+        $this->url   = $url;
+    }
+
+    public function setTitle(string $title) : self
     {
-        $title = strval($title);
-        if (strlen($title)) {
+        if ($title !== '') {
             $this->title = $title;
         } else {
-            unset($this->title);
+            $this->title = null;
         }
 
         return $this;
     }
 
-    public function hasTitle()
+    public function hasTitle() : bool
     {
         return isset($this->title);
     }
 
-    public function getTitle()
+    public function getTitle() : ?string
     {
         return $this->title;
     }
 
-    public function getTitleData()
+    public function getTitleData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasTitle() && $protocol->add(
@@ -50,30 +69,24 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $type;
-
-    public function setType(OpenGraphType $type = null)
+    public function setType(?OpenGraphType $type = null) : self
     {
-        if ($type === null) {
-            unset($this->type);
-        } else {
-            $this->type = $type;
-        }
+        $this->type = $type;
 
         return $this;
     }
 
-    public function hasType()
+    public function hasType() : bool
     {
         return isset($this->type);
     }
 
-    public function getType()
+    public function getType() : ?string
     {
         return $this->type;
     }
 
-    public function getTypeData()
+    public function getTypeData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasType() && $protocol->add($this->getType());
@@ -81,65 +94,56 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $image;
-
-    public function setImage($url)
+    public function setImage(?string $url) : self
     {
-        $url = strval($url);
-        if (strlen($url)) {
-            $this->image = new OpenGraphImageData($url);
+        if ($url === null) {
+            $this->image = $url;
         } else {
-            unset($this->image);
+            $this->image = new OpenGraphImageData($url);
         }
 
         return $this;
     }
 
-    public function hasImage()
+    public function hasImage() : bool
     {
         return isset($this->image);
     }
 
-    public function getImage($image)
+    public function getImage() : ?string
     {
-        return $this->hasImage ? $this->image->getURL() : null;
+        return $this->hasImage() ? $this->image->getURL() : null;
     }
 
-    public function setImageData(OpenGraphImageData $image)
+    public function setImageData(OpenGraphImageData $image) : void
     {
         $this->image = $image;
     }
 
-    public function getImageData()
+    public function getImageData() : OpenGraphData
     {
         return $this->hasImage() ? $this->image : new OpenGraphProtocol();
     }
 
-    protected $url;
 
-    public function setURL($url)
+    public function setURL(?string $url) : self
     {
-        $url = strval($url);
-        if (strlen($url)) {
-            $this->url = $url;
-        } else {
-            unset($this->url);
-        }
+        $this->url = $url;
 
         return $this;
     }
 
-    public function hasURL()
+    public function hasURL() : bool
     {
         return isset($this->url);
     }
 
-    public function getURL()
+    public function getURL() : ?string
     {
         return $this->url;
     }
 
-    public function getURLData()
+    public function getURLData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasURL() && $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'url', $this->getURL()));
@@ -147,31 +151,25 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $description;
 
-    public function setDescription($description)
+    public function setDescription(?string $description) : self
     {
-        $description = strval($description);
-        if (strlen($description)) {
-            $this->description = $description;
-        } else {
-            unset($this->description);
-        }
+        $this->description = $description;
 
         return $this;
     }
 
-    public function hasDescription()
+    public function hasDescription() : bool
     {
         return isset($this->description);
     }
 
-    public function getDescription()
+    public function getDescription() : ?string
     {
         return $this->description;
     }
 
-    public function getDescriptionData()
+    public function getDescriptionData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasDescription() && $protocol->add(
@@ -181,31 +179,28 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $site;
-
-    public function setSiteName($site)
+    public function setSiteName(string $site) : self
     {
-        $site = strval($site);
-        if (strlen($site)) {
+        if ($site !== '') {
             $this->site = $site;
         } else {
-            unset($this->site);
+            $this->site = null;
         }
 
         return $this;
     }
 
-    public function hasSiteName()
+    public function hasSiteName() : bool
     {
         return isset($this->site);
     }
 
-    public function getSiteName()
+    public function getSiteName() : ?string
     {
         return $this->site;
     }
 
-    public function getSiteNameData()
+    public function getSiteNameData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasSiteName() && $protocol->add(
@@ -215,15 +210,31 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    public function isValid()
+    public function isValid() : bool
     {
-        return $this->hasTitle() && $this->hasType() && $this->hasImage() && $this->getImageData()->isValid(
-            ) && $this->hasURL();
+        if (! $this->hasTitle()) {
+            return false;
+        }
+
+        if (! $this->hasType()) {
+            return false;
+        }
+
+        if (! $this->hasImage()) {
+            return false;
+        }
+
+        if (! $this->hasURL()) {
+            return false;
+        }
+
+        return $this->getImageData()->isValid();
     }
 
-    public function getProtocol()
+    public function getProtocol() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
+
         $protocol->append($this->getTitleData());
         $protocol->append($this->getTypeData());
         $protocol->append($this->getImageData());
@@ -233,5 +244,4 @@ class OpenGraphBasicData extends AbstractOpenGraphData
 
         return $protocol;
     }
-
 }

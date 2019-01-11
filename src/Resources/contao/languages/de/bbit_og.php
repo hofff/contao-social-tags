@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 $GLOBALS['TL_LANG']['bbit_st']['types']['general'] = 'Allgemein';
 $GLOBALS['TL_LANG']['bbit_st']['types']['website'] = 'Webseite';
 $GLOBALS['TL_LANG']['bbit_st']['types']['article'] = 'Artikel / Beitrag / Eintrag';
@@ -19,14 +21,7 @@ $GLOBALS['TL_LANG']['bbit_st']['types']['video.tv_show'] = 'TV-Show';
 $GLOBALS['TL_LANG']['bbit_st']['types']['video.other']   = 'Sonstiges';
 $GLOBALS['TL_LANG']['bbit_st']['types']['custom']        = 'Eigener Typ';
 
-$GLOBALS['TL_LANG']['bbit_st']['type']
-    = ['Typ', 'Typ des auszuzeichnenden Gegenstands.'];
-$GLOBALS['TL_LANG']['bbit_st']['typeCustom']
-    = [
-    'Eigener Typ',
-    'Ein eigenen Typ für den auszuzeichnenden Gegenstand festlegen. Eigene Typen sollten in eigenen Namensräumen liegen, zum Beispiel "myNS:myType".',
-];
-$GLOBALS['TL_LANG']['bbit_st']['curies']
-    = ['Eigene Namensräume', ''];
-$GLOBALS['TL_LANG']['bbit_st']['custom']
-    = ['Eigene Definitionen', ''];
+$GLOBALS['TL_LANG']['bbit_st']['type']       = ['Typ', 'Typ des auszuzeichnenden Gegenstands.'];
+$GLOBALS['TL_LANG']['bbit_st']['typeCustom'] = ['Eigener Typ', 'Ein eigenen Typ für den auszuzeichnenden Gegenstand festlegen. Eigene Typen sollten in eigenen Namensräumen liegen, zum Beispiel "myNS:myType".'];
+$GLOBALS['TL_LANG']['bbit_st']['curies']     = ['Eigene Namensräume', ''];
+$GLOBALS['TL_LANG']['bbit_st']['custom']     = ['Eigene Definitionen', ''];

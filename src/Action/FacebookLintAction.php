@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\Action;
 
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
@@ -7,6 +9,7 @@ use Contao\PageModel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use function urlencode;
 
 final class FacebookLintAction
 {
@@ -20,7 +23,7 @@ final class FacebookLintAction
         $this->framework = $framework;
     }
 
-    public function __invoke($pageId, Request $request): Response
+    public function __invoke(int $pageId, Request $request) : Response
     {
         $this->framework->initialize();
 
@@ -34,5 +37,4 @@ final class FacebookLintAction
 
         return new RedirectResponse($target);
     }
-
 }

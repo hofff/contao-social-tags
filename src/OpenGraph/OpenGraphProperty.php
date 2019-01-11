@@ -1,19 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\OpenGraph;
+
+use function sprintf;
 
 class OpenGraphProperty
 {
-
+    /** @var string|null */
     private $namespace;
 
+    /** @var string|null */
     private $name;
 
+    /** @var string|null */
     private $content;
 
+    /** @var string|null */
     private $prefix;
 
-    public function __construct($namespace = null, $name = null, $content = null, $prefix = null)
+    public function __construct(?string $namespace = null, ?string $name = null, ?string $content = null, ?string $prefix = null)
     {
         $this->setNamespace($namespace);
         $this->setName($name);
@@ -21,113 +28,96 @@ class OpenGraphProperty
         $this->setPrefix($prefix);
     }
 
-    public function __toString()
+    public function __toString() : string
     {
         return $this->getMetaTag();
     }
 
-    public function getMetaTag($prefix = true)
+    public function getMetaTag() : string
     {
         return $this->isValid() ? sprintf(
             '<meta%s property="%s" content="%s" />',
-            $prefix ? sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())) : '',
+            sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
             specialchars($this->getPrefixedName()),
             specialchars($this->getContent())
         ) : '';
     }
 
-    public function getNamespaceDeclaration()
+    public function getNamespaceDeclaration() : string
     {
         return sprintf('%s: %s', $this->getPrefix(), $this->getNamespace());
     }
 
-    public function getPrefixedName()
+    public function getPrefixedName() : string
     {
         return sprintf('%s:%s', $this->getPrefix(), $this->getName());
     }
 
-    public function isValid()
+    public function isValid() : bool
     {
         return $this->hasNamespace() && $this->hasName() && $this->hasContent();
     }
 
-    public function setNamespace($namespace)
+    public function setNamespace(?string $namespace) : self
     {
-        $namespace = strval($namespace);
-        if (strlen($namespace)) {
-            $this->namespace = $namespace;
-        } else {
-            unset($this->namespace);
-        }
+        $this->namespace = $namespace;
 
         return $this;
     }
 
-    public function hasNamespace()
+    public function hasNamespace() : bool
     {
         return isset($this->namespace);
     }
 
-    public function getNamespace()
+    public function getNamespace() : ?string
     {
         return $this->namespace;
     }
 
-    public function setName($name)
+    public function setName(?string $name) : self
     {
-        $name = strval($name);
-        if (strlen($name)) {
-            $this->name = $name;
-        } else {
-            unset($this->name);
-        }
+        $this->name = $name;
 
         return $this;
     }
 
-    public function hasName()
+    public function hasName() : bool
     {
         return isset($this->name);
     }
 
-    public function getName()
+    public function getName() : ?string
     {
         return $this->name;
     }
 
-    public function setContent($content)
+    public function setContent(?string $content) : self
     {
-        $content = strval($content);
-        if (strlen($content)) {
-            $this->content = $content;
-        } else {
-            unset($this->content);
-        }
+        $this->content = $content;
 
         return $this;
     }
 
-    public function hasContent()
+    public function hasContent() : bool
     {
         return isset($this->content);
     }
 
-    public function getContent()
+    public function getContent() : ?string
     {
         return $this->content;
     }
 
-    public function setPrefix($prefix)
+    public function setPrefix(?string $prefix) : self
     {
-        $prefix       = strval($prefix);
-        $this->prefix = strlen($prefix) ? $prefix : 'og';
+        $this->prefix = $prefix ?: 'og';
 
         return $this;
     }
 
-    public function getPrefix()
+    public function getPrefix() : ?string
     {
         return $this->prefix;
     }
-
 }

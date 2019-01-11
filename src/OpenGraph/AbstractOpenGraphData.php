@@ -1,27 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\OpenGraph;
 
 abstract class AbstractOpenGraphData implements OpenGraphData
 {
-
     protected function __construct()
     {
     }
 
-    public function __toString()
+    public function __toString() : string
     {
         return $this->getProtocol()->getMetaTags();
     }
 
-    public function getIterator()
+    /** @return OpenGraphData[] */
+    public function getIterator() : iterable
     {
         return $this->getProtocol()->getIterator();
     }
 
-    public function count()
+    public function count() : int
     {
         return $this->getProtocol()->count();
     }
-
 }

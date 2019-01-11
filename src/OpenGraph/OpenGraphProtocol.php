@@ -1,19 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\OpenGraph;
 
 use ArrayIterator;
+use function array_splice;
+use function count;
 
 class OpenGraphProtocol extends AbstractOpenGraphData
 {
-    const NS_OG = 'http://ogp.me/ns#';
-    const NS_MUSIC = 'http://ogp.me/ns/music#';
-    const NS_VIDEO = 'http://ogp.me/ns/video#';
-    const NS_ARTICLE = 'http://ogp.me/ns/article#';
-    const NS_BOOK = 'http://ogp.me/ns/book#';
-    const NS_PROFILE = 'http://ogp.me/ns/profile#';
-    const NS_WEBSITE = 'http://ogp.me/ns/website#';
+    public const NS_OG      = 'http://ogp.me/ns#';
+    public const NS_MUSIC   = 'http://ogp.me/ns/music#';
+    public const NS_VIDEO   = 'http://ogp.me/ns/video#';
+    public const NS_ARTICLE = 'http://ogp.me/ns/article#';
+    public const NS_BOOK    = 'http://ogp.me/ns/book#';
+    public const NS_PROFILE = 'http://ogp.me/ns/profile#';
+    public const NS_WEBSITE = 'http://ogp.me/ns/website#';
 
+    /** @var OpenGraphData[] */
     protected $properties;
 
     public function __construct()
@@ -22,7 +27,7 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         $this->clear();
     }
 
-    public function getMetaTags()
+    public function getMetaTags() : string
     {
         $return = '';
         foreach ($this as $property) {
@@ -32,46 +37,46 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         return $return;
     }
 
-    public function add(OpenGraphProperty $property): void
+    public function add(OpenGraphProperty $property) : void
     {
         $this->properties[] = $property;
     }
 
-    public function append(OpenGraphData $data): void
+    public function append(OpenGraphData $data) : void
     {
         foreach ($data as $property) {
             $this->add(clone $property);
         }
     }
 
-    public function get($i)
+    public function get(int $index) : ?OpenGraphData
     {
-        return $this->properties[$i];
+        return $this->properties[$index] ?? null;
     }
 
-    public function remove($i): void
+    public function remove(int $index) : void
     {
-        array_splice($this->properties, $i, 1);
+        array_splice($this->properties, $index, 1);
     }
 
-    public function clear(): void
+    public function clear() : void
     {
         $this->properties = [];
     }
 
-    public function getProtocol()
+    public function getProtocol() : OpenGraphProtocol
     {
         return $this;
     }
 
-    public function getIterator()
+    /** @return OpenGraphData[] */
+    public function getIterator() : iterable
     {
         return new ArrayIterator($this->properties);
     }
 
-    public function count()
+    public function count() : int
     {
         return count($this->properties);
     }
-
 }

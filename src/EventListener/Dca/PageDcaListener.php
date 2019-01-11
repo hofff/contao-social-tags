@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\EventListener\Dca;
 
+use function explode;
+use function strlen;
+use function strpos;
+
 final class PageDcaListener
 {
-    public function typeOptions(): array
+    /** @return string[] */
+    public function typeOptions() : array
     {
         $arrOptions = [];
         foreach ($GLOBALS['bbit_st']['TYPES'] as $strType) {
             if (strpos($strType, ' ') === false) {
-                list($strGroup, $strName) = explode('.', $strType);
+                [$strGroup, $strName]         = explode('.', $strType);
                 strlen($strName) || $strGroup = 'general';
-                $arrOptions[$strGroup][] = $strType;
+                $arrOptions[$strGroup][]      = $strType;
             } else {
                 $arrCustom[] = $strType;
             }

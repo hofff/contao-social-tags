@@ -1,13 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
+namespace Hofff\Contao\SocialTags;
+
+use Contao\File;
+use Contao\StringUtil;
+use Controller;
+use FilesModel;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphBasicData;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphType;
+use Model;
+use function array_merge;
+use function array_slice;
+use function count;
+use function explode;
+use function implode;
+use function is_file;
+use function rtrim;
+use function str_repeat;
+use function str_replace;
+use function strip_tags;
+use function strlen;
+use function trim;
 
 class ContaoOpenGraphFactory extends Controller
 {
-
-    public static function create()
+    public static function create() : self
     {
         return new self();
     }
@@ -18,11 +38,11 @@ class ContaoOpenGraphFactory extends Controller
         $this->import('Database');
     }
 
-    public function generateBasicDataByPageID($intID)
+    public function generateBasicDataByPageID(int $pageId) : OpenGraphBasicData
     {
         $objOGBD = new OpenGraphBasicData();
-        $objPage = $objOrigin = $intID == $GLOBALS['objPage']->id ? $GLOBALS['objPage'] : $this->getPageDetails($intID);
-        if (!$objPage) {
+        $objPage = $objOrigin = $pageId === $GLOBALS['objPage']->id ? $GLOBALS['objPage'] : $this->getPageDetails($pageId);
+        if (! $objPage) {
             return $objOGBD;
         }
 
@@ -42,6 +62,7 @@ class ContaoOpenGraphFactory extends Controller
 
             case 'bbit_st_root':
                 $arrTrail = array_slice($arrTrail, 0, 1);
+            // No break
             case 'bbit_st_parent':
                 $arrModes[] = 'bbit_st_page';
                 unset($objPage);
@@ -53,7 +74,7 @@ class ContaoOpenGraphFactory extends Controller
                 break;
         }
 
-        if (!$objPage) {
+        if (! $objPage) {
             $strTrailWildcards = rtrim(str_repeat('?,', count($arrTrail)), ',');
             $strModeWildcards  = rtrim(str_repeat('?,', count($arrModes)), ',');
             $arrTrailSet       = [implode(',', $arrTrail)];
@@ -82,10 +103,9 @@ class ContaoOpenGraphFactory extends Controller
             );
         }
 
-        if (!$objPage || (!($objPage instanceof \Model) && !$objPage->numRows) || $objPage->bbit_st == 'bbit_st_disableTree') {
+        if (! $objPage || (! ($objPage instanceof Model) && ! $objPage->numRows) || $objPage->bbit_st === 'bbit_st_disableTree') {
             return $objOGBD;
         }
-
 
         if (strlen($objPage->bbit_st_title)) {
             $strTitle = $this->replaceInsertTags($objPage->bbit_st_title);
@@ -97,8 +117,8 @@ class ContaoOpenGraphFactory extends Controller
         $objOGBD->setTitle($strTitle);
 
         if (strlen($objPage->bbit_st_type)) {
-            list($strNamespace, $strType) = explode(' ', $objPage->bbit_st_type, 2);
-            if (!strlen($strType)) {
+            [$strNamespace, $strType] = explode(' ', $objPage->bbit_st_type, 2);
+            if (! strlen($strType)) {
                 $strType = $strNamespace;
                 unset($strNamespace);
             }
@@ -111,7 +131,7 @@ class ContaoOpenGraphFactory extends Controller
 
         if (strlen($objPage->bbit_st_url)) {
             $strURL = $this->replaceInsertTags($objPage->bbit_st_url);
-        } elseif ($objOrigin->id == $GLOBALS['objPage']->id) {
+        } elseif ($objOrigin->id === $GLOBALS['objPage']->id) {
             $strURL = $this->Environment->base . $this->Environment->request;
         } else {
             $strURL = $this->Environment->base . $this->generateFrontendURL($objOrigin->row());
@@ -133,19 +153,22 @@ class ContaoOpenGraphFactory extends Controller
         }
         strlen($strSiteName) && $objOGBD->setSiteName($strSiteName);
 
-
         return $objOGBD;
     }
 
-    public function generateImageData($strImage, $arrSize = null)
+    /**
+     * @param string|resource     $strImage
+     * @param (string|int)[]|null $arrSize
+     */
+    public function generateImageData($strImage, ?array $arrSize = null) : OpenGraphImageData
     {
         $objOGID = new OpenGraphImageData();
 
-        $file = FilesModel::findByUuid($strImage);
+        $file              = FilesModel::findByUuid($strImage);
         $file && $strImage = $file->path;
 
         if (is_file(TL_ROOT . '/' . $strImage)) {
-            $arrSize  = deserialize($arrSize, true);
+            $arrSize  = StringUtil::deserialize($arrSize, true);
             $strImage = $this->getImage($strImage, $arrSize[0], $arrSize[1], $arrSize[2]);
             $objImage = new File($strImage);
             $objOGID->setURL($this->Environment->base . $strImage);
@@ -156,5 +179,4 @@ class ContaoOpenGraphFactory extends Controller
 
         return $objOGID;
     }
-
 }

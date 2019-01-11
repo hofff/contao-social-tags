@@ -1,45 +1,52 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hofff\Contao\SocialTags\OpenGraph;
 
-use Hofff\Contao\SocialTags\OpenGraph\AbstractOpenGraphData;
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProperty;
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphProtocol;
+use function strpos;
 
 class OpenGraphImageData extends AbstractOpenGraphData
 {
+    /** @var string|null */
+    protected $url;
 
-    public function __construct($url = null)
+    /** @var string|null */
+    protected $mime;
+
+    /** @var int|null */
+    protected $height;
+
+    /** @var int|null */
+    protected $width;
+
+    /** @var string|null */
+    protected $secure;
+
+    public function __construct(?string $url = null)
     {
         parent::__construct();
         $this->setURL($url);
     }
 
-    protected $url;
-
-    public function setURL($url)
+    public function setURL(?string $url) : self
     {
-        $url = strval($url);
-        if (strlen($url)) {
-            $this->url = $url;
-        } else {
-            unset($this->url);
-        }
+        $this->url = $url;
 
         return $this;
     }
 
-    public function hasURL()
+    public function hasURL() : bool
     {
         return isset($this->url);
     }
 
-    public function getURL()
+    public function getURL() : ?string
     {
         return $this->url;
     }
 
-    public function getURLData()
+    public function getURLData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasURL() && $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image', $this->getURL()));
@@ -47,31 +54,25 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $secure;
 
-    public function setSecureURL($secure)
+    public function setSecureURL(?string $secure) : self
     {
-        $secure = strval($secure);
-        if (strlen($secure)) {
-            $this->secure = $secure;
-        } else {
-            unset($this->secure);
-        }
+        $this->secure = $secure;
 
         return $this;
     }
 
-    public function hasSecureURL()
+    public function hasSecureURL() : bool
     {
         return isset($this->secure);
     }
 
-    public function getSecureURL()
+    public function getSecureURL() : ?string
     {
         return $this->secure;
     }
 
-    public function getSecureURLData()
+    public function getSecureURLData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasSecureURL() && $protocol->add(
@@ -81,32 +82,30 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $mime;
-
-    public function setMIMEType($mime)
+    public function setMIMEType(?string $mime) : self
     {
-        $mime = strval($mime);
-        list($base) = explode('/', $mime, 2);
-        if ($base == 'image') {
-            $this->mime = $mime;
-        } else {
-            unset($this->mime);
+        if ($mime === null || strpos($mime, 'image/') !== 0) {
+            $this->mime = null;
+
+            return $this;
         }
+
+        $this->mime = $mime;
 
         return $this;
     }
 
-    public function hasMIMEType()
+    public function hasMIMEType() : bool
     {
         return isset($this->mime);
     }
 
-    public function getMIMEType()
+    public function getMIMEType() : ?string
     {
         return $this->mime;
     }
 
-    public function getMIMETypeData()
+    public function getMIMETypeData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasMIMEType() && $protocol->add(
@@ -116,30 +115,24 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $width;
-
-    public function setWidth($width)
+    public function setWidth(?int $width) : self
     {
-        if (is_numeric($width) && $width >= 1) {
-            $this->width = intval($width);
-        } else {
-            unset($this->width);
-        }
+        $this->width = $width;
 
         return $this;
     }
 
-    public function hasWidth()
+    public function hasWidth() : bool
     {
         return isset($this->width);
     }
 
-    public function getWidth()
+    public function getWidth() : ?int
     {
         return $this->width;
     }
 
-    public function getWidthData()
+    public function getWidthData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasWidth() && $protocol->add(
@@ -149,30 +142,24 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    protected $height;
-
-    public function setHeight($height)
+    public function setHeight(?int $height) : self
     {
-        if (is_numeric($height) && $height >= 1) {
-            $this->height = intval($height);
-        } else {
-            unset($this->height);
-        }
+        $this->height = $height;
 
         return $this;
     }
 
-    public function hasHeight()
+    public function hasHeight() : bool
     {
         return isset($this->height);
     }
 
-    public function getHeight()
+    public function getHeight() : ?int
     {
         return $this->height;
     }
 
-    public function getHeightData()
+    public function getHeightData() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $this->hasHeight() && $protocol->add(
@@ -182,12 +169,12 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    public function isValid()
+    public function isValid() : bool
     {
         return $this->hasURL();
     }
 
-    public function getProtocol()
+    public function getProtocol() : OpenGraphProtocol
     {
         $protocol = new OpenGraphProtocol();
         $protocol->append($this->getURLData());
@@ -198,5 +185,4 @@ class OpenGraphImageData extends AbstractOpenGraphData
 
         return $protocol;
     }
-
 }

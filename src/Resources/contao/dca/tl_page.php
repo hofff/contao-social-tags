@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-use Hofff\Contao\SocialTags\Action\FacebookLintAction;
+use Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener;
 
 $this->loadLanguageFile('hofff_st');
 
 $GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_facebookLint'] = [
     'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_facebookLint'],
-    'icon'       => 'bundles/hofffcontaosocialtags/html/images/og.png',
-    'href'       => 'key=hofff_st_facebookLint',
+    'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',
     'attributes' => ' onclick="window.open(this.href); return false;"',
+    'button_callback' => [PageDcaListener::class, 'facebookLinkButton']
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'hofff_st';
@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_page'] =
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_tree'] = 'hofff_st_type'
     . ',hofff_st_title,hofff_st_site'
     . ',hofff_st_url'
-    . ',hofff_st_image,hofff_st_imageSize'
+    . ',hofff_st_image'
     . ',hofff_st_description';// . ',hofff_st_curies,hofff_st_custom'
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
@@ -61,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'website',
-    'options'   => FacebookLintAction::getInstance()->getTypeOptions(),
+    'options_callback'   => [PageDcaListener::class, 'typeOptions'],
     'reference' => &$GLOBALS['TL_LANG']['hofff_st']['types'],
     'eval'      => [
         'mandatory'      => true,
@@ -116,20 +116,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_image'] = [
         'extensions' => 'gif,jpg,jpeg,png',
         'filesOnly'  => true,
         'tl_class'   => 'clr',
-    ],
-];
-
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_imageSize'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_imageSize'],
-    'exclude'   => true,
-    'inputType' => 'imageSize',
-    'options'   => $GLOBALS['TL_CROP'],
-    'reference' => &$GLOBALS['TL_LANG']['MSC'],
-    'eval'      => [
-        'rgxp'       => 'digit',
-        'nospace'    => true,
-        'helpwizard' => true,
-        'tl_class'   => 'clr w50',
     ],
 ];
 

@@ -54,7 +54,6 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $protocol;
     }
 
-
     public function setSecureURL(?string $secure) : self
     {
         $this->secure = $secure;
@@ -136,7 +135,7 @@ class OpenGraphImageData extends AbstractOpenGraphData
     {
         $protocol = new OpenGraphProtocol();
         $this->hasWidth() && $protocol->add(
-            new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:width', $this->getWidth())
+            new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:width', (string) $this->getWidth())
         );
 
         return $protocol;
@@ -163,7 +162,7 @@ class OpenGraphImageData extends AbstractOpenGraphData
     {
         $protocol = new OpenGraphProtocol();
         $this->hasHeight() && $protocol->add(
-            new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:height', $this->getHeight())
+            new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:height', (string) $this->getHeight())
         );
 
         return $protocol;

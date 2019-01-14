@@ -54,6 +54,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
         'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'][''],
         'tl_class'           => '',
     ],
+    'sql' => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
@@ -69,6 +70,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
         'submitOnChange' => true,
         'tl_class'       => 'w50',
     ],
+    'sql' => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
@@ -80,6 +82,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
         'decodeEntities' => true,
         'tl_class'       => 'clr w50',
     ],
+    'sql' => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
@@ -91,6 +94,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
         'decodeEntities' => true,
         'tl_class'       => 'w50',
     ],
+    'sql' => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_url'] = [
@@ -103,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_url'] = [
         'rgxp'           => 'url',
         'tl_class'       => 'clr long',
     ],
+    'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_image'] = [
@@ -117,6 +122,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_image'] = [
         'filesOnly'  => true,
         'tl_class'   => 'clr',
     ],
+    'sql' => 'binary(16) NULL',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_description'] = [
@@ -127,4 +133,5 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_description'] = [
         'style'    => 'height: 60px;',
         'tl_class' => 'clr',
     ],
+    'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];

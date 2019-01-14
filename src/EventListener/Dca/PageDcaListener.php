@@ -17,16 +17,20 @@ final class PageDcaListener
     /** @var RouterInterface */
     private $router;
 
-    public function __construct(RouterInterface $router)
+    /** @var array */
+    private $types;
+
+    public function __construct(RouterInterface $router, array $types)
     {
         $this->router = $router;
+        $this->types = $types;
     }
 
     /** @return string[] */
     public function typeOptions() : array
     {
         $arrOptions = [];
-        foreach ($GLOBALS['hofff_st']['TYPES'] as $strType) {
+        foreach ($this->types as $strType) {
             if (strpos($strType, ' ') === false) {
                 [$strGroup, $strName]         = explode('.', $strType);
                 (is_string($strName) && strlen($strName)) || $strGroup= 'general';

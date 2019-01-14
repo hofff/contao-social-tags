@@ -81,7 +81,7 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return isset($this->type);
     }
 
-    public function getType() : ?string
+    public function getType() : ?OpenGraphType
     {
         return $this->type;
     }

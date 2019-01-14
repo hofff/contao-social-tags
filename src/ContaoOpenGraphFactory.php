@@ -4,44 +4,47 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags;
 
+use Contao\Controller;
+use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
-use Contao\StringUtil;
-use Controller;
+use Doctrine\DBAL\Connection;
 use FilesModel;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphBasicData;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\OpenGraph\OpenGraphType;
-use Model;
-use function array_merge;
+use PDO;
 use function array_slice;
-use function count;
 use function explode;
-use function implode;
 use function is_file;
-use function rtrim;
-use function str_repeat;
 use function str_replace;
 use function strip_tags;
 use function strlen;
+use Symfony\Component\HttpFoundation\RequestStack;
 use function trim;
 
-class ContaoOpenGraphFactory extends Controller
+final class ContaoOpenGraphFactory
 {
-    public static function create() : self
-    {
-        return new self();
-    }
+    /** @var Connection */
+    private $connection;
 
-    public function __construct()
+    /** @var ContaoFrameworkInterface */
+    private $framework;
+
+    /** @var RequestStack */
+    private $requestStack;
+
+    public function __construct(Connection $connection, RequestStack $requestStack, ContaoFrameworkInterface $framework)
     {
-        parent::__construct();
-        $this->import('Database');
+        $this->connection = $connection;
+        $this->framework = $framework;
+        $this->requestStack = $requestStack;
     }
 
     public function generateBasicDataByPageID(int $pageId) : OpenGraphBasicData
     {
         $objOGBD = new OpenGraphBasicData();
-        $objPage = $objOrigin = $pageId === $GLOBALS['objPage']->id ? $GLOBALS['objPage'] : $this->getPageDetails($pageId);
+        $objPage = $objOrigin = $pageId == $GLOBALS['objPage']->id ? $GLOBALS['objPage'] : $this->getPageDetails($pageId);
+
         if (! $objPage) {
             return $objOGBD;
         }
@@ -75,35 +78,36 @@ class ContaoOpenGraphFactory extends Controller
         }
 
         if (! $objPage) {
-            $strTrailWildcards = rtrim(str_repeat('?,', count($arrTrail)), ',');
-            $strModeWildcards  = rtrim(str_repeat('?,', count($arrModes)), ',');
-            $arrTrailSet       = [implode(',', $arrTrail)];
-            $objPage           = $this->Database->prepare(
-                'SELECT	p.*
-				FROM	tl_page AS p
-				WHERE	p.id IN (' . $strTrailWildcards . ')
-				AND		p.hofff_st IN (' . $strModeWildcards . ')
-				AND		(p.hofff_st != \'hofff_st_disableTree\' OR FIND_IN_SET(p.id, ?) > (
-							SELECT	COALESCE(MAX(FIND_IN_SET(p2.id, ?)), -1)
-							FROM	tl_page AS p2
-							WHERE	p2.id IN (' . $strTrailWildcards . ')
-							AND		p2.hofff_st = \'hofff_st_parent\'
-						))
-				ORDER BY FIND_IN_SET(p.id, ?) DESC
-				LIMIT	1'
-            )->execute(
-                array_merge(
-                    $arrTrail,
-                    $arrModes,
-                    $arrTrailSet,
-                    $arrTrailSet,
-                    $arrTrail,
-                    $arrTrailSet
+            $queryBuilder = $this->connection->createQueryBuilder();
+            $trailSet     = implode(',', $arrTrail);
+            $statement    = $queryBuilder
+                ->select('p.*')
+                ->from('tl_page', 'p')
+                ->andWhere('p.id IN (:trail)')
+                ->andWhere('p.hofff_st IN (:modes)')
+                ->andWhere('(p.hofff_st != \'hofff_st_disableTree\' OR FIND_IN_SET(p.id, :trailSet) > (
+                            SELECT COALESCE(MAX(FIND_IN_SET(p2.id, :trailSet)), -1)
+                            FROM   tl_page AS p2
+                            WHERE  p2.id IN (:trail)
+                            AND	   p2.hofff_st = \'hofff_st_parent\'
+                        ))'
                 )
-            );
+                ->orderBy('FIND_IN_SET(p.id, :trailSet)')
+                ->setParameter('trail', $arrTrail, Connection::PARAM_STR_ARRAY)
+                ->setParameter('trailSet', $trailSet)
+                ->setParameter('modes', $arrModes, Connection::PARAM_STR_ARRAY)
+                ->setMaxResults(1)
+                ->execute();
+
+            \dump($arrModes);
+            \dump($arrTrail);
+            \dump($statement->rowCount());
+            $objPage = $statement->fetch(PDO::FETCH_OBJ);
         }
 
-        if (! $objPage || (! ($objPage instanceof Model) && ! $objPage->numRows) || $objPage->hofff_st === 'hofff_st_disableTree') {
+        \dump($objPage);
+
+        if (! $objPage || $objPage->hofff_st === 'hofff_st_disableTree') {
             return $objOGBD;
         }
 
@@ -118,7 +122,7 @@ class ContaoOpenGraphFactory extends Controller
 
         if (strlen($objPage->hofff_st_type)) {
             [$strNamespace, $strType] = explode(' ', $objPage->hofff_st_type, 2);
-            if (! strlen($strType)) {
+            if ($strType === null) {
                 $strType = $strNamespace;
                 unset($strNamespace);
             }
@@ -127,14 +131,14 @@ class ContaoOpenGraphFactory extends Controller
         }
         $objOGBD->setType(new OpenGraphType($strType, $strNamespace));
 
-        $objOGBD->setImageData($this->generateImageData($objPage->hofff_st_image, $objPage->hofff_st_imageSize));
+        $objOGBD->setImageData($this->generateImageData($objPage->hofff_st_image));
 
         if (strlen($objPage->hofff_st_url)) {
             $strURL = $this->replaceInsertTags($objPage->hofff_st_url);
         } elseif ($objOrigin->id === $GLOBALS['objPage']->id) {
-            $strURL = $this->Environment->base . $this->Environment->request;
+            $strURL = $this->getBaseUrl() . $this->getRequestUri();
         } else {
-            $strURL = $this->Environment->base . $this->generateFrontendURL($objOrigin->row());
+            $strURL = $this->getBaseUrl() . $this->generateFrontendURL($objOrigin->row());
         }
         $objOGBD->setURL($strURL);
 
@@ -157,26 +161,61 @@ class ContaoOpenGraphFactory extends Controller
     }
 
     /**
-     * @param string|resource     $strImage
-     * @param (string|int)[]|null $arrSize
+     * @param string|resource $strImage
      */
-    public function generateImageData($strImage, ?array $arrSize = null) : OpenGraphImageData
+    public function generateImageData($strImage) : OpenGraphImageData
     {
-        $objOGID = new OpenGraphImageData();
+        $imageData = new OpenGraphImageData();
 
         $file              = FilesModel::findByUuid($strImage);
         $file && $strImage = $file->path;
 
         if (is_file(TL_ROOT . '/' . $strImage)) {
-            $arrSize  = StringUtil::deserialize($arrSize, true);
-            $strImage = $this->getImage($strImage, $arrSize[0], $arrSize[1], $arrSize[2]);
             $objImage = new File($strImage);
-            $objOGID->setURL($this->Environment->base . $strImage);
-            $objOGID->setMIMEType($objImage->mime);
-            $objOGID->setWidth($objImage->width);
-            $objOGID->setHeight($objImage->height);
+            $imageData->setURL($this->getBaseUrl() . $strImage);
+            $imageData->setMIMEType($objImage->mime);
+            $imageData->setWidth($objImage->width);
+            $imageData->setHeight($objImage->height);
         }
 
-        return $objOGID;
+        return $imageData;
+    }
+
+    private function replaceInsertTags(string $content): string
+    {
+        $controller = $this->framework->getAdapter(Controller::class);
+
+        $content = $controller->__call('replaceInsertTags', [$content, false]);
+        $content = $controller->__call('replaceInsertTags', [$content, true]);
+
+        return $content;
+    }
+
+    private function getBaseUrl(): string
+    {
+        static $baseUrl;
+
+        if ($baseUrl !== null) {
+            return $baseUrl;
+        }
+
+        $request = $this->requestStack->getMasterRequest();
+        if (!$request) {
+            return '';
+        }
+
+        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/';
+
+        return $baseUrl;
+    }
+
+    private function getRequestUri(): string
+    {
+        $request = $this->requestStack->getMasterRequest();
+        if (!$request) {
+            return '';
+        }
+
+        return $request->getRequestUri();
     }
 }

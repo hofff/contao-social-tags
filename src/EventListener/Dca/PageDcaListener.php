@@ -14,7 +14,7 @@ final class PageDcaListener
     public function typeOptions() : array
     {
         $arrOptions = [];
-        foreach ($GLOBALS['bbit_st']['TYPES'] as $strType) {
+        foreach ($GLOBALS['hofff_st']['TYPES'] as $strType) {
             if (strpos($strType, ' ') === false) {
                 [$strGroup, $strName]         = explode('.', $strType);
                 strlen($strName) || $strGroup = 'general';

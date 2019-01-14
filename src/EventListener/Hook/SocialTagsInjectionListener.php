@@ -24,7 +24,7 @@ final class SocialTagsInjectionListener
 
     public function onGeneratePage(PageModel $page) : void
     {
-        if ($page->bbit_st === null) {
+        if ($page->hofff_st === null) {
             return;
         }
 

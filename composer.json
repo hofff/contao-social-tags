@@ -43,9 +43,6 @@
       "Hofff\\Contao\\SocialTags\\": "src/"
     }
   },
-  "conflict": {
-    "backboneit/contao-opengraph": "*"
-  },
   "extra": {
     "contao-manager-plugin": "Hofff\\Contao\\SocialTags\\ContaoManager\\Plugin",
     "branch-alias": {

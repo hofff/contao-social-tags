@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data;
 
 use ArrayIterator;
+use Hofff\Contao\SocialTags\Data\AbstractData;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphProperty;
 use function array_splice;
 use function count;
 
-class OpenGraphProtocol extends AbstractOpenGraphData
+class Protocol extends AbstractData
 {
     public const NS_OG      = 'http://ogp.me/ns#';
     public const NS_MUSIC   = 'http://ogp.me/ns/music#';
@@ -18,7 +20,7 @@ class OpenGraphProtocol extends AbstractOpenGraphData
     public const NS_PROFILE = 'http://ogp.me/ns/profile#';
     public const NS_WEBSITE = 'http://ogp.me/ns/website#';
 
-    /** @var OpenGraphData[] */
+    /** @var Data[] */
     protected $properties;
 
     public function __construct()
@@ -42,14 +44,14 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         $this->properties[] = $property;
     }
 
-    public function append(OpenGraphData $data) : void
+    public function append(Data $data) : void
     {
         foreach ($data as $property) {
             $this->add(clone $property);
         }
     }
 
-    public function get(int $index) : ?OpenGraphData
+    public function get(int $index) : ?Data
     {
         return $this->properties[$index] ?? null;
     }
@@ -64,12 +66,12 @@ class OpenGraphProtocol extends AbstractOpenGraphData
         $this->properties = [];
     }
 
-    public function getProtocol() : OpenGraphProtocol
+    public function getProtocol() : Protocol
     {
         return $this;
     }
 
-    /** @return OpenGraphData[] */
+    /** @return Data[] */
     public function getIterator() : iterable
     {
         return new ArrayIterator($this->properties);

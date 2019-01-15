@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
+use Hofff\Contao\SocialTags\Data\Protocol;
 use function sprintf;
 
 class OpenGraphType extends OpenGraphProperty
@@ -21,7 +22,7 @@ class OpenGraphType extends OpenGraphProperty
     {
         parent::__construct();
 
-        parent::setNamespace(OpenGraphProtocol::NS_OG);
+        parent::setNamespace(Protocol::NS_OG);
         parent::setName('type');
 
         $this->setType($type);

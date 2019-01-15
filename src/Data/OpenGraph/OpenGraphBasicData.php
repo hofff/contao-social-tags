@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
-class OpenGraphBasicData extends AbstractOpenGraphData
+use Hofff\Contao\SocialTags\Data\AbstractData;
+use Hofff\Contao\SocialTags\Data\Protocol;
+
+class OpenGraphBasicData extends AbstractData
 {
     /** @var string|null */
     protected $siteName;
@@ -49,12 +52,12 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getTitleData() : OpenGraphProtocol
+    protected function getTitleData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->title) {
-            $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'title', $this->title));
+            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'title', $this->title));
         }
 
         return $protocol;
@@ -67,9 +70,9 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getTypeData() : OpenGraphProtocol
+    protected function getTypeData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->type) {
             $protocol->add($this->type);
@@ -113,12 +116,12 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this->url;
     }
 
-    protected function getURLData() : OpenGraphProtocol
+    protected function getURLData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->url) {
-            $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'url', $this->url));
+            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'url', $this->url));
         }
 
         return $protocol;
@@ -131,12 +134,12 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getDescriptionData() : OpenGraphProtocol
+    protected function getDescriptionData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->description) {
-            $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'description', $this->description));
+            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'description', $this->description));
         }
 
         return $protocol;
@@ -158,12 +161,12 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this->siteName;
     }
 
-    protected function getSiteNameData() : OpenGraphProtocol
+    protected function getSiteNameData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->siteName) {
-            $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'site_name', $this->siteName));
+            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'site_name', $this->siteName));
         }
 
         return $protocol;
@@ -190,9 +193,9 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this->getImageData()->isValid();
     }
 
-    public function getProtocol() : OpenGraphProtocol
+    public function getProtocol() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         $protocol->append($this->getTitleData());
         $protocol->append($this->getTypeData());

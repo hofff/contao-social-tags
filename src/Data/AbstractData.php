@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data;
 
-abstract class AbstractOpenGraphData implements OpenGraphData
+abstract class AbstractData implements Data
 {
     protected function __construct()
     {
@@ -15,7 +15,7 @@ abstract class AbstractOpenGraphData implements OpenGraphData
         return $this->getProtocol()->getMetaTags();
     }
 
-    /** @return OpenGraphData[] */
+    /** @return Data[] */
     public function getIterator() : iterable
     {
         return $this->getProtocol()->getIterator();

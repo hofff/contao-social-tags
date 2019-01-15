@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
 use function sprintf;
 

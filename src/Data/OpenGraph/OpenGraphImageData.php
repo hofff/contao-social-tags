@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
+use Hofff\Contao\SocialTags\Data\AbstractData;
+use Hofff\Contao\SocialTags\Data\Protocol;
 use function strpos;
 
-class OpenGraphImageData extends AbstractOpenGraphData
+class OpenGraphImageData extends AbstractData
 {
     /** @var string|null */
     protected $url;
@@ -36,12 +38,12 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getURLData() : OpenGraphProtocol
+    protected function getURLData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->url) {
-            $protocol->add(new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image', $this->url));
+            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'image', $this->url));
         }
 
         return $protocol;
@@ -54,13 +56,13 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getSecureURLData() : OpenGraphProtocol
+    protected function getSecureURLData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->secure) {
             $protocol->add(
-                new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:secure_url', $this->secure)
+                new OpenGraphProperty(Protocol::NS_OG, 'image:secure_url', $this->secure)
             );
         }
 
@@ -80,13 +82,13 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getMIMETypeData() : OpenGraphProtocol
+    protected function getMIMETypeData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->mime) {
             $protocol->add(
-                new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:type', $this->mime)
+                new OpenGraphProperty(Protocol::NS_OG, 'image:type', $this->mime)
             );
         }
 
@@ -100,13 +102,13 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getWidthData() : OpenGraphProtocol
+    protected function getWidthData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->width) {
             $protocol->add(
-                new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:width', (string) $this->width)
+                new OpenGraphProperty(Protocol::NS_OG, 'image:width', (string) $this->width)
             );
         }
 
@@ -120,13 +122,13 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return $this;
     }
 
-    protected function getHeightData() : OpenGraphProtocol
+    protected function getHeightData() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
 
         if ($this->height) {
             $protocol->add(
-                new OpenGraphProperty(OpenGraphProtocol::NS_OG, 'image:height', (string) $this->height)
+                new OpenGraphProperty(Protocol::NS_OG, 'image:height', (string) $this->height)
             );
         }
 
@@ -138,9 +140,9 @@ class OpenGraphImageData extends AbstractOpenGraphData
         return (bool) $this->url;
     }
 
-    public function getProtocol() : OpenGraphProtocol
+    public function getProtocol() : Protocol
     {
-        $protocol = new OpenGraphProtocol();
+        $protocol = new Protocol();
         $protocol->append($this->getURLData());
         $protocol->append($this->getSecureURLData());
         $protocol->append($this->getMIMETypeData());

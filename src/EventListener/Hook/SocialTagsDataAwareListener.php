@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
-use Hofff\Contao\SocialTags\OpenGraph\OpenGraphData;
+use Hofff\Contao\SocialTags\Data\Data;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class SocialTagsDataAwareListener
@@ -17,26 +17,26 @@ abstract class SocialTagsDataAwareListener
         $this->requestStack = $requestStack;
     }
 
-    protected function getSocialTagsData() : ?OpenGraphData
+    protected function getSocialTagsData() : ?Data
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request) {
             return null;
         }
 
-        if (! $request->attributes->has(OpenGraphData::class)) {
+        if (! $request->attributes->has(Data::class)) {
             return null;
         }
 
-        $openGraphData = $request->attributes->get(OpenGraphData::class);
-        if ($openGraphData instanceof OpenGraphData) {
+        $openGraphData = $request->attributes->get(Data::class);
+        if ($openGraphData instanceof Data) {
             return $openGraphData;
         }
 
         return null;
     }
 
-    protected function setSocialTagsData(OpenGraphData $openGraphData) : void
+    protected function setSocialTagsData(Data $openGraphData) : void
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request) {
@@ -44,6 +44,6 @@ abstract class SocialTagsDataAwareListener
             return;
         }
 
-        $request->attributes->set(OpenGraphData::class, $openGraphData);
+        $request->attributes->set(Data::class, $openGraphData);
     }
 }

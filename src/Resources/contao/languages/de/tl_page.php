@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_facebookLint'] = [
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'] = [
     'OpenGraph Daten validieren',
     'Die OpenGraph Daten dieser Seite mit dem Facebook URL Linter validieren.',
 ];
@@ -20,25 +20,25 @@ $GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'] = [
     'hofff_st_disableTree' => 'Für diesen Seitenbaum deaktivieren',
 ];
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_title'] = [
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_title'] = [
     'Titel',
     'Wenn frei, wird der Seitentitel bzw. der Seitenname verwendet.',
 ];
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_site'] = [
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_site'] = [
     'Webseite',
     'Wenn frei, wird der Seitentitel bzw. der Seitenname verwendet der Wurzelseite verwendet.',
 ];
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_url'] = [
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_url'] = [
     'Kanonische URL',
     'Wenn frei, wird die URL dieser Seite verwendet.',
 ];
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_image']     = ['Bild', ''];
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_imageSize'] = ['Bildgröße', ''];
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_image']     = ['Bild', ''];
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_imageSize'] = ['Bildgröße', ''];
 
-$GLOBALS['TL_LANG']['tl_page']['hofff_st_description'] = [
+$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_description'] = [
     'Beschreibung',
     'Wenn frei, wird die Meta-Beschreibung verwendet.',
 ];

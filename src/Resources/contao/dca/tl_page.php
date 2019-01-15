@@ -6,8 +6,8 @@ use Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener;
 
 $this->loadLanguageFile('hofff_st');
 
-$GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_facebookLint'] = [
-    'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_facebookLint'],
+$GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_og_facebookLint'] = [
+    'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'],
     'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',
     'attributes' => ' onclick="window.open(this.href); return false;"',
     'button_callback' => [PageDcaListener::class, 'facebookLinkButton'],
@@ -29,10 +29,10 @@ foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $strKey => &$strPalette) {
 
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_page'] =
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_tree'] = 'hofff_st_type'
-    . ',hofff_st_title,hofff_st_site'
-    . ',hofff_st_url'
-    . ',hofff_st_image'
-    . ',hofff_st_description';// . ',hofff_st_curies,hofff_st_custom'
+    . ',hofff_st_og_title,hofff_st_og_site'
+    . ',hofff_st_og_url'
+    . ',hofff_st_og_image'
+    . ',hofff_st_og_description';// . ',hofff_st_curies,hofff_st_custom'
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st'],
@@ -57,7 +57,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_type'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['type'],
     'exclude'   => true,
     'inputType' => 'select',
@@ -73,8 +73,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_title'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_title'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_title'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -85,8 +85,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_site'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_site'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_site'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -97,8 +97,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_url'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_url'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -110,8 +110,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_url'] = [
     'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_image'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_image'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_image'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',
     'eval'      => [
@@ -125,8 +125,8 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_image'] = [
     'sql' => 'binary(16) NULL',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_description'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_description'],
+$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_description'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
     'eval'      => [

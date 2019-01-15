@@ -39,7 +39,7 @@ final class OpenGraphFactory implements DataFactory
         $basicData
             ->setTitle($this->getTitle($referencePage, $currentPage))
             ->setType($this->getOpenGraphType($referencePage))
-            ->setImageData($this->generateImageData($referencePage->hofff_st_image))
+            ->setImageData($this->generateImageData($referencePage->hofff_st_og_image))
             ->setURL($this->getUrl($referencePage, $currentPage))
             ->setDescription($this->getDescription($referencePage, $currentPage))
             ->setSiteName($this->getSiteName($referencePage, $currentPage));
@@ -108,7 +108,7 @@ final class OpenGraphFactory implements DataFactory
 
     private function getTitle(PageModel $referencePage, PageModel $currentPage) : string
     {
-        $title = $referencePage->hofff_st_title;
+        $title = $referencePage->hofff_st_og_title;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
@@ -123,8 +123,8 @@ final class OpenGraphFactory implements DataFactory
 
     private function getUrl(PageModel $referencePage, PageModel $currentPage) : string
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_url)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_url);
+        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_url)) {
+            return $this->replaceInsertTags($referencePage->hofff_st_og_url);
         }
 
         if ($currentPage->id === $GLOBALS['objPage']->id) {
@@ -136,8 +136,8 @@ final class OpenGraphFactory implements DataFactory
 
     private function getDescription(?PageModel $referencePage, ?PageModel $currentPage) : ?string
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_description)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_description);
+        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_description)) {
+            return $this->replaceInsertTags($referencePage->hofff_st_og_description);
         }
 
         $description = $currentPage->description;
@@ -148,8 +148,8 @@ final class OpenGraphFactory implements DataFactory
 
     private function getSiteName(?PageModel $referencePage, ?PageModel $currentPage) : string
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_site)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_site);
+        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_site)) {
+            return $this->replaceInsertTags($referencePage->hofff_st_og_site);
         }
 
         return strip_tags($currentPage->rootTitle);
@@ -157,8 +157,8 @@ final class OpenGraphFactory implements DataFactory
 
     private function getOpenGraphType(?PageModel $referencePage) : OpenGraphType
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_type)) {
-            [$namespace, $type] = explode(' ', $referencePage->hofff_st_type, 2);
+        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_type)) {
+            [$namespace, $type] = explode(' ', $referencePage->hofff_st_og_type, 2);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);

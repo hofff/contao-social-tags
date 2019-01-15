@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
+use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 use function sprintf;
 
-class OpenGraphType extends OpenGraphProperty
+class OpenGraphType extends Property
 {
     /** @var string|null */
     private $type;
@@ -77,19 +78,19 @@ class OpenGraphType extends OpenGraphProperty
     }
 
     /** @return $this */
-    public function setNamespace(?string $namespace) : OpenGraphProperty
+    public function setNamespace(?string $namespace) : Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setName(?string $name) : OpenGraphProperty
+    public function setName(?string $name) : Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setContent(?string $content) : OpenGraphProperty
+    public function setContent(?string $content) : Property
     {
         $this->setType($content);
 

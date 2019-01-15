@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data;
 
 use ArrayIterator;
-use Hofff\Contao\SocialTags\Data\AbstractData;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphProperty;
 use function array_splice;
 use function count;
 
@@ -20,7 +18,7 @@ class Protocol extends AbstractData
     public const NS_PROFILE = 'http://ogp.me/ns/profile#';
     public const NS_WEBSITE = 'http://ogp.me/ns/website#';
 
-    /** @var Data[] */
+    /** @var Property[] */
     protected $properties;
 
     public function __construct()
@@ -39,7 +37,7 @@ class Protocol extends AbstractData
         return $return;
     }
 
-    public function add(OpenGraphProperty $property) : void
+    public function add(Property $property) : void
     {
         $this->properties[] = $property;
     }
@@ -51,7 +49,7 @@ class Protocol extends AbstractData
         }
     }
 
-    public function get(int $index) : ?Data
+    public function get(int $index) : ?Property
     {
         return $this->properties[$index] ?? null;
     }
@@ -71,7 +69,7 @@ class Protocol extends AbstractData
         return $this;
     }
 
-    /** @return Data[] */
+    /** @return Property[] */
     public function getIterator() : iterable
     {
         return new ArrayIterator($this->properties);

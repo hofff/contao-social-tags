@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
 use Hofff\Contao\SocialTags\Data\AbstractData;
+use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 
 class OpenGraphBasicData extends AbstractData
@@ -57,7 +58,7 @@ class OpenGraphBasicData extends AbstractData
         $protocol = new Protocol();
 
         if ($this->title) {
-            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'title', $this->title));
+            $protocol->add(new Property(Protocol::NS_OG, 'title', $this->title));
         }
 
         return $protocol;
@@ -121,7 +122,7 @@ class OpenGraphBasicData extends AbstractData
         $protocol = new Protocol();
 
         if ($this->url) {
-            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'url', $this->url));
+            $protocol->add(new Property(Protocol::NS_OG, 'url', $this->url));
         }
 
         return $protocol;
@@ -139,7 +140,7 @@ class OpenGraphBasicData extends AbstractData
         $protocol = new Protocol();
 
         if ($this->description) {
-            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'description', $this->description));
+            $protocol->add(new Property(Protocol::NS_OG, 'description', $this->description));
         }
 
         return $protocol;
@@ -166,7 +167,7 @@ class OpenGraphBasicData extends AbstractData
         $protocol = new Protocol();
 
         if ($this->siteName) {
-            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'site_name', $this->siteName));
+            $protocol->add(new Property(Protocol::NS_OG, 'site_name', $this->siteName));
         }
 
         return $protocol;

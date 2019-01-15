@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\Data\OpenGraph;
+namespace Hofff\Contao\SocialTags\Data;
 
 use function sprintf;
 
-class OpenGraphProperty
+class Property
 {
     /** @var string|null */
     private $namespace;
@@ -39,12 +39,24 @@ class OpenGraphProperty
 
     public function getMetaTag() : string
     {
-        return $this->isValid() ? sprintf(
-            '<meta%s property="%s" content="%s" />',
-            sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
+        if (!$this->isValid()) {
+            return '';
+        }
+
+        if ($this->namespace && $this->prefix) {
+            return sprintf(
+                '<meta%s property="%s" content="%s" />',
+                sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
+                specialchars($this->getPrefixedName()),
+                specialchars($this->content)
+            );
+        }
+
+        return sprintf(
+            '<meta property="%s" content="%s" />',
             specialchars($this->getPrefixedName()),
             specialchars($this->content)
-        ) : '';
+        );
     }
 
     protected function getNamespaceDeclaration() : string
@@ -59,7 +71,7 @@ class OpenGraphProperty
 
     public function isValid() : bool
     {
-        return $this->namespace && $this->name && $this->content;
+        return $this->name && $this->content;
     }
 
     public function setNamespace(?string $namespace) : self

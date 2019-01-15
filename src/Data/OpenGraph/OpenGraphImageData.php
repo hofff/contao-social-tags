@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
 use Hofff\Contao\SocialTags\Data\AbstractData;
+use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 use function strpos;
 
@@ -43,7 +44,7 @@ class OpenGraphImageData extends AbstractData
         $protocol = new Protocol();
 
         if ($this->url) {
-            $protocol->add(new OpenGraphProperty(Protocol::NS_OG, 'image', $this->url));
+            $protocol->add(new Property(Protocol::NS_OG, 'image', $this->url));
         }
 
         return $protocol;
@@ -62,7 +63,7 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->secure) {
             $protocol->add(
-                new OpenGraphProperty(Protocol::NS_OG, 'image:secure_url', $this->secure)
+                new Property(Protocol::NS_OG, 'image:secure_url', $this->secure)
             );
         }
 
@@ -88,7 +89,7 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->mime) {
             $protocol->add(
-                new OpenGraphProperty(Protocol::NS_OG, 'image:type', $this->mime)
+                new Property(Protocol::NS_OG, 'image:type', $this->mime)
             );
         }
 
@@ -108,7 +109,7 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->width) {
             $protocol->add(
-                new OpenGraphProperty(Protocol::NS_OG, 'image:width', (string) $this->width)
+                new Property(Protocol::NS_OG, 'image:width', (string) $this->width)
             );
         }
 
@@ -128,7 +129,7 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->height) {
             $protocol->add(
-                new OpenGraphProperty(Protocol::NS_OG, 'image:height', (string) $this->height)
+                new Property(Protocol::NS_OG, 'image:height', (string) $this->height)
             );
         }
 

@@ -15,6 +15,7 @@ use PDO;
 use Symfony\Component\HttpFoundation\RequestStack;
 use function array_slice;
 use function explode;
+use function implode;
 use function is_file;
 use function str_replace;
 use function strip_tags;
@@ -116,7 +117,7 @@ final class OpenGraphFactory
         return $imageData;
     }
 
-    private function replaceInsertTags(string $content): string
+    private function replaceInsertTags(string $content) : string
     {
         $controller = $this->framework->getAdapter(Controller::class);
 
@@ -126,7 +127,7 @@ final class OpenGraphFactory
         return $content;
     }
 
-    private function getBaseUrl(): string
+    private function getBaseUrl() : string
     {
         static $baseUrl;
 
@@ -135,7 +136,7 @@ final class OpenGraphFactory
         }
 
         $request = $this->requestStack->getMasterRequest();
-        if (!$request) {
+        if (! $request) {
             return '';
         }
 
@@ -144,26 +145,26 @@ final class OpenGraphFactory
         return $baseUrl;
     }
 
-    private function getRequestUri(): string
+    private function getRequestUri() : string
     {
         $request = $this->requestStack->getMasterRequest();
-        if (!$request) {
+        if (! $request) {
             return '';
         }
 
         return $request->getRequestUri();
     }
 
-    private function getOriginPage(int $pageId): ?PageModel
+    private function getOriginPage(int $pageId) : ?PageModel
     {
-        if ($pageId == $GLOBALS['objPage']->id) {
+        if ($pageId === $GLOBALS['objPage']->id) {
             return $GLOBALS['objPage'];
         }
 
         return $this->framework->getAdapter(PageModel::class)->findWithDetails($pageId);
     }
 
-    private function loadReferencePage(array $pageTrail, array $modes): ?PageModel
+    private function loadReferencePage(array $pageTrail, array $modes) : ?PageModel
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $trailSet     = implode(',', $pageTrail);
@@ -177,8 +178,7 @@ final class OpenGraphFactory
                             FROM   tl_page AS p2
                             WHERE  p2.id IN (:trail)
                             AND	   p2.hofff_st = \'hofff_st_parent\'
-                        ))'
-            )
+                        ))')
             ->orderBy('FIND_IN_SET(p.id, :trailSet)')
             ->setParameter('trail', $pageTrail, Connection::PARAM_STR_ARRAY)
             ->setParameter('trailSet', $trailSet)
@@ -191,7 +191,7 @@ final class OpenGraphFactory
         return $this->framework->getAdapter(PageModel::class)->findByPK($pageId);
     }
 
-    private function getTitle(PageModel $referencePage, PageModel $currentPage): string
+    private function getTitle(PageModel $referencePage, PageModel $currentPage) : string
     {
         $title = $referencePage->hofff_st_title;
         if (TypeUtil::isStringWithContent($title)) {
@@ -206,7 +206,7 @@ final class OpenGraphFactory
         return strip_tags($currentPage->title);
     }
 
-    private function getUrl(PageModel $referencePage, PageModel $currentPage): string
+    private function getUrl(PageModel $referencePage, PageModel $currentPage) : string
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_url)) {
             return $this->replaceInsertTags($referencePage->hofff_st_url);
@@ -219,7 +219,7 @@ final class OpenGraphFactory
         return $currentPage->getAbsoluteUrl();
     }
 
-    private function getDescription(?PageModel $referencePage, ?PageModel $currentPage): ?string
+    private function getDescription(?PageModel $referencePage, ?PageModel $currentPage) : ?string
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_description)) {
             return $this->replaceInsertTags($referencePage->hofff_st_description);
@@ -231,7 +231,7 @@ final class OpenGraphFactory
         return $description ?: null;
     }
 
-    private function getSiteName(?PageModel $referencePage, ?PageModel $currentPage): string
+    private function getSiteName(?PageModel $referencePage, ?PageModel $currentPage) : string
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_site)) {
             return $this->replaceInsertTags($referencePage->hofff_st_site);
@@ -240,7 +240,7 @@ final class OpenGraphFactory
         return strip_tags($currentPage->rootTitle);
     }
 
-    private function getOpenGraphType(?PageModel $referencePage): OpenGraphType
+    private function getOpenGraphType(?PageModel $referencePage) : OpenGraphType
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_type)) {
             [$namespace, $type] = explode(' ', $referencePage->hofff_st_type, 2);

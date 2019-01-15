@@ -54,23 +54,11 @@ class OpenGraphType extends OpenGraphProperty
         return $this;
     }
 
-    public function hasType() : bool
+    protected function getTypeNamespaceDeclaration() : string
     {
-        return isset($this->type);
-    }
-
-    public function getType() : ?string
-    {
-        return $this->type;
-    }
-
-    public function getTypeNamespaceDeclaration() : string
-    {
-        return $this->hasTypeNamespace() ? sprintf(
-            '%s: %s',
-            $this->getTypePrefix(),
-            $this->getTypeNamespace()
-        ) : '';
+        return $this->typeNamespace
+            ? sprintf('%s: %s', $this->typePrefix, $this->typeNamespace)
+            : '';
     }
 
     public function setTypeNamespace(?string $typeNamespace) : self
@@ -80,26 +68,11 @@ class OpenGraphType extends OpenGraphProperty
         return $this;
     }
 
-    public function hasTypeNamespace() : bool
-    {
-        return isset($this->typeNamespace);
-    }
-
-    public function getTypeNamespace() : ?string
-    {
-        return $this->typeNamespace;
-    }
-
     public function setTypePrefix(?string $typePrefix) : self
     {
         $this->typePrefix = $typePrefix ?: 't';
 
         return $this;
-    }
-
-    public function getTypePrefix() : ?string
-    {
-        return $this->typePrefix;
     }
 
     /** @return $this */
@@ -122,15 +95,10 @@ class OpenGraphType extends OpenGraphProperty
         return $this;
     }
 
-    public function hasContent() : bool
+    protected function getContent() : ?string
     {
-        return $this->hasType();
-    }
-
-    public function getContent() : ?string
-    {
-        return $this->hasTypeNamespace()
-            ? sprintf('%s:%s', $this->getTypePrefix(), $this->getType())
-            : $this->getType();
+        return $this->typeNamespace
+            ? sprintf('%s:%s', $this->typePrefix, $this->type)
+            : $this->type;
     }
 }

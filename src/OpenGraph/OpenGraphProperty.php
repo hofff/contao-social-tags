@@ -20,8 +20,12 @@ class OpenGraphProperty
     /** @var string|null */
     private $prefix;
 
-    public function __construct(?string $namespace = null, ?string $name = null, ?string $content = null, ?string $prefix = null)
-    {
+    public function __construct(
+        ?string $namespace = null,
+        ?string $name = null,
+        ?string $content = null,
+        ?string $prefix = null
+    ) {
         $this->setNamespace($namespace);
         $this->setName($name);
         $this->setContent($content);
@@ -39,23 +43,23 @@ class OpenGraphProperty
             '<meta%s property="%s" content="%s" />',
             sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
             specialchars($this->getPrefixedName()),
-            specialchars($this->getContent())
+            specialchars($this->content)
         ) : '';
     }
 
-    public function getNamespaceDeclaration() : string
+    protected function getNamespaceDeclaration() : string
     {
-        return sprintf('%s: %s', $this->getPrefix(), $this->getNamespace());
+        return sprintf('%s: %s', $this->prefix, $this->name);
     }
 
-    public function getPrefixedName() : string
+    protected function getPrefixedName() : string
     {
-        return sprintf('%s:%s', $this->getPrefix(), $this->getName());
+        return sprintf('%s:%s', $this->prefix, $this->name);
     }
 
     public function isValid() : bool
     {
-        return $this->hasNamespace() && $this->hasName() && $this->hasContent();
+        return $this->namespace && $this->name && $this->content;
     }
 
     public function setNamespace(?string $namespace) : self
@@ -65,31 +69,11 @@ class OpenGraphProperty
         return $this;
     }
 
-    public function hasNamespace() : bool
-    {
-        return isset($this->namespace);
-    }
-
-    public function getNamespace() : ?string
-    {
-        return $this->namespace;
-    }
-
     public function setName(?string $name) : self
     {
         $this->name = $name;
 
         return $this;
-    }
-
-    public function hasName() : bool
-    {
-        return isset($this->name);
-    }
-
-    public function getName() : ?string
-    {
-        return $this->name;
     }
 
     public function setContent(?string $content) : self
@@ -99,25 +83,10 @@ class OpenGraphProperty
         return $this;
     }
 
-    public function hasContent() : bool
-    {
-        return isset($this->content);
-    }
-
-    public function getContent() : ?string
-    {
-        return $this->content;
-    }
-
     public function setPrefix(?string $prefix) : self
     {
         $this->prefix = $prefix ?: 'og';
 
         return $this;
-    }
-
-    public function getPrefix() : ?string
-    {
-        return $this->prefix;
     }
 }

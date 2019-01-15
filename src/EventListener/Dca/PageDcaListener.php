@@ -29,7 +29,7 @@ final class PageDcaListener
     }
 
     /** @return string[] */
-    public function typeOptions() : array
+    public function openGraphTypeOptions() : array
     {
         $arrOptions = [];
         foreach ($this->types as $strType) {

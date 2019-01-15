@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hofff\Contao\SocialTags\Data\Twitter;
+namespace Hofff\Contao\SocialTags\Data\TwitterCards;
 
 use Hofff\Contao\SocialTags\Data\AbstractData;
 use Hofff\Contao\SocialTags\Data\Property;

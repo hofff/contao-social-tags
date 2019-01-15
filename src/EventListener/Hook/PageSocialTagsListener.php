@@ -6,14 +6,15 @@ namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
 use Contao\PageModel;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory;
+use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PageSocialTagsListener extends SocialTagsDataAwareListener
 {
-    /** @var OpenGraphFactory */
+    /** @var SocialTagsFactory */
     private $factory;
 
-    public function __construct(RequestStack $requestStack, OpenGraphFactory $factory)
+    public function __construct(RequestStack $requestStack, SocialTagsFactory $factory)
     {
         parent::__construct($requestStack);
 
@@ -26,6 +27,6 @@ final class PageSocialTagsListener extends SocialTagsDataAwareListener
             return;
         }
 
-        $this->setSocialTagsData($this->factory->generateBasicDataByPageID((int) $page->id));
+        $this->setSocialTagsData($this->factory->generateByPageId((int) $page->id));
     }
 }

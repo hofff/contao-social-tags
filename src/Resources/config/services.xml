@@ -10,12 +10,6 @@
             <argument type="service" id="contao.framework" />
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory">
-            <argument type="service" id="database_connection" />
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="contao.framework" />
-        </service>
-
         <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener" public="true">
             <argument type="service" id="router" />
             <argument>%hofff.contao_social_tags.tags%</argument>
@@ -27,7 +21,23 @@
 
         <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener" public="true">
             <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
+        </service>
+
+        <!-- Factories -->
+        <service id="Hofff\Contao\SocialTags\Data\SocialTagsFactory">
+            <argument type="service" id="database_connection" />
+            <argument type="service" id="contao.framework" />
+            <argument type="tagged" tag="Hofff\Contao\SocialTags\DataFactory" />
+        </service>
+        <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="contao.framework" />
+            <tag name="Hofff\Contao\SocialTags\DataFactory" />
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory">
+            <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
     </services>
 </container>

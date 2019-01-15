@@ -19,12 +19,11 @@ class Protocol extends AbstractData
     public const NS_WEBSITE = 'http://ogp.me/ns/website#';
 
     /** @var Property[] */
-    protected $properties;
+    protected $properties = [];
 
     public function __construct()
     {
         parent::__construct();
-        $this->clear();
     }
 
     public function getMetaTags() : string
@@ -57,11 +56,6 @@ class Protocol extends AbstractData
     public function remove(int $index) : void
     {
         array_splice($this->properties, $index, 1);
-    }
-
-    public function clear() : void
-    {
-        $this->properties = [];
     }
 
     public function getProtocol() : Protocol

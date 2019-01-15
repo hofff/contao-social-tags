@@ -49,7 +49,7 @@ class OpenGraphProperty
 
     protected function getNamespaceDeclaration() : string
     {
-        return sprintf('%s: %s', $this->prefix, $this->name);
+        return sprintf('%s: %s', $this->prefix, $this->namespace);
     }
 
     protected function getPrefixedName() : string

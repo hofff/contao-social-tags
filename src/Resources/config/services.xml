@@ -10,7 +10,7 @@
             <argument type="service" id="contao.framework" />
         </service>
 
-        <service id="Hofff\Contao\SocialTags\ContaoOpenGraphFactory">
+        <service id="Hofff\Contao\SocialTags\OpenGraph\OpenGraphFactory">
             <argument type="service" id="database_connection" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="contao.framework" />
@@ -27,7 +27,7 @@
 
         <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener" public="true">
             <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\ContaoOpenGraphFactory" />
+            <argument type="service" id="Hofff\Contao\SocialTags\OpenGraph\OpenGraphFactory" />
         </service>
     </services>
 </container>

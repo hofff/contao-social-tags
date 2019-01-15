@@ -115,9 +115,11 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $this->hasImage() ? $this->image->getURL() : null;
     }
 
-    public function setImageData(OpenGraphImageData $image) : void
+    public function setImageData(OpenGraphImageData $image) : self
     {
         $this->image = $image;
+
+        return $this;
     }
 
     public function getImageData() : OpenGraphData
@@ -179,7 +181,7 @@ class OpenGraphBasicData extends AbstractOpenGraphData
         return $protocol;
     }
 
-    public function setSiteName(string $site) : self
+    public function setSiteName(?string $site) : self
     {
         if ($site !== '') {
             $this->site = $site;

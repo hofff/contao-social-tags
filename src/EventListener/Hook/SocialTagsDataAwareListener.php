@@ -17,14 +17,14 @@ abstract class SocialTagsDataAwareListener
         $this->requestStack = $requestStack;
     }
 
-    protected function getSocialTagsData(): ?OpenGraphData
+    protected function getSocialTagsData() : ?OpenGraphData
     {
         $request = $this->requestStack->getMasterRequest();
-        if (!$request) {
+        if (! $request) {
             return null;
         }
 
-        if (!$request->attributes->has(OpenGraphData::class)) {
+        if (! $request->attributes->has(OpenGraphData::class)) {
             return null;
         }
 
@@ -36,10 +36,10 @@ abstract class SocialTagsDataAwareListener
         return null;
     }
 
-    protected function setSocialTagsData(OpenGraphData $openGraphData): void
+    protected function setSocialTagsData(OpenGraphData $openGraphData) : void
     {
         $request = $this->requestStack->getMasterRequest();
-        if (!$request) {
+        if (! $request) {
             // Silently break. Shouldn't be the case for a regular call
             return;
         }

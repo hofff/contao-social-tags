@@ -11,7 +11,7 @@ final class SocialTagsDataInjectionListener extends SocialTagsDataAwareListener
     public function onGeneratePage() : void
     {
         $socialTagsData = $this->getSocialTagsData();
-        if (!$socialTagsData instanceof OpenGraphData) {
+        if (! $socialTagsData instanceof OpenGraphData) {
             return;
         }
 

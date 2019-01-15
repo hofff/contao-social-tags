@@ -7,7 +7,7 @@ use Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener;
 
 $GLOBALS['TL_HOOKS']['generatePage'][] = [
     PageSocialTagsListener::class,
-    'onGeneratePage'
+    'onGeneratePage',
 ];
 
 $GLOBALS['TL_HOOKS']['generatePage'][] = [

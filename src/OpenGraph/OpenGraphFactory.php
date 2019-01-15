@@ -164,6 +164,10 @@ final class OpenGraphFactory
         return $this->framework->getAdapter(PageModel::class)->findWithDetails($pageId);
     }
 
+    /**
+     * @param string[] $pageTrail
+     * @param string[] $modes
+     */
     private function loadReferencePage(array $pageTrail, array $modes) : ?PageModel
     {
         $queryBuilder = $this->connection->createQueryBuilder();

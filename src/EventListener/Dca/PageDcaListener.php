@@ -9,6 +9,7 @@ use Contao\StringUtil;
 use Symfony\Component\Routing\RouterInterface;
 use function explode;
 use function is_string;
+use function sprintf;
 use function strlen;
 use function strpos;
 
@@ -17,13 +18,14 @@ final class PageDcaListener
     /** @var RouterInterface */
     private $router;
 
-    /** @var array */
+    /** @var string[] */
     private $types;
 
+    /** @param string[] $types */
     public function __construct(RouterInterface $router, array $types)
     {
         $this->router = $router;
-        $this->types = $types;
+        $this->types  = $types;
     }
 
     /** @return string[] */
@@ -32,9 +34,9 @@ final class PageDcaListener
         $arrOptions = [];
         foreach ($this->types as $strType) {
             if (strpos($strType, ' ') === false) {
-                [$strGroup, $strName]         = explode('.', $strType);
-                (is_string($strName) && strlen($strName)) || $strGroup= 'general';
-                $arrOptions[$strGroup][]      = $strType;
+                [$strGroup, $strName]                                  = explode('.', $strType);
+                (is_string($strName) && strlen($strName)) || $strGroup = 'general';
+                $arrOptions[$strGroup][]                               = $strType;
             } else {
                 $arrCustom[] = $strType;
             }
@@ -44,6 +46,7 @@ final class PageDcaListener
         return $arrOptions;
     }
 
+    /** @param mixed[] $row */
     public function facebookLinkButton(
         array $row,
         ?string $href,

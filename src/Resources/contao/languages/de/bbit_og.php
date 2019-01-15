@@ -22,6 +22,10 @@ $GLOBALS['TL_LANG']['hofff_st']['types']['video.other']   = 'Sonstiges';
 $GLOBALS['TL_LANG']['hofff_st']['types']['custom']        = 'Eigener Typ';
 
 $GLOBALS['TL_LANG']['hofff_st']['type']       = ['Typ', 'Typ des auszuzeichnenden Gegenstands.'];
-$GLOBALS['TL_LANG']['hofff_st']['typeCustom'] = ['Eigener Typ', 'Ein eigenen Typ für den auszuzeichnenden Gegenstand festlegen. Eigene Typen sollten in eigenen Namensräumen liegen, zum Beispiel "myNS:myType".'];
+$GLOBALS['TL_LANG']['hofff_st']['typeCustom'] = [
+    'Eigener Typ',
+    'Ein eigenen Typ für den auszuzeichnenden Gegenstand festlegen. '
+    . ' Eigene Typen sollten in eigenen Namensräumen liegen, zum Beispiel "myNS:myType".',
+];
 $GLOBALS['TL_LANG']['hofff_st']['curies']     = ['Eigene Namensräume', ''];
 $GLOBALS['TL_LANG']['hofff_st']['custom']     = ['Eigene Definitionen', ''];

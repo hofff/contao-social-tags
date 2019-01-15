@@ -20,7 +20,7 @@ final class PageSocialTagsListener extends SocialTagsDataAwareListener
         $this->factory = $factory;
     }
 
-    public function onGeneratePage(PageModel $page): void
+    public function onGeneratePage(PageModel $page) : void
     {
         if ($page->hofff_st === null || $this->getSocialTagsData()) {
             return;

@@ -8,9 +8,10 @@ use function is_string;
 
 final class TypeUtil
 {
-    public static function isStringWithContent($value): bool
+    /** @param mixed $value */
+    public static function isStringWithContent($value) : bool
     {
-        if (!is_string($value)) {
+        if (! is_string($value)) {
             return false;
         }
 

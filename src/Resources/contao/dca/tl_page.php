@@ -10,7 +10,7 @@ $GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_facebookLint'] = [
     'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_facebookLint'],
     'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',
     'attributes' => ' onclick="window.open(this.href); return false;"',
-    'button_callback' => [PageDcaListener::class, 'facebookLinkButton']
+    'button_callback' => [PageDcaListener::class, 'facebookLinkButton'],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'hofff_st';
@@ -54,7 +54,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
         'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'][''],
         'tl_class'           => '',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\''
+    'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
@@ -70,7 +70,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_type'] = [
         'submitOnChange' => true,
         'tl_class'       => 'w50',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\''
+    'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
@@ -82,7 +82,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_title'] = [
         'decodeEntities' => true,
         'tl_class'       => 'clr w50',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\''
+    'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_site'] = [
         'decodeEntities' => true,
         'tl_class'       => 'w50',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\''
+    'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_url'] = [

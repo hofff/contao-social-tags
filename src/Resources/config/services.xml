@@ -30,6 +30,13 @@
             <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\FaqExtractor">
+            <argument type="service" id="contao.framework" />
+            <argument type="service" id="request_stack" />
+            <argument>%kernel.project_dir%</argument>
+            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
+        </service>
+
         <!-- Factories -->
         <service id="Hofff\Contao\SocialTags\Data\SocialTagsFactory">
             <argument type="service" id="database_connection" />

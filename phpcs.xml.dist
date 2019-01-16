@@ -22,5 +22,11 @@
             <property name="lineLimit" value="120"/>
             <property name="absoluteLineLimit" value="120"/>
         </properties>
+
+        <exclude-pattern>*/languages/*/*\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod">
+        <exclude-pattern>*/Data/Extractor/*Extractor\.php</exclude-pattern>
     </rule>
 </ruleset>

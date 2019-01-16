@@ -6,22 +6,28 @@
     <services>
         <defaults public="false" autoconfigure="false" autowire="false" />
 
+        <!-- Controllers -->
         <service id="Hofff\Contao\SocialTags\Action\FacebookLintAction" public="true">
             <argument type="service" id="contao.framework" />
         </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener" public="true">
-            <argument type="service" id="router" />
-            <argument>%hofff.contao_social_tags.tags%</argument>
+        <!-- Extractors -->
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor">
+            <argument type="tagged" tag="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener" public="true">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\PageExtractor">
+            <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
+            <argument>%kernel.project_dir%</argument>
+            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener" public="true">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\NewsExtractor">
+            <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
+            <argument>%kernel.project_dir%</argument>
+            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
         <!-- Factories -->
@@ -30,15 +36,14 @@
             <argument type="service" id="contao.framework" />
             <argument type="tagged" tag="Hofff\Contao\SocialTags\DataFactory" />
         </service>
+
         <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory">
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="contao.framework" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor" />
             <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
 
         <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory">
-            <argument type="service" id="contao.framework" />
-            <argument>%kernel.project_dir%</argument>
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor" />
             <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
     </services>

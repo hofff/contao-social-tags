@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data;
 
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\Model;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use PDO;
@@ -80,7 +81,23 @@ final class SocialTagsFactory
         }
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generateForPage($referencePage, $currentPage));
+            $protocol->append($factory->generate($referencePage, $currentPage));
+        }
+
+        return $protocol;
+    }
+
+    public function generateByModel(Model $model) : Protocol
+    {
+        $protocol    = new Protocol();
+        $currentPage = $GLOBALS['objPage'];
+
+        if (! $currentPage) {
+            return $protocol;
+        }
+
+        foreach ($this->dataFactories as $factory) {
+            $protocol->append($factory->generate($model, $currentPage));
         }
 
         return $protocol;

@@ -2,78 +2,52 @@
 
 declare(strict_types=1);
 
+use Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener;
 use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
-use Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener;
 
 $this->loadLanguageFile('hofff_st');
 
-$GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_og_facebookLint'] = [
-    'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'],
-    'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',
-    'attributes' => ' onclick="window.open(this.href); return false;"',
-    'button_callback' => [PageDcaListener::class, 'facebookLinkButton'],
-];
+// Config
+$GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = [NewsDcaListener::class, 'initializePalette'];
 
-$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'hofff_st';
-$GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'hofff_st_twitter_type';
+// Palettes
+$GLOBALS['TL_DCA']['tl_news']['palettes']['__selector__'][] = 'hofff_st';
+$GLOBALS['TL_DCA']['tl_news']['palettes']['__selector__'][] = 'hofff_st_twitter_type';
 
-foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $strKey => &$strPalette) {
-    if ($strKey === '__selector__') {
-        continue;
-    }
-
-    $strPalette = preg_replace(
-        '@(\{meta_legend\}[^;]*;)@',
-        '$1{hofff_st_legend},hofff_st;',
-        $strPalette
-    );
-}
-
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_page'] =
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_tree'] = 'hofff_st_og_type'
+$GLOBALS['TL_DCA']['tl_news']['subpalettes']['hofff_st'] = 'hofff_st_og_type'
     . ',hofff_st_og_title,hofff_st_og_site'
     . ',hofff_st_og_url'
     . ',hofff_st_og_image'
     . ',hofff_st_og_description'
     . ',hofff_st_twitter_type';
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary'] =
+$GLOBALS['TL_DCA']['tl_news']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary'] =
     ',hofff_st_twitter_title'
     . ',hofff_st_twitter_image'
     . ',hofff_st_twitter_site'
     . ',hofff_st_twitter_description';
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary_large_image'] =
+$GLOBALS['TL_DCA']['tl_news']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary_large_image'] =
     ',hofff_st_twitter_title'
     . ',hofff_st_twitter_image'
     . ',hofff_st_twitter_site'
     . ',hofff_st_twitter_creator'
     . ',hofff_st_twitter_description';
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st'],
+
+// Fields
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st'] = [
+    'label'     => &$GLOBALS['TL_LANG']['tl_news']['hofff_st'],
     'exclude'   => true,
-    'inputType' => 'select',
-    'options'   => [
-        'hofff_st_page',
-        'hofff_st_tree',
-        'hofff_st_parent',
-        'hofff_st_root',
-        'hofff_st_disablePage',
-        'hofff_st_disableTree',
-    ],
-    'reference' => &$GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'],
+    'inputType' => 'checkbox',
     'eval'      => [
-        'chosen'             => true,
         'submitOnChange'     => true,
-        'includeBlankOption' => true,
-        'blankOptionLabel'   => &$GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'][''],
         'tl_class'           => '',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\'',
+    'sql' => 'char(1) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_type'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_type'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['type'],
     'exclude'   => true,
     'inputType' => 'select',
@@ -89,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_type'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_title'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_title'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_title'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -101,7 +75,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_title'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_site'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_site'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_site'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -113,7 +87,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_site'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_url'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_url'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_url'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -126,7 +100,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_url'] = [
     'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_image'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_image'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',
@@ -141,7 +115,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_image'] = [
     'sql' => 'binary(16) NULL',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_description'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_og_description'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
@@ -152,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_description'] = [
     'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_type'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_type'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_type'],
     'exclude'   => true,
     'inputType' => 'select',
@@ -165,10 +139,10 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_type'] = [
         'includeBlankOption' => true,
         'tl_class'           => 'w50',
     ],
-    'sql' => 'varchar(255) NOT NULL default \'\'',
+    'sql'       => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_title'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_title'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_title'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -180,7 +154,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_title'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_description'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_description'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
@@ -191,7 +165,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_description'] = [
     'sql' => 'varchar(1022) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_site'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_site'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_site'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -203,7 +177,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_site'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_creator'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_creator'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_creator'],
     'exclude'   => true,
     'inputType' => 'text',
@@ -215,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_creator'] = [
     'sql' => 'varchar(255) NOT NULL default \'\'',
 ];
 
-$GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_image'] = [
+$GLOBALS['TL_DCA']['tl_news']['fields']['hofff_st_twitter_image'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',

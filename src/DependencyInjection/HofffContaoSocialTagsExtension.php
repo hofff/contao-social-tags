@@ -21,5 +21,6 @@ final class HofffContaoSocialTagsExtension extends Extension
 
         $loader->load('config.xml');
         $loader->load('services.xml');
+        $loader->load('listeners.xml');
     }
 }

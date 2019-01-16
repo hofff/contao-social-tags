@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 abstract class SocialTagsDataAwareListener
 {
     /** @var RequestStack */
-    private $requestStack;
+    protected $requestStack;
 
     public function __construct(RequestStack $requestStack)
     {

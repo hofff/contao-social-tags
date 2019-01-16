@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="false" autoconfigure="false" autowire="false" />
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener" public="true">
+            <argument type="service" id="router" />
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions" public="true">
+            <argument>%hofff.contao_social_tags.open_graph_types%</argument>
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener" public="true">
+            <argument type="service" id="request_stack" />
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener" public="true">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Hook\NewsReaderListener" public="true">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
+            <argument type="service" id="contao.routing.scope_matcher" />
+            <argument type="service" id="contao.framework" />
+        </service>
+    </services>
+</container>

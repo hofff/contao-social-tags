@@ -36,12 +36,14 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_hofff_st_tree'] = 'hofff_
     . ',hofff_st_og_description'
     . ',hofff_st_twitter_type';
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_summary'] = ',hofff_st_twitter_title'
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary'] =
+    ',hofff_st_twitter_title'
     . ',hofff_st_twitter_image'
     . ',hofff_st_twitter_site'
     . ',hofff_st_twitter_description';
 
-$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_summary_large_image'] = ',hofff_st_twitter_title'
+$GLOBALS['TL_DCA']['tl_page']['subpalettes']['hofff_st_twitter_type_hofff_st_twitter_summary_large_image'] =
+    ',hofff_st_twitter_title'
     . ',hofff_st_twitter_image'
     . ',hofff_st_twitter_site'
     . ',hofff_st_twitter_creator'
@@ -87,7 +89,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_type'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_title'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_title'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_title'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -99,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_title'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_site'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_site'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_site'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -111,7 +113,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_site'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_url'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_url'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_url'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -124,7 +126,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_url'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_image'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_image'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',
     'eval'      => [
@@ -139,7 +141,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_image'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_description'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_description'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_og_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
     'eval'      => [
@@ -150,12 +152,12 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_description'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_type'] = [
-    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['twitter_type'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_type'],
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'website',
-    'options'   => ['summary', 'summary_large_image'],
-    'reference' => &$GLOBALS['TL_LANG']['hofff_st']['types'],
+    'options'   => ['hofff_st_twitter_summary', 'hofff_st_twitter_summary_large_image'],
+    'reference' => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_types'],
     'eval'      => [
         'mandatory'      => true,
         'chosen'         => true,
@@ -166,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_type'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_title'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_twitter_title'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_title'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -178,7 +180,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_title'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_description'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_twitter_description'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_description'],
     'exclude'   => true,
     'inputType' => 'textarea',
     'eval'      => [
@@ -189,7 +191,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_description'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_site'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_twitter_site'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_site'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -201,7 +203,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_site'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_creator'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_twitter_creator'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_creator'],
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
@@ -213,7 +215,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_creator'] = [
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_twitter_image'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_twitter_image'],
+    'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_image'],
     'exclude'   => true,
     'inputType' => 'fileTree',
     'eval'      => [

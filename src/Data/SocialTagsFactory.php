@@ -8,6 +8,8 @@ use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
 use PDO;
+use function array_slice;
+use function implode;
 
 final class SocialTagsFactory
 {
@@ -30,7 +32,7 @@ final class SocialTagsFactory
         $this->dataFactories = $dataFactories;
     }
 
-    public function generateByPageId(int $pageId): Protocol
+    public function generateByPageId(int $pageId) : Protocol
     {
         $protocol    = new Protocol();
         $currentPage = $this->getOriginPage($pageId);
@@ -56,7 +58,8 @@ final class SocialTagsFactory
 
             case 'hofff_st_root':
                 $pageTrail = array_slice($pageTrail, 0, 1);
-            // No break
+                // No break
+
             case 'hofff_st_parent':
                 $modes[] = 'hofff_st_page';
                 unset($referencePage);

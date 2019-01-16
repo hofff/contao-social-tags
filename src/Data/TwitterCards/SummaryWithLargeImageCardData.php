@@ -34,7 +34,7 @@ final class SummaryWithLargeImageCardData extends CardData
         return $protocol;
     }
 
-    private function getCreatorData(): Protocol
+    private function getCreatorData() : Protocol
     {
         $protocol = new Protocol();
 

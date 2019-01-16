@@ -8,5 +8,5 @@ use Contao\PageModel;
 
 interface DataFactory
 {
-    public function generateForPage(PageModel $referencePage, PageModel $currentPage): Data;
+    public function generateForPage(PageModel $referencePage, PageModel $currentPage) : Data;
 }

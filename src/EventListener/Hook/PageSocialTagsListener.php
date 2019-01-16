@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
 use Contao\PageModel;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory;
 use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 

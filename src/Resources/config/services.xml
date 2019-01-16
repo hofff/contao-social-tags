@@ -37,6 +37,8 @@
         </service>
 
         <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory">
+            <argument type="service" id="contao.framework" />
+            <argument>%kernel.project_dir%</argument>
             <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
     </services>

@@ -28,10 +28,10 @@ abstract class CardData extends AbstractData
     {
         parent::__construct();
 
-        $this->title = $title;
-        $this->site = $site;
+        $this->title       = $title;
+        $this->site        = $site;
         $this->description = $description;
-        $this->image = $image;
+        $this->image       = $image;
     }
 
     public function getProtocol() : Protocol

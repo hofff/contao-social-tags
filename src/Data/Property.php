@@ -39,7 +39,7 @@ class Property
 
     public function getMetaTag() : string
     {
-        if (!$this->isValid()) {
+        if (! $this->isValid()) {
             return '';
         }
 

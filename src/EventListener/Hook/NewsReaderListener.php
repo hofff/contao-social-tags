@@ -13,6 +13,8 @@ use Contao\NewsModel;
 use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
+use const VERSION;
+use function version_compare;
 
 final class NewsReaderListener extends SocialTagsDataAwareListener
 {
@@ -59,6 +61,8 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
             return $result;
         }
 
+        $model = $this->determineModuleModel($model);
+
         if (! $this->supports($model) || $this->getSocialTagsData()) {
             return $result;
         }
@@ -82,5 +86,20 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
             $this->framework->getAdapter(Input::class)->get('items'),
             StringUtil::deserialize($model->news_archives, true)
         );
+    }
+
+    private function determineModuleModel(ModuleModel $model): ModuleModel
+    {
+        if (($model->type === 'newsarchive' || (version_compare(VERSION, '4.7', '>=') && $model->type === 'newslist'))
+            && $model->news_readerModule > 0
+            && $this->framework->getAdapter(Input::class)->get('items')
+        ) {
+            $readerModel = ModuleModel::findByPk($model->news_readerModule);
+            if ($readerModel) {
+                return $readerModel;
+            }
+        }
+
+        return $model;
     }
 }

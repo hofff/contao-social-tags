@@ -59,6 +59,8 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
             return $result;
         }
 
+        $model = $this->determineModuleModel($model);
+
         if (! $this->supports($model) || $this->getSocialTagsData()) {
             return $result;
         }
@@ -82,5 +84,20 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
             $this->framework->getAdapter(Input::class)->get('items'),
             StringUtil::deserialize($model->faq_categories, true)
         );
+    }
+
+    private function determineModuleModel(ModuleModel $model): ModuleModel
+    {
+        if ($model->type === 'faqlist'
+            && $model->faq_readerModule > 0
+            && $this->framework->getAdapter(Input::class)->get('items')
+        ) {
+            $readerModel = ModuleModel::findByPk($model->faq_readerModule);
+            if ($readerModel) {
+                return $readerModel;
+            }
+        }
+
+        return $model;
     }
 }

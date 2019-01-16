@@ -30,6 +30,13 @@
             <argument type="service" id="contao.framework" />
         </service>
 
+        <service id="Hofff\Contao\SocialTags\EventListener\Hook\CalendarEventReaderListener" public="true">
+            <argument type="service" id="request_stack" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
+            <argument type="service" id="contao.routing.scope_matcher" />
+            <argument type="service" id="contao.framework" />
+        </service>
+
         <service id="Hofff\Contao\SocialTags\EventListener\Hook\FaqReaderListener" public="true">
             <argument type="service" id="request_stack" />
             <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />

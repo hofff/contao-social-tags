@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
+use Contao\CalendarEventsModel;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\CoreBundle\Routing\ScopeMatcher;
-use Contao\FaqModel;
 use Contao\Input;
 use Contao\Model;
 use Contao\ModuleModel;
@@ -14,7 +14,7 @@ use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class FaqReaderListener extends SocialTagsDataAwareListener
+final class CalendarEventReaderListener extends SocialTagsDataAwareListener
 {
     /** @var SocialTagsFactory */
     private $factory;
@@ -59,13 +59,15 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
             return $result;
         }
 
+        $model = $this->determineModuleModel($model);
+
         if (! $this->supports($model) || $this->getSocialTagsData()) {
             return $result;
         }
 
-        $newsModel = $this->getFaqModel($model);
-        if ($newsModel) {
-            $this->setSocialTagsData($this->factory->generateByModel($newsModel));
+        $eventModel = $this->getEventModel($model);
+        if ($eventModel) {
+            $this->setSocialTagsData($this->factory->generateByModel($eventModel));
         }
 
         return $result;
@@ -73,14 +75,33 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
 
     private function supports(ModuleModel $model) : bool
     {
-        return $model->type === 'faqreader';
+        if ($model->type === 'eventreader') {
+            return true;
+        }
+
+        return false;
     }
 
-    private function getFaqModel(ModuleModel $model) : ?FaqModel
+    private function getEventModel(ModuleModel $model) : ?CalendarEventsModel
     {
-        return FaqModel::findPublishedByParentAndIdOrAlias(
-            $this->framework->getAdapter(Input::class)->get('items'),
-            StringUtil::deserialize($model->faq_categories, true)
+        return CalendarEventsModel::findPublishedByParentAndIdOrAlias(
+            $this->framework->getAdapter(Input::class)->get('events'),
+            StringUtil::deserialize($model->cal_calendar, true)
         );
+    }
+
+    private function determineModuleModel(ModuleModel $model): ModuleModel
+    {
+        if ($model->type === 'eventlist'
+            && $model->cal_readerModule > 0
+            && $this->framework->getAdapter(Input::class)->get('events')
+        ) {
+            $readerModel = ModuleModel::findByPk($model->cal_readerModule);
+            if ($readerModel) {
+                return $readerModel;
+            }
+        }
+
+        return $model;
     }
 }

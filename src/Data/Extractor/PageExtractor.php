@@ -20,6 +20,7 @@ use function is_file;
 use function method_exists;
 use function str_replace;
 use function strip_tags;
+use function substr;
 use function trim;
 use function ucfirst;
 
@@ -158,7 +159,7 @@ final class PageExtractor implements Extractor
         }
 
         if ($currentPage->id === $GLOBALS['objPage']->id) {
-            return $this->getBaseUrl() . $this->getRequestUri();
+            return $this->getBaseUrl() . substr($this->getRequestUri(), 1);
         }
 
         return $currentPage->getAbsoluteUrl();
@@ -232,7 +233,7 @@ final class PageExtractor implements Extractor
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request) {
-            return '';
+            return '/';
         }
 
         return $request->getRequestUri();

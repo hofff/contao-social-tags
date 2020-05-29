@@ -13,7 +13,7 @@ use function urlencode;
 
 final class FacebookLintAction
 {
-    private const FACEBOOK_LINT_URL = 'https://developers.facebook.com/tools/debug/og/object?q=';
+    private const FACEBOOK_LINT_URL = 'https://developers.facebook.com/tools/debug/?q=';
 
     /** @var ContaoFrameworkInterface */
     private $framework;

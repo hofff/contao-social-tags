@@ -181,7 +181,7 @@ final class FaqExtractor implements Extractor
         return strip_tags($fallback->rootTitle);
     }
 
-    private function extractOpenGraphOpenGraphType(FaqModel $faqModel) : OpenGraphType
+    private function extractOpenGraphType(FaqModel $faqModel) : OpenGraphType
     {
         if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $faqModel->hofff_st_og_type, 2);

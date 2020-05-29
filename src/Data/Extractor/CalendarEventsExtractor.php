@@ -187,7 +187,7 @@ final class CalendarEventsExtractor implements Extractor
         return strip_tags($fallback->rootTitle);
     }
 
-    private function extractOpenGraphOpenGraphType(CalendarEventsModel $calendarEventsModel) : OpenGraphType
+    private function extractOpenGraphType(CalendarEventsModel $calendarEventsModel) : OpenGraphType
     {
         if (TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $calendarEventsModel->hofff_st_og_type, 2);

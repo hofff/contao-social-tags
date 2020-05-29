@@ -187,7 +187,7 @@ final class NewsExtractor implements Extractor
         return strip_tags($fallback->rootTitle);
     }
 
-    private function extractOpenGraphOpenGraphType(NewsModel $newsModel) : OpenGraphType
+    private function extractOpenGraphType(NewsModel $newsModel) : OpenGraphType
     {
         if (TypeUtil::isStringWithContent($newsModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $newsModel->hofff_st_og_type, 2);

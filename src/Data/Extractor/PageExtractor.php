@@ -186,7 +186,7 @@ final class PageExtractor implements Extractor
         return strip_tags($currentPage->rootTitle);
     }
 
-    private function extractOpenGraphOpenGraphType(PageModel $referencePage) : OpenGraphType
+    private function extractOpenGraphType(PageModel $referencePage) : OpenGraphType
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $referencePage->hofff_st_og_type, 2);

@@ -236,8 +236,8 @@ final class CalendarEventsExtractor implements Extractor
 
         // Generate the description from the teaser the same way as the event reader does
         $description = $this->replaceInsertTags($model->teaser, false);
-		$description = strip_tags($description);
-		$description = str_replace("\n", ' ', $description);
+        $description = strip_tags($description);
+        $description = str_replace("\n", ' ', $description);
         $description = StringUtil::substr($description, 320);
         
         return $description;

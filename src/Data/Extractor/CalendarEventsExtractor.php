@@ -13,6 +13,11 @@ use Contao\Model;
 use Contao\News;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Hofff\Contao\SocialTags\Data\Extractor;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
+use Hofff\Contao\SocialTags\Util\TypeUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use function explode;
 use function is_file;
 use function method_exists;
@@ -20,11 +25,6 @@ use function str_replace;
 use function strip_tags;
 use function trim;
 use function ucfirst;
-use Hofff\Contao\SocialTags\Data\Extractor;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
-use Hofff\Contao\SocialTags\Util\TypeUtil;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CalendarEventsExtractor implements Extractor
 {
@@ -228,9 +228,9 @@ final class CalendarEventsExtractor implements Extractor
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */
-    private function getEventDescription(CalendarEventsModel $model): string
+    private function getEventDescription(CalendarEventsModel $model) : string
     {
-        if (!empty($model->description)) {
+        if (! empty($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
         }
 
@@ -239,14 +239,14 @@ final class CalendarEventsExtractor implements Extractor
         $description = strip_tags($description);
         $description = str_replace("\n", ' ', $description);
         $description = StringUtil::substr($description, 320);
-        
+
         return $description;
     }
 
     /**
      * Returns the meta title if present, otherwise the title.
      */
-    private function getEventTitle(CalendarEventsModel $model): string
+    private function getEventTitle(CalendarEventsModel $model) : string
     {
         return $this->replaceInsertTags($model->pageTitle ?: $model->title);
     }

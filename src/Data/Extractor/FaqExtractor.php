@@ -6,11 +6,11 @@ namespace Hofff\Contao\SocialTags\Data\Extractor;
 
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\FaqModel;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\News;
-use Contao\FaqModel;
 use Contao\PageModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
@@ -20,9 +20,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use function explode;
 use function is_file;
 use function method_exists;
-use function str_replace;
 use function strip_tags;
-use function trim;
+use function stripos;
 use function ucfirst;
 
 final class FaqExtractor implements Extractor
@@ -160,7 +159,14 @@ final class FaqExtractor implements Extractor
             return $this->getBaseUrl() . $this->getRequestUri();
         }
 
-        return News::generateNewsUrl($faqModel, false, true);
+        $faqUrl = News::generateNewsUrl($faqModel, false, true);
+
+        // Prepend scheme and host if URL is not absolute
+        if (stripos($faqUrl, 'http') !== 0) {
+            $faqUrl = $this->getBaseUrl() . $faqUrl;
+        }
+
+        return $faqUrl;
     }
 
     private function extractOpenGraphDescription(FaqModel $faqModel) : ?string

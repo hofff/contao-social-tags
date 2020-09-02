@@ -22,6 +22,7 @@ use function is_file;
 use function method_exists;
 use function str_replace;
 use function strip_tags;
+use function stripos;
 use function trim;
 use function ucfirst;
 
@@ -163,7 +164,14 @@ final class NewsExtractor implements Extractor
             return $this->getBaseUrl() . $this->getRequestUri();
         }
 
-        return News::generateNewsUrl($newsModel, false, true);
+        $newsUrl = News::generateNewsUrl($newsModel, false, true);
+
+        // Prepend scheme and host if URL is not absolute
+        if (stripos($newsUrl, 'http') !== 0) {
+            $newsUrl = $this->getBaseUrl() . $newsUrl;
+        }
+
+        return $newsUrl;
     }
 
     private function extractOpenGraphDescription(NewsModel $newsModel) : ?string

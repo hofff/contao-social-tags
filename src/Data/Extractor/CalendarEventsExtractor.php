@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
+use Contao\CalendarEventsModel;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\News;
-use Contao\CalendarEventsModel;
 use Contao\PageModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
@@ -22,6 +22,7 @@ use function is_file;
 use function method_exists;
 use function str_replace;
 use function strip_tags;
+use function stripos;
 use function trim;
 use function ucfirst;
 
@@ -163,7 +164,14 @@ final class CalendarEventsExtractor implements Extractor
             return $this->getBaseUrl() . $this->getRequestUri();
         }
 
-        return News::generateNewsUrl($calendarEventsModel, false, true);
+        $eventUrl = News::generateNewsUrl($calendarEventsModel, false, true);
+
+        // Prepend scheme and host if URL is not absolute
+        if (stripos($eventUrl, 'http') !== 0) {
+            $eventUrl = $this->getBaseUrl() . $eventUrl;
+        }
+
+        return $eventUrl;
     }
 
     private function extractOpenGraphDescription(CalendarEventsModel $calendarEventsModel) : ?string

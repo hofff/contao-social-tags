@@ -160,7 +160,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_description);
         }
 
-        return $this->getNewsDescription($newsModel);
+        return $this->getNewsDescription($newsModel) ?: null;
     }
 
     private function extractOpenGraphSiteName(NewsModel $newsModel, PageModel $fallback) : string

@@ -76,7 +76,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        return $this->getNewsTitle($newsModel) ?: null;
+        return $this->getNewsTitle($newsModel);
     }
 
     private function extractTwitterSite(NewsModel $newsModel) : ?string
@@ -230,7 +230,7 @@ final class NewsExtractor implements Extractor
      */
     private function getNewsDescription(NewsModel $model) : string
     {
-        if (! empty($model->description)) {
+        if (TypeUtil::isStringWithContent($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
         }
 
@@ -246,8 +246,13 @@ final class NewsExtractor implements Extractor
     /**
      * Returns the meta title if present, otherwise the headline.
      */
-    private function getNewsTitle(NewsModel $model) : string
+    private function getNewsTitle(NewsModel $model) : ?string
     {
-        return $this->replaceInsertTags($model->pageTitle ?: $model->headline);
+        $title = $model->pageTitle ?: $model->headline;
+        if (TypeUtil::isStringWithContent($title)) {	
+            return $this->replaceInsertTags($title);	
+        }
+        
+        return null;
     }
 }

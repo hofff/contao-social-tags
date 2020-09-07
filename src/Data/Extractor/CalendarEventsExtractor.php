@@ -76,7 +76,7 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        return $this->getEventTitle($eventModel) ?: null;
+        return $this->getEventTitle($eventModel);
     }
 
     private function extractTwitterSite(CalendarEventsModel $evemtModel) : ?string
@@ -230,7 +230,7 @@ final class CalendarEventsExtractor implements Extractor
      */
     private function getEventDescription(CalendarEventsModel $model) : string
     {
-        if (! empty($model->description)) {
+        if (TypeUtil::isStringWithContent($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
         }
 
@@ -246,8 +246,13 @@ final class CalendarEventsExtractor implements Extractor
     /**
      * Returns the meta title if present, otherwise the title.
      */
-    private function getEventTitle(CalendarEventsModel $model) : string
+    private function getEventTitle(CalendarEventsModel $model) : ?string
     {
-        return $this->replaceInsertTags($model->pageTitle ?: $model->title);
+        $title = $model->pageTitle ?: $model->title;
+        if (TypeUtil::isStringWithContent($title)) {	
+            return $this->replaceInsertTags($title);	
+        }
+        
+        return null;
     }
 }

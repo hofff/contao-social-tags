@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
+use Contao\Config;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\FaqModel;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
-use Contao\News;
 use Contao\PageModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
@@ -21,7 +21,6 @@ use function explode;
 use function is_file;
 use function method_exists;
 use function strip_tags;
-use function stripos;
 use function ucfirst;
 
 final class FaqExtractor implements Extractor
@@ -149,7 +148,7 @@ final class FaqExtractor implements Extractor
         return '';
     }
 
-    private function extractOpenGraphUrl(FaqModel $faqModel) : string
+    private function extractOpenGraphUrl(FaqModel $faqModel) : ?string
     {
         if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_url);
@@ -159,14 +158,7 @@ final class FaqExtractor implements Extractor
             return $this->getBaseUrl() . $this->getRequestUri();
         }
 
-        $faqUrl = News::generateNewsUrl($faqModel, false, true);
-
-        // Prepend scheme and host if URL is not absolute
-        if (stripos($faqUrl, 'http') !== 0) {
-            $faqUrl = $this->getBaseUrl() . $faqUrl;
-        }
-
-        return $faqUrl;
+        return self::generateFaqUrl($faqModel, true);
     }
 
     private function extractOpenGraphDescription(FaqModel $faqModel) : ?string
@@ -238,5 +230,26 @@ final class FaqExtractor implements Extractor
         }
 
         return $request->getRequestUri();
+    }
+
+    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false) : ?string
+    {
+        /** @var FaqCategoryModel $faqCategory */
+        $faqCategory = $faqModel->getRelated('pid');
+        $jumpTo      = (int) $faqCategory->jumpTo;
+
+        if ($jumpTo < 1) {
+            return null;
+        }
+
+        $target = PageModel::findByPk($jumpTo);
+
+        if ($target === null) {
+            return null;
+        }
+
+        $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($faqModel->alias ?: $faqModel->id);
+
+        return ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
     }
 }

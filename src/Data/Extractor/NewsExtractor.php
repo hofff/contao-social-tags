@@ -12,6 +12,7 @@ use Contao\Model;
 use Contao\News;
 use Contao\NewsModel;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
@@ -75,12 +76,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        $title = $newsModel->headline;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return null;
+        return $this->getNewsTitle($newsModel);
     }
 
     private function extractTwitterSite(NewsModel $newsModel) : ?string
@@ -94,10 +90,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_description);
         }
 
-        $description = $newsModel->description;
-        $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
-
-        return $description ?: null;
+        return $this->getNewsDescription($newsModel) ?: null;
     }
 
     private function extractTwitterImage(NewsModel $newsModel) : ?string
@@ -145,12 +138,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        $title = $newsModel->headline;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return null;
+        return $this->getNewsTitle($newsModel) ?: null;
     }
 
     private function extractOpenGraphUrl(NewsModel $newsModel) : string
@@ -172,10 +160,7 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_description);
         }
 
-        $description = $newsModel->description;
-        $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
-
-        return $description ?: null;
+        return $this->getNewsDescription($newsModel) ?: null;
     }
 
     private function extractOpenGraphSiteName(NewsModel $newsModel, PageModel $fallback) : string
@@ -238,5 +223,36 @@ final class NewsExtractor implements Extractor
         }
 
         return $request->getRequestUri();
+    }
+
+    /**
+     * Returns the meta description if present, otherwise the shortened teaser.
+     */
+    private function getNewsDescription(NewsModel $model) : string
+    {
+        if (TypeUtil::isStringWithContent($model->description)) {
+            return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
+        }
+
+        // Generate the description from the teaser the same way as the news reader does
+        $description = $this->replaceInsertTags($model->teaser, false);
+        $description = strip_tags($description);
+        $description = str_replace("\n", ' ', $description);
+        $description = StringUtil::substr($description, 320);
+
+        return $description;
+    }
+
+    /**
+     * Returns the meta title if present, otherwise the headline.
+     */
+    private function getNewsTitle(NewsModel $model) : ?string
+    {
+        $title = $model->pageTitle ?: $model->headline;
+        if (TypeUtil::isStringWithContent($title)) {	
+            return $this->replaceInsertTags($title);	
+        }
+        
+        return null;
     }
 }

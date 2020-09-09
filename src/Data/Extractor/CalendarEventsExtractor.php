@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
+use Contao\CalendarEventsModel;
 use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\News;
-use Contao\CalendarEventsModel;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
@@ -75,12 +76,7 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        $title = $eventModel->title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return null;
+        return $this->getEventTitle($eventModel);
     }
 
     private function extractTwitterSite(CalendarEventsModel $evemtModel) : ?string
@@ -94,10 +90,7 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($eventModel->hofff_st_twitter_description);
         }
 
-        $description = $eventModel->description;
-        $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
-
-        return $description ?: null;
+        return $this->getEventDescription($eventModel) ?: null;
     }
 
     private function extractTwitterImage(CalendarEventsModel $calendarEventsModel) : ?string
@@ -145,12 +138,7 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($title);
         }
 
-        $title = $calendarEventsModel->title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return null;
+        return $this->getEventTitle($calendarEventsModel) ?: null;
     }
 
     private function extractOpenGraphUrl(CalendarEventsModel $calendarEventsModel) : string
@@ -172,10 +160,7 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_description);
         }
 
-        $description = $calendarEventsModel->description;
-        $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
-
-        return $description ?: null;
+        return $this->getEventDescription($calendarEventsModel) ?: null;
     }
 
     private function extractOpenGraphSiteName(CalendarEventsModel $calendarEventsModel, PageModel $fallback) : string
@@ -238,5 +223,36 @@ final class CalendarEventsExtractor implements Extractor
         }
 
         return $request->getRequestUri();
+    }
+
+    /**
+     * Returns the meta description if present, otherwise the shortened teaser.
+     */
+    private function getEventDescription(CalendarEventsModel $model) : string
+    {
+        if (TypeUtil::isStringWithContent($model->description)) {
+            return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
+        }
+
+        // Generate the description from the teaser the same way as the event reader does
+        $description = $this->replaceInsertTags($model->teaser, false);
+        $description = strip_tags($description);
+        $description = str_replace("\n", ' ', $description);
+        $description = StringUtil::substr($description, 320);
+
+        return $description;
+    }
+
+    /**
+     * Returns the meta title if present, otherwise the title.
+     */
+    private function getEventTitle(CalendarEventsModel $model) : ?string
+    {
+        $title = $model->pageTitle ?: $model->title;
+        if (TypeUtil::isStringWithContent($title)) {	
+            return $this->replaceInsertTags($title);	
+        }
+        
+        return null;
     }
 }

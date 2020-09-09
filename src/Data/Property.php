@@ -45,7 +45,7 @@ class Property
 
         if ($this->namespace && $this->prefix) {
             return sprintf(
-                '<meta%s property="%s" content="%s" />',
+                '<meta%s property="%s" content="%s">',
                 sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
                 specialchars($this->getPrefixedName()),
                 specialchars($this->content)
@@ -53,7 +53,7 @@ class Property
         }
 
         return sprintf(
-            '<meta property="%s" content="%s" />',
+            '<meta property="%s" content="%s">',
             specialchars($this->getPrefixedName()),
             specialchars($this->content)
         );

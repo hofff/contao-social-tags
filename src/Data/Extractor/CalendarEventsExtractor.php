@@ -237,10 +237,14 @@ final class CalendarEventsExtractor implements Extractor
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */
-    private function getEventDescription(CalendarEventsModel $model) : string
+    private function getEventDescription(CalendarEventsModel $model) : ?string
     {
         if (TypeUtil::isStringWithContent($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
+        }
+
+        if (! TypeUtil::isStringWithContent($model->teaser)) {
+            return null;
         }
 
         // Generate the description from the teaser the same way as the event reader does

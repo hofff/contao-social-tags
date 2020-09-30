@@ -81,9 +81,9 @@ final class CalendarEventsExtractor implements Extractor
         return $this->getEventTitle($eventModel);
     }
 
-    private function extractTwitterSite(CalendarEventsModel $evemtModel) : ?string
+    private function extractTwitterSite(CalendarEventsModel $eventModel) : ?string
     {
-        return $evemtModel->hofff_st_twitter_site ?: null;
+        return $eventModel->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(CalendarEventsModel $eventModel) : ?string

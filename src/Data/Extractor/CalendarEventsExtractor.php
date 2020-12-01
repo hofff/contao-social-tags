@@ -73,9 +73,8 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractTwitterTitle(CalendarEventsModel $eventModel) : ?string
     {
-        $title = $eventModel->hofff_st_twitter_title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
+        if ($eventModel->hofff_st && TypeUtil::isStringWithContent($eventModel->hofff_st_twitter_title)) {
+            return $this->replaceInsertTags($eventModel->hofff_st_twitter_title);
         }
 
         return $this->getEventTitle($eventModel);
@@ -83,12 +82,16 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractTwitterSite(CalendarEventsModel $eventModel) : ?string
     {
+        if (!$eventModel->hofff_st) {
+            return null;
+        }
+
         return $eventModel->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(CalendarEventsModel $eventModel) : ?string
     {
-        if (TypeUtil::isStringWithContent($eventModel->hofff_st_twitter_description)) {
+        if ($eventModel->hofff_st && TypeUtil::isStringWithContent($eventModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($eventModel->hofff_st_twitter_description);
         }
 
@@ -97,6 +100,10 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractTwitterImage(CalendarEventsModel $calendarEventsModel) : ?string
     {
+        if (!$calendarEventsModel->hofff_st) {
+            return null;
+        }
+
         $file = $this->framework
             ->getAdapter(FilesModel::class)
             ->findByUuid($calendarEventsModel->hofff_st_twitter_image);
@@ -110,6 +117,10 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractTwitterCreator(CalendarEventsModel $calendarEventsModel) : ?string
     {
+        if (!$calendarEventsModel->hofff_st) {
+            return null;
+        }
+
         return $calendarEventsModel->hofff_st_twitter_creator ?: null;
     }
 
@@ -119,6 +130,9 @@ final class CalendarEventsExtractor implements Extractor
     private function extractOpenGraphImageData(CalendarEventsModel $calendarEventsModel) : OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
+        if (!$calendarEventsModel->hofff_st) {
+            return $imageData;
+        }
 
         $file = FilesModel::findByUuid($calendarEventsModel->hofff_st_og_image);
 
@@ -135,9 +149,8 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractOpenGraphTitle(CalendarEventsModel $calendarEventsModel) : ?string
     {
-        $title = $calendarEventsModel->hofff_st_og_title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
+        if ($calendarEventsModel->hofff_st && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_title)) {
+            return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_title);
         }
 
         return $this->getEventTitle($calendarEventsModel) ?: null;
@@ -145,7 +158,7 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractOpenGraphUrl(CalendarEventsModel $calendarEventsModel) : string
     {
-        if (TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_url)) {
+        if ($calendarEventsModel->hofff_st && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_url);
         }
 
@@ -165,7 +178,9 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractOpenGraphDescription(CalendarEventsModel $calendarEventsModel) : ?string
     {
-        if (TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_description)) {
+        if ($calendarEventsModel->hofff_st
+            && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_description)
+        ) {
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_description);
         }
 
@@ -174,7 +189,7 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractOpenGraphSiteName(CalendarEventsModel $calendarEventsModel, PageModel $fallback) : string
     {
-        if (TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_site)) {
+        if ($calendarEventsModel->hofff_st && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_site)) {
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_site);
         }
 
@@ -183,7 +198,7 @@ final class CalendarEventsExtractor implements Extractor
 
     private function extractOpenGraphType(CalendarEventsModel $calendarEventsModel) : OpenGraphType
     {
-        if (TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_type)) {
+        if ($calendarEventsModel->hofff_st && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $calendarEventsModel->hofff_st_og_type, 2);
 
             if ($type === null) {
@@ -193,7 +208,7 @@ final class CalendarEventsExtractor implements Extractor
             return new OpenGraphType($type, $namespace);
         }
 
-        return new OpenGraphType('website');
+        return new OpenGraphType('article');
     }
 
     private function replaceInsertTags(string $content) : string
@@ -262,8 +277,8 @@ final class CalendarEventsExtractor implements Extractor
     private function getEventTitle(CalendarEventsModel $model) : ?string
     {
         $title = $model->pageTitle ?: $model->title;
-        if (TypeUtil::isStringWithContent($title)) {	
-            return $this->replaceInsertTags($title);	
+        if (TypeUtil::isStringWithContent($title)) {
+            return $this->replaceInsertTags($title);
         }
         
         return null;

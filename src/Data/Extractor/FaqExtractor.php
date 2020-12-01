@@ -68,9 +68,8 @@ final class FaqExtractor implements Extractor
 
     private function extractTwitterTitle(FaqModel $faqModel) : ?string
     {
-        $title = $faqModel->hofff_st_twitter_title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_title)) {
+            return $this->replaceInsertTags($faqModel->hofff_st_twitter_title);
         }
 
         $title = $faqModel->question;
@@ -83,12 +82,16 @@ final class FaqExtractor implements Extractor
 
     private function extractTwitterSite(FaqModel $faqModel) : ?string
     {
+        if (!$faqModel->hofff_st) {
+            return null;
+        }
+
         return $faqModel->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(FaqModel $faqModel) : ?string
     {
-        if (TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_description)) {
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_twitter_description);
         }
 
@@ -97,6 +100,10 @@ final class FaqExtractor implements Extractor
 
     private function extractTwitterImage(FaqModel $faqModel) : ?string
     {
+        if (!$faqModel->hofff_st) {
+            return null;
+        }
+
         $file = $this->framework
             ->getAdapter(FilesModel::class)
             ->findByUuid($faqModel->hofff_st_twitter_image);
@@ -110,6 +117,10 @@ final class FaqExtractor implements Extractor
 
     private function extractTwitterCreator(FaqModel $faqModel) : ?string
     {
+        if (!$faqModel->hofff_st) {
+            return null;
+        }
+
         return $faqModel->hofff_st_twitter_creator ?: null;
     }
 
@@ -119,6 +130,9 @@ final class FaqExtractor implements Extractor
     private function extractOpenGraphImageData(FaqModel $faqModel) : OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
+        if (!$faqModel->hofff_st) {
+            return $imageData;
+        }
 
         $file = FilesModel::findByUuid($faqModel->hofff_st_og_image);
 
@@ -135,9 +149,8 @@ final class FaqExtractor implements Extractor
 
     private function extractOpenGraphTitle(FaqModel $faqModel) : ?string
     {
-        $title = $faqModel->hofff_st_og_title;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_title)) {
+            return $this->replaceInsertTags($faqModel->hofff_st_og_title);
         }
 
         $title = $faqModel->question;
@@ -150,7 +163,7 @@ final class FaqExtractor implements Extractor
 
     private function extractOpenGraphUrl(FaqModel $faqModel) : ?string
     {
-        if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_url);
         }
 
@@ -163,7 +176,7 @@ final class FaqExtractor implements Extractor
 
     private function extractOpenGraphDescription(FaqModel $faqModel) : ?string
     {
-        if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_description)) {
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_description);
         }
 
@@ -172,7 +185,7 @@ final class FaqExtractor implements Extractor
 
     private function extractOpenGraphSiteName(FaqModel $faqModel, PageModel $fallback) : string
     {
-        if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_site)) {
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_site)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_site);
         }
 
@@ -181,7 +194,7 @@ final class FaqExtractor implements Extractor
 
     private function extractOpenGraphType(FaqModel $faqModel) : OpenGraphType
     {
-        if (TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
+        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $faqModel->hofff_st_og_type, 2);
 
             if ($type === null) {

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6] - 2020-09-11
+
+### Fixed
+
+ - Recognize `hofff_st` checkbox before evaluating field content for news, events and calendars
+ - Use `article` as default `og:type` for news, events and calendars
+
 ## [1.0.5] - 2020-09-11
 
 ### Fixed
@@ -19,5 +26,6 @@
  - Fix cross dependencies to the news bundle in the faq and event integration ([#6](https://github.com/hofff/contao-social-tags/pull/6)) thanks to[@fritzmg](https://github.com/fritzmg)
  - Recognize `pageTitle` fields for news and events, fallback to teaser as the description ([#5](https://github.com/hofff/contao-social-tags/pull/5)) thanks to [@fritzmg](https://github.com/fritzmg)
 
+[1.0.6]: https://github.com/hofff/contao-social-tags/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/hofff/contao-social-tags/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/hofff/contao-social-tags/compare/1.0.3...1.0.4

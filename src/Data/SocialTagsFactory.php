@@ -42,41 +42,9 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $currentPage;
-        $modes         = ['hofff_st_tree'];
-        $pageTrail     = $referencePage->trail;
-
-        switch ($referencePage->hofff_st) {
-            case 'hofff_st_disablePage':
-            case 'hofff_st_disableTree':
-                return $protocol;
-                break;
-
-            case 'hofff_st_page':
-            case 'hofff_st_tree':
-                // data in current page available
-                break;
-
-            case 'hofff_st_root':
-                $pageTrail = array_slice($pageTrail, 0, 1);
-                // No break
-
-            case 'hofff_st_parent':
-                $modes[] = 'hofff_st_page';
-                unset($referencePage);
-                break;
-
-            default:
-                $modes[] = 'hofff_st_disableTree';
-                unset($referencePage);
-                break;
-        }
+        $referencePage = $this->getReferencePage($currentPage);
 
         if (! $referencePage) {
-            $referencePage = $this->loadReferencePage($pageTrail, $modes);
-        }
-
-        if (! $referencePage || $referencePage->hofff_st === 'hofff_st_disableTree') {
             return $protocol;
         }
 
@@ -96,8 +64,10 @@ final class SocialTagsFactory
             return $protocol;
         }
 
+        $referencePage = $this->getReferencePage($currentPage);
+
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($model, $currentPage));
+            $protocol->append($factory->generate($model, $referencePage ?? $currentPage));
         }
 
         return $protocol;
@@ -141,5 +111,48 @@ final class SocialTagsFactory
         $pageId = $statement->fetch(PDO::FETCH_COLUMN);
 
         return $this->framework->getAdapter(PageModel::class)->findByPK($pageId);
+    }
+
+    private function getReferencePage(PageModel $currentPage): ?PageModel
+    {
+        $referencePage = $currentPage;
+        $modes         = ['hofff_st_tree'];
+        $pageTrail     = $referencePage->trail;
+
+        switch ($referencePage->hofff_st) {
+            case 'hofff_st_disablePage':
+            case 'hofff_st_disableTree':
+                return null;
+                break;
+
+            case 'hofff_st_page':
+            case 'hofff_st_tree':
+                // data in current page available
+                break;
+
+            case 'hofff_st_root':
+                $pageTrail = array_slice($pageTrail, 0, 1);
+                // No break
+
+            case 'hofff_st_parent':
+                $modes[] = 'hofff_st_page';
+                unset($referencePage);
+                break;
+
+            default:
+                $modes[] = 'hofff_st_disableTree';
+                unset($referencePage);
+                break;
+        }
+
+        if (! $referencePage) {
+            $referencePage = $this->loadReferencePage($pageTrail, $modes);
+        }
+
+        if (! $referencePage || $referencePage->hofff_st === 'hofff_st_disableTree') {
+            return null;
+        }
+
+        return $referencePage->loadDetails();
     }
 }

@@ -11,7 +11,7 @@ $GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'][1] = 'Validates the O
 
 // Fields
 $GLOBALS['TL_LANG']['tl_page']['hofff_st'][0] = 'Social tags';
-$GLOBALS['TL_LANG']['tl_page']['hofff_st'][1] = '';
+$GLOBALS['TL_LANG']['tl_page']['hofff_st'][1] = 'Define social tags on for this page.';
 
 // Options
 $GLOBALS['TL_LANG']['tl_page']['hofff_stOptions'] = [

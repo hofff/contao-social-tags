@@ -68,10 +68,7 @@ abstract class CardData extends AbstractData
     private function getImageData() : Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'image', $this->image, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'image', $this->image, 'twitter'));
 
         return $protocol;
     }
@@ -79,10 +76,7 @@ abstract class CardData extends AbstractData
     private function getTitleData() : Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'title', $this->title, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'title', $this->title, 'twitter'));
 
         return $protocol;
     }
@@ -90,10 +84,7 @@ abstract class CardData extends AbstractData
     private function getDescriptionData() : Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'description', $this->description, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'description', $this->description, 'twitter'));
 
         return $protocol;
     }

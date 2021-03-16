@@ -64,10 +64,10 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getReferencePage($currentPage);
+        $referencePage = $this->getReferencePage($currentPage) ?? $currentPage;
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($model, $referencePage ?? $currentPage));
+            $protocol->append($factory->generate($model, $referencePage));
         }
 
         return $protocol;

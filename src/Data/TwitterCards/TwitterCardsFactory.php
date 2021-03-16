@@ -26,7 +26,12 @@ final class TwitterCardsFactory implements DataFactory
             return new Protocol();
         }
 
-        switch ($reference->hofff_st_twitter_type ?: $fallback->hofff_st_twitter_type) {
+        $type = $fallback->hofff_st_twitter_type ?? null;
+        if ($reference->hofff_st && $reference->hofff_st_twitter_type) {
+            $type = $reference->hofff_st_twitter_type;
+        }
+
+        switch ($type) {
             case 'hofff_st_twitter_summary':
                 return new SummaryCardData(
                     $this->extractor->extract('twitter', 'title', $reference, $fallback),

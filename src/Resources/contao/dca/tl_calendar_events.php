@@ -133,7 +133,6 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['hofff_st_twitter_type'] = [
     'label'     => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_type'],
     'exclude'   => true,
     'inputType' => 'select',
-    'default'   => 'website',
     'options'   => ['hofff_st_twitter_summary', 'hofff_st_twitter_summary_large_image'],
     'reference' => &$GLOBALS['TL_LANG']['hofff_st']['hofff_st_twitter_types'],
     'eval'      => [

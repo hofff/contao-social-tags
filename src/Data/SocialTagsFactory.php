@@ -135,13 +135,13 @@ final class SocialTagsFactory
                 // No break
 
             case 'hofff_st_parent':
-                $modes[] = 'hofff_st_page';
-                unset($referencePage);
+                $modes[]       = 'hofff_st_page';
+                $referencePage = null;
                 break;
 
             default:
-                $modes[] = 'hofff_st_disableTree';
-                unset($referencePage);
+                $modes[]       = 'hofff_st_disableTree';
+                $referencePage = null;
                 break;
         }
 

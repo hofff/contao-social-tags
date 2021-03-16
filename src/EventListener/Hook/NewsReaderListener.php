@@ -13,8 +13,10 @@ use Contao\NewsModel;
 use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
-use const VERSION;
+
 use function version_compare;
+
+use const VERSION;
 
 final class NewsReaderListener extends SocialTagsDataAwareListener
 {
@@ -40,7 +42,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         $this->framework    = $framework;
     }
 
-    public function onGetContentElement(Model $model, string $result) : string
+    public function onGetContentElement(Model $model, string $result): string
     {
         if ($model->type !== 'module') {
             return $result;
@@ -54,7 +56,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         return $this->onGetFrontendModule($module, $result);
     }
 
-    public function onGetFrontendModule(ModuleModel $model, string $result) : string
+    public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request || ! $this->scopeMatcher->isFrontendRequest($request)) {
@@ -75,12 +77,12 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         return $result;
     }
 
-    private function supports(ModuleModel $model) : bool
+    private function supports(ModuleModel $model): bool
     {
         return $model->type === 'newsreader';
     }
 
-    private function getNewsModel(ModuleModel $model) : ?NewsModel
+    private function getNewsModel(ModuleModel $model): ?NewsModel
     {
         return NewsModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('items'),
@@ -90,7 +92,8 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
 
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
-        if (($model->type === 'newsarchive' || (version_compare(VERSION, '4.7', '>=') && $model->type === 'newslist'))
+        if (
+            ($model->type === 'newsarchive' || (version_compare(VERSION, '4.7', '>=') && $model->type === 'newslist'))
             && $model->news_readerModule > 0
             && $this->framework->getAdapter(Input::class)->get('items')
         ) {

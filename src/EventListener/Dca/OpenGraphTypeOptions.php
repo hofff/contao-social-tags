@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\EventListener\Dca;
 
 use Hofff\Contao\SocialTags\Util\TypeUtil;
+
 use function explode;
 use function strpos;
 
@@ -20,7 +21,7 @@ final class OpenGraphTypeOptions
     }
 
     /** @return string[] */
-    public function __invoke() : array
+    public function __invoke(): array
     {
         $options = [];
         foreach ($this->types as $strType) {

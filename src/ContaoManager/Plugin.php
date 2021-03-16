@@ -20,19 +20,20 @@ use Symfony\Component\Routing\RouteCollection;
 final class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
     /** @return BundleConfig[] */
-    public function getBundles(ParserInterface $parser) : array
+    public function getBundles(ParserInterface $parser): array
     {
-        return [BundleConfig::create(HofffContaoSocialTagsBundle::class)
+        return [
+            BundleConfig::create(HofffContaoSocialTagsBundle::class)
                 ->setLoadAfter([
                     ContaoCoreBundle::class,
                     ContaoNewsBundle::class,
                     ContaoFaqBundle::class,
-                    ContaoCalendarBundle::class
+                    ContaoCalendarBundle::class,
                 ]),
         ];
     }
 
-    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel) : ?RouteCollection
+    public function getRouteCollection(LoaderResolverInterface $resolver, KernelInterface $kernel): ?RouteCollection
     {
         $loader = $resolver->resolve(__DIR__ . '/../Resources/config/routing.xml');
         if (! $loader) {

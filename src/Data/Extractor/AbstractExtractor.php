@@ -16,10 +16,10 @@ abstract class AbstractExtractor implements Extractor
     protected $requestStack;
 
     /** @var ContaoFrameworkInterface */
-    protected  $framework;
+    protected $framework;
 
     /** @var string */
-    protected  $projectDir;
+    protected $projectDir;
 
     public function __construct(ContaoFrameworkInterface $framework, RequestStack $requestStack, string $projectDir)
     {
@@ -28,7 +28,7 @@ abstract class AbstractExtractor implements Extractor
         $this->requestStack = $requestStack;
     }
 
-    protected function getBaseUrl() : string
+    protected function getBaseUrl(): string
     {
         static $baseUrl;
 
@@ -46,7 +46,7 @@ abstract class AbstractExtractor implements Extractor
         return $baseUrl;
     }
 
-    protected  function getRequestUri() : string
+    protected function getRequestUri(): string
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request) {
@@ -63,7 +63,7 @@ abstract class AbstractExtractor implements Extractor
             ->findByUuid($uuid);
     }
 
-    protected function replaceInsertTags(string $content) : string
+    protected function replaceInsertTags(string $content): string
     {
         $controller = $this->framework->getAdapter(Controller::class);
 

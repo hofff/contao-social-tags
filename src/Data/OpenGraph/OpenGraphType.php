@@ -6,6 +6,7 @@ namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
 use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
+
 use function sprintf;
 
 class OpenGraphType extends Property
@@ -31,7 +32,7 @@ class OpenGraphType extends Property
         $this->setTypePrefix($typePrefix);
     }
 
-    public function getMetaTag() : string
+    public function getMetaTag(): string
     {
         $prefix            = $this->getTypeNamespaceDeclaration();
         $prefix && $prefix = ' ' . $prefix;
@@ -49,28 +50,28 @@ class OpenGraphType extends Property
         );
     }
 
-    public function setType(?string $type) : self
+    public function setType(?string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    protected function getTypeNamespaceDeclaration() : string
+    protected function getTypeNamespaceDeclaration(): string
     {
         return $this->typeNamespace
             ? sprintf('%s: %s', $this->typePrefix, $this->typeNamespace)
             : '';
     }
 
-    public function setTypeNamespace(?string $typeNamespace) : self
+    public function setTypeNamespace(?string $typeNamespace): self
     {
         $this->typeNamespace = $typeNamespace;
 
         return $this;
     }
 
-    public function setTypePrefix(?string $typePrefix) : self
+    public function setTypePrefix(?string $typePrefix): self
     {
         $this->typePrefix = $typePrefix ?: 't';
 
@@ -78,26 +79,26 @@ class OpenGraphType extends Property
     }
 
     /** @return $this */
-    public function setNamespace(?string $namespace) : Property
+    public function setNamespace(?string $namespace): Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setName(?string $name) : Property
+    public function setName(?string $name): Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setContent(?string $content) : Property
+    public function setContent(?string $content): Property
     {
         $this->setType($content);
 
         return $this;
     }
 
-    protected function getContent() : ?string
+    protected function getContent(): ?string
     {
         return $this->typeNamespace
             ? sprintf('%s:%s', $this->typePrefix, $this->type)

@@ -9,6 +9,8 @@ use Contao\PageModel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+
+use function assert;
 use function urlencode;
 
 final class FacebookLintAction
@@ -23,13 +25,13 @@ final class FacebookLintAction
         $this->framework = $framework;
     }
 
-    public function __invoke(int $pageId, Request $request) : Response
+    public function __invoke(int $pageId, Request $request): Response
     {
         $this->framework->initialize();
 
-        /** @var PageModel|null $pageModel */
         $pageModel = $this->framework->getAdapter(PageModel::class)->findWithDetails($pageId);
-        $target    = self::FACEBOOK_LINT_URL;
+        assert($pageModel instanceof PageModel || $pageModel === null);
+        $target = self::FACEBOOK_LINT_URL;
 
         if ($pageModel) {
             $target .= urlencode($pageModel->getAbsoluteUrl());

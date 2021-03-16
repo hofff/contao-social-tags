@@ -10,18 +10,18 @@ abstract class AbstractData implements Data
     {
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getProtocol()->getMetaTags();
     }
 
     /** @return Data[] */
-    public function getIterator() : iterable
+    public function getIterator(): iterable
     {
         return $this->getProtocol()->getIterator();
     }
 
-    public function count() : int
+    public function count(): int
     {
         return $this->getProtocol()->count();
     }

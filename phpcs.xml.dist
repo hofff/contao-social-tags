@@ -15,6 +15,7 @@
     <!-- Include full Doctrine Coding Standard -->
     <rule ref="Doctrine">
         <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming"/>
+        <exclude name="Squiz.NamingConventions.ValidVariableName.NotCamelCaps"/>
     </rule>
 
     <rule ref="Generic.Files.LineLength">
@@ -28,5 +29,17 @@
 
     <rule ref="SlevomatCodingStandard.Classes.UnusedPrivateElements.UnusedMethod">
         <exclude-pattern>*/Data/Extractor/*Extractor\.php</exclude-pattern>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint">
+        <properties>
+            <property name="enableObjectTypeHint" value="false" />
+        </properties>
+    </rule>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint">
+        <properties>
+            <property name="enableNativeTypeHint" value="false" />
+        </properties>
     </rule>
 </ruleset>

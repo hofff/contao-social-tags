@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
-use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
@@ -13,11 +11,10 @@ use Contao\News;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\StringUtil;
-use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
-use Symfony\Component\HttpFoundation\RequestStack;
+
 use function explode;
 use function is_file;
 use function method_exists;
@@ -29,17 +26,13 @@ use function ucfirst;
 
 final class NewsExtractor extends AbstractExtractor
 {
-    public function supports(Model $reference, ?Model $fallback = null) : bool
+    public function supports(Model $reference, ?Model $fallback = null): bool
     {
         if (! $reference instanceof NewsModel) {
             return false;
         }
 
-        if (! $fallback instanceof PageModel) {
-            return false;
-        }
-
-        return true;
+        return $fallback instanceof PageModel;
     }
 
     /** @return mixed */
@@ -54,7 +47,7 @@ final class NewsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterTitle(NewsModel $newsModel) : ?string
+    private function extractTwitterTitle(NewsModel $newsModel): ?string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_twitter_title)) {
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_title);
@@ -63,7 +56,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsTitle($newsModel);
     }
 
-    private function extractTwitterSite(NewsModel $newsModel, PageModel $referencePage) : ?string
+    private function extractTwitterSite(NewsModel $newsModel, PageModel $referencePage): ?string
     {
         if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_site) {
             return $newsModel->hofff_st_twitter_site;
@@ -72,7 +65,7 @@ final class NewsExtractor extends AbstractExtractor
         return $referencePage->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(NewsModel $newsModel) : ?string
+    private function extractTwitterDescription(NewsModel $newsModel): ?string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_description);
@@ -81,7 +74,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsDescription($newsModel) ?: null;
     }
 
-    private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage) : ?string
+    private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage): ?string
     {
         $file = $this->getImage('hofff_st_twitter_image', $newsModel, $referencePage);
 
@@ -92,7 +85,7 @@ final class NewsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(NewsModel $newsModel, PageModel $referencePage) : ?string
+    private function extractTwitterCreator(NewsModel $newsModel, PageModel $referencePage): ?string
     {
         if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_creator) {
             return $newsModel->hofff_st_twitter_creator;
@@ -104,7 +97,7 @@ final class NewsExtractor extends AbstractExtractor
     /**
      * @param string|resource $strImage
      */
-    private function extractOpenGraphImageData(NewsModel $newsModel, PageModel $referencePage) : OpenGraphImageData
+    private function extractOpenGraphImageData(NewsModel $newsModel, PageModel $referencePage): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
         $file      = $this->getImage('hofff_st_og_image', $newsModel, $referencePage);
@@ -120,7 +113,7 @@ final class NewsExtractor extends AbstractExtractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(NewsModel $newsModel) : ?string
+    private function extractOpenGraphTitle(NewsModel $newsModel): ?string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_title)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_title);
@@ -129,7 +122,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsTitle($newsModel) ?: null;
     }
 
-    private function extractOpenGraphUrl(NewsModel $newsModel) : string
+    private function extractOpenGraphUrl(NewsModel $newsModel): string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_url);
@@ -145,7 +138,7 @@ final class NewsExtractor extends AbstractExtractor
         return $newsUrl;
     }
 
-    private function extractOpenGraphDescription(NewsModel $newsModel) : ?string
+    private function extractOpenGraphDescription(NewsModel $newsModel): ?string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_description)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_description);
@@ -154,7 +147,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsDescription($newsModel) ?: null;
     }
 
-    private function extractOpenGraphSiteName(NewsModel $newsModel, PageModel $fallback) : string
+    private function extractOpenGraphSiteName(NewsModel $newsModel, PageModel $fallback): string
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_site)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_site);
@@ -163,7 +156,7 @@ final class NewsExtractor extends AbstractExtractor
         return strip_tags($fallback->rootTitle);
     }
 
-    private function extractOpenGraphType(NewsModel $newsModel) : OpenGraphType
+    private function extractOpenGraphType(NewsModel $newsModel): OpenGraphType
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $newsModel->hofff_st_og_type, 2);
@@ -181,7 +174,7 @@ final class NewsExtractor extends AbstractExtractor
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */
-    private function getNewsDescription(NewsModel $model) : ?string
+    private function getNewsDescription(NewsModel $model): ?string
     {
         if (TypeUtil::isStringWithContent($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
@@ -203,13 +196,13 @@ final class NewsExtractor extends AbstractExtractor
     /**
      * Returns the meta title if present, otherwise the headline.
      */
-    private function getNewsTitle(NewsModel $model) : ?string
+    private function getNewsTitle(NewsModel $model): ?string
     {
         $title = $model->pageTitle ?: $model->headline;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
-        
+
         return null;
     }
 

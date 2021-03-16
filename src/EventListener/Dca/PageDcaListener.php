@@ -7,6 +7,7 @@ namespace Hofff\Contao\SocialTags\EventListener\Dca;
 use Contao\Image;
 use Contao\StringUtil;
 use Symfony\Component\Routing\RouterInterface;
+
 use function sprintf;
 
 final class PageDcaListener
@@ -27,7 +28,7 @@ final class PageDcaListener
         string $title,
         string $icon,
         string $attributes
-    ) : string {
+    ): string {
         return sprintf(
             '<a href="%s" title="%s"%s>%s</a>',
             $this->router->generate('hofff_contao_social_tags_facebook_lint', ['pageId' => $row['id']]),

@@ -32,12 +32,12 @@ class Property
         $this->setPrefix($prefix);
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getMetaTag();
     }
 
-    public function getMetaTag() : string
+    public function getMetaTag(): string
     {
         if (! $this->isValid()) {
             return '';
@@ -59,43 +59,43 @@ class Property
         );
     }
 
-    protected function getNamespaceDeclaration() : string
+    protected function getNamespaceDeclaration(): string
     {
         return sprintf('%s: %s', $this->prefix, $this->namespace);
     }
 
-    protected function getPrefixedName() : string
+    protected function getPrefixedName(): string
     {
         return sprintf('%s:%s', $this->prefix, $this->name);
     }
 
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return $this->name && $this->content;
     }
 
-    public function setNamespace(?string $namespace) : self
+    public function setNamespace(?string $namespace): self
     {
         $this->namespace = $namespace;
 
         return $this;
     }
 
-    public function setName(?string $name) : self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setContent(?string $content) : self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setPrefix(?string $prefix) : self
+    public function setPrefix(?string $prefix): self
     {
         $this->prefix = $prefix ?: 'og';
 

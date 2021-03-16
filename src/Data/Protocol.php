@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data;
 
 use ArrayIterator;
+
 use function array_splice;
 use function count;
 
@@ -26,7 +27,7 @@ class Protocol extends AbstractData
         parent::__construct();
     }
 
-    public function getMetaTags() : string
+    public function getMetaTags(): string
     {
         $return = '';
         foreach ($this as $property) {
@@ -36,40 +37,40 @@ class Protocol extends AbstractData
         return $return;
     }
 
-    public function add(Property $property) : void
+    public function add(Property $property): void
     {
         $this->properties[] = $property;
     }
 
-    public function append(Data $data) : void
+    public function append(Data $data): void
     {
         foreach ($data as $property) {
             $this->add(clone $property);
         }
     }
 
-    public function get(int $index) : ?Property
+    public function get(int $index): ?Property
     {
         return $this->properties[$index] ?? null;
     }
 
-    public function remove(int $index) : void
+    public function remove(int $index): void
     {
         array_splice($this->properties, $index, 1);
     }
 
-    public function getProtocol() : Protocol
+    public function getProtocol(): Protocol
     {
         return $this;
     }
 
     /** @return Property[] */
-    public function getIterator() : iterable
+    public function getIterator(): iterable
     {
         return new ArrayIterator($this->properties);
     }
 
-    public function count() : int
+    public function count(): int
     {
         return count($this->properties);
     }

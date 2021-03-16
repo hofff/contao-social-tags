@@ -2,9 +2,15 @@
 
 ## Unreleased
 
+## [1.1.0] - 2021-03-14
+
 ### Added
 
- - Added english translation thanks to ([#15](https://github.com/hofff/contao-social-tags/pull/8)) [@fritzmg](https://github.com/fritzmg)
+ - Add english translation thanks to ([#15](https://github.com/hofff/contao-social-tags/pull/8)) [@fritzmg](https://github.com/fritzmg)
+ - Add an abstract extractor class
+ - Fallback to news/faq/event image if non provided for og:image and twitter:image
+ - Fallback to reference page image if no news/faq/event image if no og:image and twitter:image and no news/faq/event image exists
+ - Fallback to twitter:site and twitter:creator from the reference page of news/faq/event if not defined 
 
 ### Changed
 
@@ -14,6 +20,8 @@
 ### Fixed
 
  - Fix twitter cards default type  ([#12](https://github.com/hofff/contao-social-tags/pull/12)) [@fritzmg](https://github.com/fritzmg)
+ - Fix broken url for news, events, faqs having the same id like the current page
+ - Correctly detect if twitter cards are enabled
 
 ## [1.0.6] - 2020-09-11
 
@@ -41,6 +49,7 @@
  - Fix cross dependencies to the news bundle in the faq and event integration ([#6](https://github.com/hofff/contao-social-tags/pull/6)) thanks to[@fritzmg](https://github.com/fritzmg)
  - Recognize `pageTitle` fields for news and events, fallback to teaser as the description ([#5](https://github.com/hofff/contao-social-tags/pull/5)) thanks to [@fritzmg](https://github.com/fritzmg)
 
+[1.1.0]: https://github.com/hofff/contao-social-tags/compare/1.0.6...1.1.0
 [1.0.6]: https://github.com/hofff/contao-social-tags/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/hofff/contao-social-tags/compare/1.0.4...1.0.5
 [1.0.4]: https://github.com/hofff/contao-social-tags/compare/1.0.3...1.0.4

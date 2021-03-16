@@ -42,7 +42,7 @@ class OpenGraphBasicData extends AbstractData
         $this->url   = $url;
     }
 
-    public function setTitle(string $title) : self
+    public function setTitle(string $title): self
     {
         if ($title !== '') {
             $this->title = $title;
@@ -53,7 +53,7 @@ class OpenGraphBasicData extends AbstractData
         return $this;
     }
 
-    protected function getTitleData() : Protocol
+    protected function getTitleData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -64,14 +64,14 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setType(?OpenGraphType $type = null) : self
+    public function setType(?OpenGraphType $type = null): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-    protected function getTypeData() : Protocol
+    protected function getTypeData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -82,7 +82,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setImage(?string $url) : self
+    public function setImage(?string $url): self
     {
         if ($url === null) {
             $this->image = $url;
@@ -93,31 +93,31 @@ class OpenGraphBasicData extends AbstractData
         return $this;
     }
 
-    public function setImageData(OpenGraphImageData $image) : self
+    public function setImageData(OpenGraphImageData $image): self
     {
         $this->image = $image;
 
         return $this;
     }
 
-    protected function getImageData() : OpenGraphImageData
+    protected function getImageData(): OpenGraphImageData
     {
         return $this->image ? $this->image : new OpenGraphImageData();
     }
 
-    public function setURL(?string $url) : self
+    public function setURL(?string $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function getURL() : ?string
+    public function getURL(): ?string
     {
         return $this->url;
     }
 
-    protected function getURLData() : Protocol
+    protected function getURLData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -128,14 +128,14 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setDescription(?string $description) : self
+    public function setDescription(?string $description): self
     {
         $this->description = $description;
 
         return $this;
     }
 
-    protected function getDescriptionData() : Protocol
+    protected function getDescriptionData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -146,7 +146,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setSiteName(?string $site) : self
+    public function setSiteName(?string $site): self
     {
         if ($site !== '') {
             $this->siteName = $site;
@@ -157,12 +157,12 @@ class OpenGraphBasicData extends AbstractData
         return $this;
     }
 
-    public function getSiteName() : ?string
+    public function getSiteName(): ?string
     {
         return $this->siteName;
     }
 
-    protected function getSiteNameData() : Protocol
+    protected function getSiteNameData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -173,7 +173,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function isValid() : bool
+    public function isValid(): bool
     {
         if (! $this->title) {
             return false;
@@ -194,7 +194,7 @@ class OpenGraphBasicData extends AbstractData
         return $this->getImageData()->isValid();
     }
 
-    public function getProtocol() : Protocol
+    public function getProtocol(): Protocol
     {
         $protocol = new Protocol();
 

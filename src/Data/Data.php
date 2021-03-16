@@ -9,7 +9,7 @@ use IteratorAggregate;
 
 interface Data extends IteratorAggregate, Countable
 {
-    public function __toString() : string;
+    public function __toString(): string;
 
-    public function getProtocol() : Protocol;
+    public function getProtocol(): Protocol;
 }

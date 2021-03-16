@@ -8,7 +8,7 @@ use Hofff\Contao\SocialTags\Data\Data;
 
 final class SocialTagsDataInjectionListener extends SocialTagsDataAwareListener
 {
-    public function onGeneratePage() : void
+    public function onGeneratePage(): void
     {
         $socialTagsData = $this->getSocialTagsData();
         if (! $socialTagsData instanceof Data) {

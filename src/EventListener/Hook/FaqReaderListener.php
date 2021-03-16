@@ -38,7 +38,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         $this->framework    = $framework;
     }
 
-    public function onGetContentElement(Model $model, string $result) : string
+    public function onGetContentElement(Model $model, string $result): string
     {
         if ($model->type !== 'module') {
             return $result;
@@ -52,7 +52,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         return $this->onGetFrontendModule($module, $result);
     }
 
-    public function onGetFrontendModule(ModuleModel $model, string $result) : string
+    public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request || ! $this->scopeMatcher->isFrontendRequest($request)) {
@@ -73,12 +73,12 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         return $result;
     }
 
-    private function supports(ModuleModel $model) : bool
+    private function supports(ModuleModel $model): bool
     {
         return $model->type === 'faqreader';
     }
 
-    private function getFaqModel(ModuleModel $model) : ?FaqModel
+    private function getFaqModel(ModuleModel $model): ?FaqModel
     {
         return FaqModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('items'),
@@ -88,7 +88,8 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
 
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
-        if ($model->type === 'faqlist'
+        if (
+            $model->type === 'faqlist'
             && $model->faq_readerModule > 0
             && $this->framework->getAdapter(Input::class)->get('items')
         ) {

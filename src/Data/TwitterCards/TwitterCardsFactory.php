@@ -20,7 +20,7 @@ final class TwitterCardsFactory implements DataFactory
         $this->extractor = $extractor;
     }
 
-    public function generate(Model $reference, ?Model $fallback = null) : Data
+    public function generate(Model $reference, ?Model $fallback = null): Data
     {
         if (! $this->extractor->supports($reference, $fallback)) {
             return new Protocol();

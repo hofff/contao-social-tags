@@ -7,7 +7,6 @@ namespace Hofff\Contao\SocialTags\Action;
 use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\PageModel;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use function assert;
@@ -25,7 +24,7 @@ final class FacebookLintAction
         $this->framework = $framework;
     }
 
-    public function __invoke(int $pageId, Request $request): Response
+    public function __invoke(int $pageId): Response
     {
         $this->framework->initialize();
 

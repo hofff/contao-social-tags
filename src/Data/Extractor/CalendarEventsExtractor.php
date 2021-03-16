@@ -24,6 +24,10 @@ use function stripos;
 use function trim;
 use function ucfirst;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 final class CalendarEventsExtractor extends AbstractExtractor
 {
     public function supports(Model $reference, ?Model $fallback = null): bool

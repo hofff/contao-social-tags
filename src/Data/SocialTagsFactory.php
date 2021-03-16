@@ -56,6 +56,7 @@ final class SocialTagsFactory
         return $protocol;
     }
 
+    /** @SuppressWarnings(PHPMD.Superglobals) */
     public function generateByModel(Model $model): Protocol
     {
         $protocol    = new Protocol();
@@ -74,6 +75,7 @@ final class SocialTagsFactory
         return $protocol;
     }
 
+    /** @SuppressWarnings(PHPMD.Superglobals) */
     private function getOriginPage(int $pageId): ?PageModel
     {
         if ($pageId === $GLOBALS['objPage']->id) {
@@ -114,6 +116,7 @@ final class SocialTagsFactory
         return $this->framework->getAdapter(PageModel::class)->findByPK($pageId);
     }
 
+    /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
     private function getReferencePage(PageModel $currentPage): ?PageModel
     {
         $referencePage = $currentPage;

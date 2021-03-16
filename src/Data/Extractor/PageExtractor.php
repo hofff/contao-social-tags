@@ -21,6 +21,9 @@ use function substr;
 use function trim;
 use function ucfirst;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+ */
 final class PageExtractor extends AbstractExtractor
 {
     public function supports(Model $reference, ?Model $fallback = null): bool
@@ -129,6 +132,7 @@ final class PageExtractor extends AbstractExtractor
         return strip_tags($currentPage->title);
     }
 
+    /** @SuppressWarnings(PHPMD.Superglobals) */
     private function extractOpenGraphUrl(PageModel $referencePage, PageModel $currentPage): string
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_url)) {

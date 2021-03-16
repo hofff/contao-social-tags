@@ -20,7 +20,11 @@ final class PageDcaListener
         $this->router = $router;
     }
 
-    /** @param mixed[] $row */
+    /**
+     * @param mixed[] $row
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function facebookLinkButton(
         array $row,
         ?string $href,

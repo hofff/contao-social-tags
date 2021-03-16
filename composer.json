@@ -1,5 +1,6 @@
 {
   "name": "hofff/contao-social-tags",
+  "type": "contao-bundle",
   "description": "Define OpenGraph/twitter cards meta data in Contao",
   "keywords": [
     "facebook",
@@ -13,13 +14,12 @@
     "meta data",
     "contao"
   ],
-  "type": "contao-bundle",
   "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Nicky Hoff",
-      "homepage": "https://www.hofff.com",
       "email": "nick@hofff.com",
+      "homepage": "https://www.hofff.com",
       "role": "Manager"
     },
     {
@@ -29,32 +29,39 @@
       "role": "Developer"
     }
   ],
-  "support": {
-    "issues": "https://github.com/hofff/contao-social-tags/issues",
-    "irc": "irc://irc.freenode.org/contao.dev",
-    "source": "https://github.com/hofff/contao-social-tags"
-  },
   "require": {
     "php": "^7.1",
+    "ext-pdo": "*",
     "contao/core-bundle": "^4.4",
+    "doctrine/dbal": "^2.5",
     "symfony/config": "^3.4 || ^4.0 || ^5.0",
     "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0",
+    "symfony/http-foundation": "^3.4 || ^4.0 || ^5.0",
     "symfony/http-kernel": "^3.4 || ^4.0 || ^5.0",
-    "symfony/http-foundation": "^3.4 || ^4.0 || ^5.0"
+    "symfony/routing": "^3.4 || ^4.0 || ^5.0"
+  },
+  "require-dev": {
+    "contao/calendar-bundle": "^4.4",
+    "contao/faq-bundle": "^4.4",
+    "contao/news-bundle": "^4.4",
+    "doctrine/coding-standard": "^8.0",
+    "phpcq/runner-bootstrap": "^1.0@dev"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-develop": "1.2.x-dev",
+      "dev-master": "1.1.x-dev"
+    },
+    "contao-manager-plugin": "Hofff\\Contao\\SocialTags\\ContaoManager\\Plugin"
   },
   "autoload": {
     "psr-4": {
       "Hofff\\Contao\\SocialTags\\": "src/"
     }
   },
-  "extra": {
-    "contao-manager-plugin": "Hofff\\Contao\\SocialTags\\ContaoManager\\Plugin",
-    "branch-alias": {
-      "dev-master": "1.1.x-dev",
-      "dev-develop": "1.2.x-dev"
-    }
-  },
-  "require-dev": {
-    "doctrine/coding-standard": "^8.0"
+  "support": {
+    "issues": "https://github.com/hofff/contao-social-tags/issues",
+    "irc": "irc://irc.freenode.org/contao.dev",
+    "source": "https://github.com/hofff/contao-social-tags"
   }
 }

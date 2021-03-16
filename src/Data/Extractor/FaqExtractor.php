@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
 use Contao\Config;
+use Contao\FaqCategoryModel;
 use Contao\FaqModel;
 use Contao\File;
 use Contao\FilesModel;
@@ -21,6 +22,10 @@ use function method_exists;
 use function strip_tags;
 use function ucfirst;
 
+/**
+ * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 final class FaqExtractor extends AbstractExtractor
 {
     public function supports(Model $reference, ?Model $fallback = null): bool
@@ -64,7 +69,7 @@ final class FaqExtractor extends AbstractExtractor
             return $faqModel->hofff_st_twitter_site;
         }
 
-        return $faqModel->hofff_st_twitter_site ?: null;
+        return $referencePage->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(FaqModel $faqModel): ?string
@@ -205,13 +210,13 @@ final class FaqExtractor extends AbstractExtractor
     /**
      * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
      */
-    private function getImage(string $key, NewsModel $newsModel, PageModel $referencePage): ?FilesModel
+    private function getImage(string $key, FaqModel $faqModel, PageModel $referencePage): ?FilesModel
     {
         $image = null;
-        if ($newsModel->hofff_st && $newsModel->{$key}) {
-            $image = $newsModel->{$key};
-        } elseif ($newsModel->addImage && $newsModel->singleSRC) {
-            $image = $newsModel->singleSRC;
+        if ($faqModel->hofff_st && $faqModel->{$key}) {
+            $image = $faqModel->{$key};
+        } elseif ($faqModel->addImage && $faqModel->singleSRC) {
+            $image = $faqModel->singleSRC;
         } elseif ($referencePage->{$key}) {
             $image = $referencePage->{$key};
         } else {

@@ -11,7 +11,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 
 final class HofffContaoSocialTagsExtension extends Extension
 {
-    /** @param mixed[][] $configs */
+    /**
+     * @param mixed[][] $configs
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new XmlFileLoader(

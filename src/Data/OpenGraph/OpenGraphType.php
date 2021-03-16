@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
+use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 
@@ -38,15 +39,15 @@ class OpenGraphType extends Property
         $prefix && $prefix = ' ' . $prefix;
         $prefix            = sprintf(
             ' prefix="%s%s"',
-            specialchars($this->getNamespaceDeclaration()),
-            specialchars($prefix)
+            StringUtil::specialchars($this->getNamespaceDeclaration()),
+            StringUtil::specialchars($prefix)
         );
 
         return sprintf(
             '<meta%s property="%s" content="%s" />',
             $prefix,
-            specialchars($this->getPrefixedName()),
-            specialchars($this->getContent())
+            StringUtil::specialchars($this->getPrefixedName()),
+            StringUtil::specialchars($this->getContent())
         );
     }
 

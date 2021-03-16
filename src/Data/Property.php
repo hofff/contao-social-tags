@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
+use Contao\StringUtil;
+
 use function sprintf;
 
 class Property
@@ -46,16 +48,16 @@ class Property
         if ($this->namespace && $this->prefix) {
             return sprintf(
                 '<meta%s property="%s" content="%s">',
-                sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
-                specialchars($this->getPrefixedName()),
-                specialchars($this->content)
+                sprintf(' prefix="%s"', StringUtil::specialchars($this->getNamespaceDeclaration())),
+                StringUtil::specialchars($this->getPrefixedName()),
+                StringUtil::specialchars($this->content)
             );
         }
 
         return sprintf(
             '<meta property="%s" content="%s">',
-            specialchars($this->getPrefixedName()),
-            specialchars($this->content)
+            StringUtil::specialchars($this->getPrefixedName()),
+            StringUtil::specialchars($this->content)
         );
     }
 

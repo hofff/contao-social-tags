@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+ - Added english translation thanks to ([#15](https://github.com/hofff/contao-social-tags/pull/8)) [@fritzmg](https://github.com/fritzmg)
+
+### Changed
+
+ - Use reference page for non page content ([#14](https://github.com/hofff/contao-social-tags/pull/14)) [@fritzmg](https://github.com/fritzmg)
+ - Do not require twitter site  ([#13](https://github.com/hofff/contao-social-tags/pull/13)) [@fritzmg](https://github.com/fritzmg)
+
+### Fixed
+
+ - Fix twitter cards default type  ([#12](https://github.com/hofff/contao-social-tags/pull/12)) [@fritzmg](https://github.com/fritzmg)
+
 ## [1.0.6] - 2020-09-11
 
 ### Fixed

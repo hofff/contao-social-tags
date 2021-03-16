@@ -64,10 +64,10 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterSite(FaqModel $faqModel) : ?string
+    private function extractTwitterSite(FaqModel $faqModel, PageModel $referencePage) : ?string
     {
-        if (!$faqModel->hofff_st) {
-            return null;
+        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_site) {
+            return $faqModel->hofff_st_twitter_site;
         }
 
         return $faqModel->hofff_st_twitter_site ?: null;
@@ -99,13 +99,13 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(FaqModel $faqModel) : ?string
+    private function extractTwitterCreator(FaqModel $faqModel, PageModel $referencePage) : ?string
     {
-        if (!$faqModel->hofff_st) {
-            return null;
+        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_creator) {
+            return $faqModel->hofff_st_twitter_creator;
         }
 
-        return $faqModel->hofff_st_twitter_creator ?: null;
+        return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
     /**
@@ -206,5 +206,26 @@ final class FaqExtractor extends AbstractExtractor
         $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($faqModel->alias ?: $faqModel->id);
 
         return ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
+    }
+
+    /**
+     * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
+     */
+    private function getImage(string $key, NewsModel $newsModel, PageModel $referencePage): ?FilesModel
+    {
+        $image = null;
+        if ($newsModel->hofff_st && $newsModel->{$key}) {
+            $image = $newsModel->{$key};
+        } elseif ($newsModel->addImage && $newsModel->singleSRC) {
+            $image = $newsModel->singleSRC;
+        } elseif ($referencePage->{$key}) {
+            $image = $referencePage->{$key};
+        } else {
+            return null;
+        }
+
+        return $this->framework
+            ->getAdapter(FilesModel::class)
+            ->findByUuid($image);
     }
 }

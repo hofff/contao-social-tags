@@ -60,13 +60,13 @@ final class CalendarEventsExtractor extends AbstractExtractor
         return $this->getEventTitle($eventModel);
     }
 
-    private function extractTwitterSite(CalendarEventsModel $eventModel) : ?string
+    private function extractTwitterSite(CalendarEventsModel $eventModel, PageModel $referencePage) : ?string
     {
-        if (!$eventModel->hofff_st) {
-            return null;
+        if ($eventModel->hofff_st && $eventModel->hofff_st_twitter_site) {
+            return $eventModel->hofff_st_twitter_site;
         }
 
-        return $eventModel->hofff_st_twitter_site ?: null;
+        return $referencePage->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(CalendarEventsModel $eventModel) : ?string
@@ -78,15 +78,9 @@ final class CalendarEventsExtractor extends AbstractExtractor
         return $this->getEventDescription($eventModel) ?: null;
     }
 
-    private function extractTwitterImage(CalendarEventsModel $calendarEventsModel) : ?string
+    private function extractTwitterImage(CalendarEventsModel $calendarEventsModel, PageModel $referencePage) : ?string
     {
-        if (!$calendarEventsModel->hofff_st) {
-            return null;
-        }
-
-        $file = $this->framework
-            ->getAdapter(FilesModel::class)
-            ->findByUuid($calendarEventsModel->hofff_st_twitter_image);
+        $file = $this->getImage('hofff_st_twitter_image', $calendarEventsModel, $referencePage);
 
         if ($file && is_file($this->projectDir . '/' . $file->path)) {
             return $this->getBaseUrl() . $file->path;
@@ -95,26 +89,24 @@ final class CalendarEventsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(CalendarEventsModel $calendarEventsModel) : ?string
+    private function extractTwitterCreator(CalendarEventsModel $eventModel, PageModel $referencePage) : ?string
     {
-        if (!$calendarEventsModel->hofff_st) {
-            return null;
+        if ($eventModel->hofff_st && $eventModel->hofff_st_twitter_creator) {
+            return $eventModel->hofff_st_twitter_creator;
         }
 
-        return $calendarEventsModel->hofff_st_twitter_creator ?: null;
+        return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
     /**
      * @param string|resource $strImage
      */
-    private function extractOpenGraphImageData(CalendarEventsModel $calendarEventsModel) : OpenGraphImageData
-    {
+    private function extractOpenGraphImageData(
+        CalendarEventsModel $calendarEventsModel,
+        PageModel $referencePage
+    ): OpenGraphImageData {
         $imageData = new OpenGraphImageData();
-        if (!$calendarEventsModel->hofff_st) {
-            return $imageData;
-        }
-
-        $file = FilesModel::findByUuid($calendarEventsModel->hofff_st_og_image);
+        $file      = $this->getImage('hofff_st_og_image', $calendarEventsModel, $referencePage);
 
         if ($file && is_file(TL_ROOT . '/' . $file->path)) {
             $objImage = new File($file->path);
@@ -220,5 +212,26 @@ final class CalendarEventsExtractor extends AbstractExtractor
         }
         
         return null;
+    }
+
+    /**
+     * Retrieves an image from the event for a given key. It fallbacks to the event image or page image if not defined.
+     */
+    private function getImage(string $key, CalendarEventsModel $eventsModel, PageModel $referencePage): ?FilesModel
+    {
+        $image = null;
+        if ($eventsModel->hofff_st && $eventsModel->{$key}) {
+            $image = $eventsModel->{$key};
+        } elseif ($eventsModel->addImage && $eventsModel->singleSRC) {
+            $image = $eventsModel->singleSRC;
+        } elseif ($referencePage->{$key}) {
+            $image = $referencePage->{$key};
+        } else {
+            return null;
+        }
+
+        return $this->framework
+            ->getAdapter(FilesModel::class)
+            ->findByUuid($image);
     }
 }

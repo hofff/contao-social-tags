@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
+use Contao\Controller;
+use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
@@ -11,9 +13,11 @@ use Contao\News;
 use Contao\NewsModel;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
+use Symfony\Component\HttpFoundation\RequestStack;
 use function explode;
 use function is_file;
 use function method_exists;
@@ -59,13 +63,13 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsTitle($newsModel);
     }
 
-    private function extractTwitterSite(NewsModel $newsModel) : ?string
+    private function extractTwitterSite(NewsModel $newsModel, PageModel $referencePage) : ?string
     {
-        if (!$newsModel->hofff_st) {
-            return null;
+        if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_site) {
+            return $newsModel->hofff_st_twitter_site;
         }
 
-        return $newsModel->hofff_st_twitter_site ?: null;
+        return $referencePage->hofff_st_twitter_site ?: null;
     }
 
     private function extractTwitterDescription(NewsModel $newsModel) : ?string
@@ -77,15 +81,9 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsDescription($newsModel) ?: null;
     }
 
-    private function extractTwitterImage(NewsModel $newsModel) : ?string
+    private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage) : ?string
     {
-        if (!$newsModel->hofff_st) {
-            return null;
-        }
-
-        $file = $this->framework
-            ->getAdapter(FilesModel::class)
-            ->findByUuid($newsModel->hofff_st_twitter_image);
+        $file = $this->getImage('hofff_st_twitter_image', $newsModel, $referencePage);
 
         if ($file && is_file($this->projectDir . '/' . $file->path)) {
             return $this->getBaseUrl() . $file->path;
@@ -94,24 +92,24 @@ final class NewsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(NewsModel $newsModel) : ?string
+    private function extractTwitterCreator(NewsModel $newsModel, PageModel $referencePage) : ?string
     {
-        return $newsModel->hofff_st_twitter_creator ?: null;
+        if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_creator) {
+            return $newsModel->hofff_st_twitter_creator;
+        }
+
+        return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
     /**
      * @param string|resource $strImage
      */
-    private function extractOpenGraphImageData(NewsModel $newsModel) : OpenGraphImageData
+    private function extractOpenGraphImageData(NewsModel $newsModel, PageModel $referencePage) : OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
-        if (!$newsModel->hofff_st) {
-            return $imageData;
-        }
+        $file      = $this->getImage('hofff_st_og_image', $newsModel, $referencePage);
 
-        $file = FilesModel::findByUuid($newsModel->hofff_st_og_image);
-
-        if ($file && is_file(TL_ROOT . '/' . $file->path)) {
+        if ($file && is_file($this->projectDir . '/' . $file->path)) {
             $objImage = new File($file->path);
             $imageData->setURL($this->getBaseUrl() . $file->path);
             $imageData->setMIMEType($objImage->mime);
@@ -213,5 +211,26 @@ final class NewsExtractor extends AbstractExtractor
         }
         
         return null;
+    }
+
+    /**
+     * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
+     */
+    private function getImage(string $key, NewsModel $newsModel, PageModel $referencePage): ?FilesModel
+    {
+        $image = null;
+        if ($newsModel->hofff_st && $newsModel->{$key}) {
+            $image = $newsModel->{$key};
+        } elseif ($newsModel->addImage && $newsModel->singleSRC) {
+            $image = $newsModel->singleSRC;
+        } elseif ($referencePage->{$key}) {
+            $image = $referencePage->{$key};
+        } else {
+            return null;
+        }
+
+        return $this->framework
+            ->getAdapter(FilesModel::class)
+            ->findByUuid($image);
     }
 }

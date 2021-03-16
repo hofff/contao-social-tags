@@ -162,10 +162,6 @@ final class CalendarEventsExtractor implements Extractor
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_url);
         }
 
-        if ($calendarEventsModel->id === $GLOBALS['objPage']->id) {
-            return $this->getBaseUrl() . $this->getRequestUri();
-        }
-
         $eventUrl = Events::generateEventUrl($calendarEventsModel, true);
 
         // Prepend scheme and host if URL is not absolute

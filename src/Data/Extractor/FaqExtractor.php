@@ -167,10 +167,6 @@ final class FaqExtractor implements Extractor
             return $this->replaceInsertTags($faqModel->hofff_st_og_url);
         }
 
-        if ($faqModel->id === $GLOBALS['objPage']->id) {
-            return $this->getBaseUrl() . $this->getRequestUri();
-        }
-
         return self::generateFaqUrl($faqModel, true);
     }
 

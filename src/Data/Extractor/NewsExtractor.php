@@ -157,10 +157,6 @@ final class NewsExtractor implements Extractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_url);
         }
 
-        if ($newsModel->id === $GLOBALS['objPage']->id) {
-            return $this->getBaseUrl() . $this->getRequestUri();
-        }
-
         $newsUrl = News::generateNewsUrl($newsModel, false, true);
 
         // Prepend scheme and host if URL is not absolute

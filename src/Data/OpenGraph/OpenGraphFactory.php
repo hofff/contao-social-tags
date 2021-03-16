@@ -19,7 +19,7 @@ final class OpenGraphFactory implements DataFactory
         $this->extractor = $extractor;
     }
 
-    public function generate(Model $referencePage, ?Model $currentPage = null) : Data
+    public function generate(Model $referencePage, ?Model $currentPage = null): Data
     {
         $basicData = new OpenGraphBasicData();
 

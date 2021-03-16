@@ -8,7 +8,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 final class FaqDcaListener
 {
-    public function initializePalette() : void
+    public function initializePalette(): void
     {
         PaletteManipulator::create()
             ->addLegend('hofff_st_legend', 'answer_legend')

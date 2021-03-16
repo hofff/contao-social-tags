@@ -34,7 +34,7 @@ abstract class CardData extends AbstractData
         $this->image       = $image;
     }
 
-    public function getProtocol() : Protocol
+    public function getProtocol(): Protocol
     {
         $protocol = new Protocol();
         $protocol->append($this->getCardTypeData());
@@ -46,15 +46,15 @@ abstract class CardData extends AbstractData
         return $protocol;
     }
 
-    private function getCardTypeData() : Protocol
+    private function getCardTypeData(): Protocol
     {
         $protocol = new Protocol();
-        $protocol->add(new Property(null, 'card', static::TYPE, 'twitter'));
+        $protocol->add(new Property(null, 'card', self::TYPE, 'twitter'));
 
         return $protocol;
     }
 
-    private function getSiteData() : Protocol
+    private function getSiteData(): Protocol
     {
         $protocol = new Protocol();
 
@@ -65,35 +65,26 @@ abstract class CardData extends AbstractData
         return $protocol;
     }
 
-    private function getImageData() : Protocol
+    private function getImageData(): Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'image', $this->image, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'image', $this->image, 'twitter'));
 
         return $protocol;
     }
 
-    private function getTitleData() : Protocol
+    private function getTitleData(): Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'title', $this->title, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'title', $this->title, 'twitter'));
 
         return $protocol;
     }
 
-    private function getDescriptionData() : Protocol
+    private function getDescriptionData(): Protocol
     {
         $protocol = new Protocol();
-
-        if ($this->site) {
-            $protocol->add(new Property(null, 'description', $this->description, 'twitter'));
-        }
+        $protocol->add(new Property(null, 'description', $this->description, 'twitter'));
 
         return $protocol;
     }

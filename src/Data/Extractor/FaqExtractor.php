@@ -5,53 +5,36 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
 use Contao\Config;
-use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\FaqCategoryModel;
 use Contao\FaqModel;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\PageModel;
-use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
-use Symfony\Component\HttpFoundation\RequestStack;
+
+use function assert;
 use function explode;
 use function is_file;
 use function method_exists;
 use function strip_tags;
 use function ucfirst;
 
-final class FaqExtractor implements Extractor
+/**
+ * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
+final class FaqExtractor extends AbstractExtractor
 {
-    /** @var ContaoFrameworkInterface */
-    private $framework;
-
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var string */
-    private $projectDir;
-
-    public function __construct(ContaoFrameworkInterface $framework, RequestStack $requestStack, string $projectDir)
-    {
-        $this->framework    = $framework;
-        $this->projectDir   = $projectDir;
-        $this->requestStack = $requestStack;
-    }
-
-    public function supports(Model $reference, ?Model $fallback = null) : bool
+    public function supports(Model $reference, ?Model $fallback = null): bool
     {
         if (! $reference instanceof FaqModel) {
             return false;
         }
 
-        if (! $fallback instanceof PageModel) {
-            return false;
-        }
-
-        return true;
+        return $fallback instanceof PageModel;
     }
 
     /** @return mixed */
@@ -66,7 +49,7 @@ final class FaqExtractor implements Extractor
         return null;
     }
 
-    private function extractTwitterTitle(FaqModel $faqModel) : ?string
+    private function extractTwitterTitle(FaqModel $faqModel): ?string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_title)) {
             return $this->replaceInsertTags($faqModel->hofff_st_twitter_title);
@@ -80,16 +63,16 @@ final class FaqExtractor implements Extractor
         return null;
     }
 
-    private function extractTwitterSite(FaqModel $faqModel) : ?string
+    private function extractTwitterSite(FaqModel $faqModel, PageModel $referencePage): ?string
     {
-        if (!$faqModel->hofff_st) {
-            return null;
+        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_site) {
+            return $faqModel->hofff_st_twitter_site;
         }
 
-        return $faqModel->hofff_st_twitter_site ?: null;
+        return $referencePage->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(FaqModel $faqModel) : ?string
+    private function extractTwitterDescription(FaqModel $faqModel): ?string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_twitter_description);
@@ -98,9 +81,9 @@ final class FaqExtractor implements Extractor
         return null;
     }
 
-    private function extractTwitterImage(FaqModel $faqModel) : ?string
+    private function extractTwitterImage(FaqModel $faqModel): ?string
     {
-        if (!$faqModel->hofff_st) {
+        if (! $faqModel->hofff_st) {
             return null;
         }
 
@@ -115,22 +98,22 @@ final class FaqExtractor implements Extractor
         return null;
     }
 
-    private function extractTwitterCreator(FaqModel $faqModel) : ?string
+    private function extractTwitterCreator(FaqModel $faqModel, PageModel $referencePage): ?string
     {
-        if (!$faqModel->hofff_st) {
-            return null;
+        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_creator) {
+            return $faqModel->hofff_st_twitter_creator;
         }
 
-        return $faqModel->hofff_st_twitter_creator ?: null;
+        return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
     /**
      * @param string|resource $strImage
      */
-    private function extractOpenGraphImageData(FaqModel $faqModel) : OpenGraphImageData
+    private function extractOpenGraphImageData(FaqModel $faqModel): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
-        if (!$faqModel->hofff_st) {
+        if (! $faqModel->hofff_st) {
             return $imageData;
         }
 
@@ -147,7 +130,7 @@ final class FaqExtractor implements Extractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(FaqModel $faqModel) : ?string
+    private function extractOpenGraphTitle(FaqModel $faqModel): ?string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_title)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_title);
@@ -161,20 +144,16 @@ final class FaqExtractor implements Extractor
         return '';
     }
 
-    private function extractOpenGraphUrl(FaqModel $faqModel) : ?string
+    private function extractOpenGraphUrl(FaqModel $faqModel): ?string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_url);
         }
 
-        if ($faqModel->id === $GLOBALS['objPage']->id) {
-            return $this->getBaseUrl() . $this->getRequestUri();
-        }
-
         return self::generateFaqUrl($faqModel, true);
     }
 
-    private function extractOpenGraphDescription(FaqModel $faqModel) : ?string
+    private function extractOpenGraphDescription(FaqModel $faqModel): ?string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_description);
@@ -183,7 +162,7 @@ final class FaqExtractor implements Extractor
         return null;
     }
 
-    private function extractOpenGraphSiteName(FaqModel $faqModel, PageModel $fallback) : string
+    private function extractOpenGraphSiteName(FaqModel $faqModel, PageModel $fallback): string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_site)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_site);
@@ -192,7 +171,7 @@ final class FaqExtractor implements Extractor
         return strip_tags($fallback->rootTitle);
     }
 
-    private function extractOpenGraphType(FaqModel $faqModel) : OpenGraphType
+    private function extractOpenGraphType(FaqModel $faqModel): OpenGraphType
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
             [$namespace, $type] = explode(' ', $faqModel->hofff_st_og_type, 2);
@@ -207,49 +186,11 @@ final class FaqExtractor implements Extractor
         return new OpenGraphType('website');
     }
 
-    private function replaceInsertTags(string $content) : string
+    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false): ?string
     {
-        $controller = $this->framework->getAdapter(Controller::class);
-
-        $content = $controller->__call('replaceInsertTags', [$content, false]);
-        $content = $controller->__call('replaceInsertTags', [$content, true]);
-
-        return $content;
-    }
-
-    private function getBaseUrl() : string
-    {
-        static $baseUrl;
-
-        if ($baseUrl !== null) {
-            return $baseUrl;
-        }
-
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '';
-        }
-
-        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/';
-
-        return $baseUrl;
-    }
-
-    private function getRequestUri() : string
-    {
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '';
-        }
-
-        return $request->getRequestUri();
-    }
-
-    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false) : ?string
-    {
-        /** @var FaqCategoryModel $faqCategory */
         $faqCategory = $faqModel->getRelated('pid');
-        $jumpTo      = (int) $faqCategory->jumpTo;
+        assert($faqCategory instanceof FaqCategoryModel);
+        $jumpTo = (int) $faqCategory->jumpTo;
 
         if ($jumpTo < 1) {
             return null;
@@ -264,5 +205,26 @@ final class FaqExtractor implements Extractor
         $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($faqModel->alias ?: $faqModel->id);
 
         return ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
+    }
+
+    /**
+     * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
+     */
+    private function getImage(string $key, FaqModel $faqModel, PageModel $referencePage): ?FilesModel
+    {
+        $image = null;
+        if ($faqModel->hofff_st && $faqModel->{$key}) {
+            $image = $faqModel->{$key};
+        } elseif ($faqModel->addImage && $faqModel->singleSRC) {
+            $image = $faqModel->singleSRC;
+        } elseif ($referencePage->{$key}) {
+            $image = $referencePage->{$key};
+        } else {
+            return null;
+        }
+
+        return $this->framework
+            ->getAdapter(FilesModel::class)
+            ->findByUuid($image);
     }
 }

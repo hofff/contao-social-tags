@@ -20,13 +20,18 @@ final class TwitterCardsFactory implements DataFactory
         $this->extractor = $extractor;
     }
 
-    public function generate(Model $reference, ?Model $fallback = null) : Data
+    public function generate(Model $reference, ?Model $fallback = null): Data
     {
         if (! $this->extractor->supports($reference, $fallback)) {
             return new Protocol();
         }
 
-        switch ($reference->hofff_st_twitter_type) {
+        $type = $fallback->hofff_st_twitter_type ?? null;
+        if ($reference->hofff_st && $reference->hofff_st_twitter_type) {
+            $type = $reference->hofff_st_twitter_type;
+        }
+
+        switch ($type) {
             case 'hofff_st_twitter_summary':
                 return new SummaryCardData(
                     $this->extractor->extract('twitter', 'title', $reference, $fallback),

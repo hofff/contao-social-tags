@@ -18,7 +18,7 @@ final class CompositeExtractor implements Extractor
         $this->extractors = $extractors;
     }
 
-    public function supports(Model $reference, ?Model $fallback = null) : bool
+    public function supports(Model $reference, ?Model $fallback = null): bool
     {
         foreach ($this->extractors as $extractor) {
             if ($extractor->supports($reference, $fallback)) {

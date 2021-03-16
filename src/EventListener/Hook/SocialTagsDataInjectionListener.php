@@ -8,7 +8,8 @@ use Hofff\Contao\SocialTags\Data\Data;
 
 final class SocialTagsDataInjectionListener extends SocialTagsDataAwareListener
 {
-    public function onGeneratePage() : void
+    /** @SuppressWarnings(PHPMD.Superglobals) */
+    public function onGeneratePage(): void
     {
         $socialTagsData = $this->getSocialTagsData();
         if (! $socialTagsData instanceof Data) {

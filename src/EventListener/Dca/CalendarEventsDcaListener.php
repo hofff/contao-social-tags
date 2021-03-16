@@ -8,7 +8,7 @@ use Contao\CoreBundle\DataContainer\PaletteManipulator;
 
 final class CalendarEventsDcaListener
 {
-    public function initializePalette() : void
+    public function initializePalette(): void
     {
         PaletteManipulator::create()
             ->addLegend('hofff_st_legend', 'details_legend', PaletteManipulator::POSITION_AFTER)

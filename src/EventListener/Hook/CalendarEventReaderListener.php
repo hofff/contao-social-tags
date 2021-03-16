@@ -38,7 +38,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         $this->framework    = $framework;
     }
 
-    public function onGetContentElement(Model $model, string $result) : string
+    public function onGetContentElement(Model $model, string $result): string
     {
         if ($model->type !== 'module') {
             return $result;
@@ -52,7 +52,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $this->onGetFrontendModule($module, $result);
     }
 
-    public function onGetFrontendModule(ModuleModel $model, string $result) : string
+    public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request || ! $this->scopeMatcher->isFrontendRequest($request)) {
@@ -73,16 +73,12 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $result;
     }
 
-    private function supports(ModuleModel $model) : bool
+    private function supports(ModuleModel $model): bool
     {
-        if ($model->type === 'eventreader') {
-            return true;
-        }
-
-        return false;
+        return $model->type === 'eventreader';
     }
 
-    private function getEventModel(ModuleModel $model) : ?CalendarEventsModel
+    private function getEventModel(ModuleModel $model): ?CalendarEventsModel
     {
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('events'),
@@ -92,7 +88,8 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
 
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
-        if ($model->type === 'eventlist'
+        if (
+            $model->type === 'eventlist'
             && $model->cal_readerModule > 0
             && $this->framework->getAdapter(Input::class)->get('events')
         ) {

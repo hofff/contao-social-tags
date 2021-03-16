@@ -26,7 +26,7 @@ final class SummaryWithLargeImageCardData extends CardData
         $this->creator = $creator;
     }
 
-    public function getProtocol() : Protocol
+    public function getProtocol(): Protocol
     {
         $protocol = parent::getProtocol();
         $protocol->append($this->getCreatorData());
@@ -34,7 +34,7 @@ final class SummaryWithLargeImageCardData extends CardData
         return $protocol;
     }
 
-    private function getCreatorData() : Protocol
+    private function getCreatorData(): Protocol
     {
         $protocol = new Protocol();
 

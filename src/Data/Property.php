@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
+use Contao\StringUtil;
+
 use function sprintf;
 
 class Property
@@ -32,12 +34,12 @@ class Property
         $this->setPrefix($prefix);
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->getMetaTag();
     }
 
-    public function getMetaTag() : string
+    public function getMetaTag(): string
     {
         if (! $this->isValid()) {
             return '';
@@ -46,56 +48,56 @@ class Property
         if ($this->namespace && $this->prefix) {
             return sprintf(
                 '<meta%s property="%s" content="%s">',
-                sprintf(' prefix="%s"', specialchars($this->getNamespaceDeclaration())),
-                specialchars($this->getPrefixedName()),
-                specialchars($this->content)
+                sprintf(' prefix="%s"', StringUtil::specialchars($this->getNamespaceDeclaration())),
+                StringUtil::specialchars($this->getPrefixedName()),
+                StringUtil::specialchars($this->content)
             );
         }
 
         return sprintf(
             '<meta property="%s" content="%s">',
-            specialchars($this->getPrefixedName()),
-            specialchars($this->content)
+            StringUtil::specialchars($this->getPrefixedName()),
+            StringUtil::specialchars($this->content)
         );
     }
 
-    protected function getNamespaceDeclaration() : string
+    protected function getNamespaceDeclaration(): string
     {
         return sprintf('%s: %s', $this->prefix, $this->namespace);
     }
 
-    protected function getPrefixedName() : string
+    protected function getPrefixedName(): string
     {
         return sprintf('%s:%s', $this->prefix, $this->name);
     }
 
-    public function isValid() : bool
+    public function isValid(): bool
     {
         return $this->name && $this->content;
     }
 
-    public function setNamespace(?string $namespace) : self
+    public function setNamespace(?string $namespace): self
     {
         $this->namespace = $namespace;
 
         return $this;
     }
 
-    public function setName(?string $name) : self
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setContent(?string $content) : self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setPrefix(?string $prefix) : self
+    public function setPrefix(?string $prefix): self
     {
         $this->prefix = $prefix ?: 'og';
 

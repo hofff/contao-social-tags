@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
-use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\PageModel;
-use Hofff\Contao\SocialTags\Data\Extractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
-use Symfony\Component\HttpFoundation\RequestStack;
 use function explode;
 use function is_file;
 use function method_exists;
@@ -24,24 +20,8 @@ use function substr;
 use function trim;
 use function ucfirst;
 
-final class PageExtractor implements Extractor
+final class PageExtractor extends AbstractExtractor
 {
-    /** @var ContaoFrameworkInterface */
-    private $framework;
-
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var string */
-    private $projectDir;
-
-    public function __construct(ContaoFrameworkInterface $framework, RequestStack $requestStack, string $projectDir)
-    {
-        $this->framework    = $framework;
-        $this->projectDir   = $projectDir;
-        $this->requestStack = $requestStack;
-    }
-
     public function supports(Model $reference, ?Model $fallback = null) : bool
     {
         if (! $reference instanceof PageModel) {
@@ -199,43 +179,5 @@ final class PageExtractor implements Extractor
         }
 
         return new OpenGraphType('website');
-    }
-
-    private function replaceInsertTags(string $content) : string
-    {
-        $controller = $this->framework->getAdapter(Controller::class);
-
-        $content = $controller->__call('replaceInsertTags', [$content, false]);
-        $content = $controller->__call('replaceInsertTags', [$content, true]);
-
-        return $content;
-    }
-
-    private function getBaseUrl() : string
-    {
-        static $baseUrl;
-
-        if ($baseUrl !== null) {
-            return $baseUrl;
-        }
-
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '';
-        }
-
-        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/';
-
-        return $baseUrl;
-    }
-
-    private function getRequestUri() : string
-    {
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '/';
-        }
-
-        return $request->getRequestUri();
     }
 }

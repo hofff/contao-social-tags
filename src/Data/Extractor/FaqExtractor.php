@@ -23,24 +23,8 @@ use function method_exists;
 use function strip_tags;
 use function ucfirst;
 
-final class FaqExtractor implements Extractor
+final class FaqExtractor extends AbstractExtractor
 {
-    /** @var ContaoFrameworkInterface */
-    private $framework;
-
-    /** @var RequestStack */
-    private $requestStack;
-
-    /** @var string */
-    private $projectDir;
-
-    public function __construct(ContaoFrameworkInterface $framework, RequestStack $requestStack, string $projectDir)
-    {
-        $this->framework    = $framework;
-        $this->projectDir   = $projectDir;
-        $this->requestStack = $requestStack;
-    }
-
     public function supports(Model $reference, ?Model $fallback = null) : bool
     {
         if (! $reference instanceof FaqModel) {
@@ -201,44 +185,6 @@ final class FaqExtractor implements Extractor
         }
 
         return new OpenGraphType('website');
-    }
-
-    private function replaceInsertTags(string $content) : string
-    {
-        $controller = $this->framework->getAdapter(Controller::class);
-
-        $content = $controller->__call('replaceInsertTags', [$content, false]);
-        $content = $controller->__call('replaceInsertTags', [$content, true]);
-
-        return $content;
-    }
-
-    private function getBaseUrl() : string
-    {
-        static $baseUrl;
-
-        if ($baseUrl !== null) {
-            return $baseUrl;
-        }
-
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '';
-        }
-
-        $baseUrl = $request->getSchemeAndHttpHost() . $request->getBasePath() . '/';
-
-        return $baseUrl;
-    }
-
-    private function getRequestUri() : string
-    {
-        $request = $this->requestStack->getMasterRequest();
-        if (! $request) {
-            return '';
-        }
-
-        return $request->getRequestUri();
     }
 
     private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false) : ?string

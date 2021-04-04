@@ -6,6 +6,7 @@ namespace Hofff\Contao\SocialTags\EventListener\Dca;
 
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
+use function array_pad;
 use function explode;
 use function strpos;
 
@@ -26,7 +27,7 @@ final class OpenGraphTypeOptions
         $options = [];
         foreach ($this->types as $strType) {
             if (strpos($strType, ' ') === false) {
-                [$strGroup, $strName]                                = \array_pad(explode('.', $strType), 2, null);
+                [$strGroup, $strName]                                = array_pad(explode('.', $strType), 2, null);
                 TypeUtil::isStringWithContent($strName) || $strGroup = 'general';
                 $options[$strGroup][]                                = $strType;
             } else {

@@ -73,7 +73,7 @@ final class PageExtractor extends AbstractExtractor
             return $this->replaceInsertTags($referencePage->hofff_st_twitter_description);
         }
 
-        $description = $currentPage->description;
+        $description = $currentPage->description ?? '';
         $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
 
         return $description ?: null;
@@ -152,7 +152,7 @@ final class PageExtractor extends AbstractExtractor
             return $this->replaceInsertTags($referencePage->hofff_st_og_description);
         }
 
-        $description = $currentPage->description;
+        $description = $currentPage->description ?? '';
         $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
 
         return $description ?: null;
@@ -170,7 +170,7 @@ final class PageExtractor extends AbstractExtractor
     private function extractOpenGraphType(PageModel $referencePage): OpenGraphType
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_type)) {
-            [$namespace, $type] = explode(' ', $referencePage->hofff_st_og_type, 2);
+            [$namespace, $type] = array_pad(explode(' ', $referencePage->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);

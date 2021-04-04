@@ -168,7 +168,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
     private function extractOpenGraphType(CalendarEventsModel $calendarEventsModel): OpenGraphType
     {
         if ($calendarEventsModel->hofff_st && TypeUtil::isStringWithContent($calendarEventsModel->hofff_st_og_type)) {
-            [$namespace, $type] = explode(' ', $calendarEventsModel->hofff_st_og_type, 2);
+            [$namespace, $type] = array_pad(explode(' ', $calendarEventsModel->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);
@@ -194,7 +194,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
         }
 
         // Generate the description from the teaser the same way as the event reader does
-        $description = $this->replaceInsertTags($model->teaser, false);
+        $description = $this->replaceInsertTags($model->teaser ?? '', false);
         $description = strip_tags($description);
         $description = str_replace("\n", ' ', $description);
         $description = StringUtil::substr($description, 320);

@@ -26,7 +26,7 @@ final class OpenGraphTypeOptions
         $options = [];
         foreach ($this->types as $strType) {
             if (strpos($strType, ' ') === false) {
-                [$strGroup, $strName]                                = array_pad(explode('.', $strType), 2, null);
+                [$strGroup, $strName]                                = \array_pad(explode('.', $strType), 2, null);
                 TypeUtil::isStringWithContent($strName) || $strGroup = 'general';
                 $options[$strGroup][]                                = $strType;
             } else {

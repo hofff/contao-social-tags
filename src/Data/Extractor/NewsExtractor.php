@@ -163,7 +163,7 @@ final class NewsExtractor extends AbstractExtractor
     private function extractOpenGraphType(NewsModel $newsModel): OpenGraphType
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_type)) {
-            [$namespace, $type] = array_pad(explode(' ', $newsModel->hofff_st_og_type, 2), 2, null);
+            [$namespace, $type] = \array_pad(explode(' ', $newsModel->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);

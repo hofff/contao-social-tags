@@ -14,7 +14,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [ 7.3, 7.4 ]
+        include:
+          - php: 7.3
+            output: '-o default'
+          - php: 7.4
+              output: '-o github-action -o default'
 
     steps:
       - uses: actions/checkout@v2
@@ -37,4 +41,4 @@ jobs:
         run: $GITHUB_WORKSPACE/vendor/bin/phpcq install -v --trust-keys
 
       - name: Run tests
-        run: $GITHUB_WORKSPACE/vendor/bin/phpcq run -v -o github-action -o default
+        run: $GITHUB_WORKSPACE/vendor/bin/phpcq run -v ${{ matrix.output }}

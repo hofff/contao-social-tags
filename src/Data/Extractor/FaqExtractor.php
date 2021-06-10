@@ -15,6 +15,7 @@ use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
+use function array_pad;
 use function assert;
 use function explode;
 use function is_file;
@@ -174,7 +175,7 @@ final class FaqExtractor extends AbstractExtractor
     private function extractOpenGraphType(FaqModel $faqModel): OpenGraphType
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
-            [$namespace, $type] = explode(' ', $faqModel->hofff_st_og_type, 2);
+            [$namespace, $type] = array_pad(explode(' ', $faqModel->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);

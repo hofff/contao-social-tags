@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [1.1.1] - 2021-06-10
+
+### Fixed
+
+ - Fix PHP 8 support ([#17](https://github.com/hofff/contao-social-tags/pull/17)) [@rabauss](https://github.com/rabauss)
+
 ## [1.1.0] - 2021-03-14
 
 ### Added
@@ -15,7 +21,7 @@
 ### Changed
 
  - Use reference page for non page content ([#14](https://github.com/hofff/contao-social-tags/pull/14)) [@fritzmg](https://github.com/fritzmg)
- - Do not require twitter site  ([#13](https://github.com/hofff/contao-social-tags/pull/13)) [@fritzmg](https://github.com/fritzmg)
+ - Do not require twitter site ([#13](https://github.com/hofff/contao-social-tags/pull/13)) [@fritzmg](https://github.com/fritzmg)
 
 ### Fixed
 
@@ -49,6 +55,7 @@
  - Fix cross dependencies to the news bundle in the faq and event integration ([#6](https://github.com/hofff/contao-social-tags/pull/6)) thanks to[@fritzmg](https://github.com/fritzmg)
  - Recognize `pageTitle` fields for news and events, fallback to teaser as the description ([#5](https://github.com/hofff/contao-social-tags/pull/5)) thanks to [@fritzmg](https://github.com/fritzmg)
 
+[1.1.1]: https://github.com/hofff/contao-social-tags/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/hofff/contao-social-tags/compare/1.0.6...1.1.0
 [1.0.6]: https://github.com/hofff/contao-social-tags/compare/1.0.5...1.0.6
 [1.0.5]: https://github.com/hofff/contao-social-tags/compare/1.0.4...1.0.5

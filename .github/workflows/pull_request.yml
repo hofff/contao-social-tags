@@ -18,7 +18,7 @@ jobs:
           - php: 7.3
             output: '-o default'
           - php: 7.4
-              output: '-o github-action -o default'
+            output: '-o github-action -o default'
 
     steps:
       - uses: actions/checkout@v2

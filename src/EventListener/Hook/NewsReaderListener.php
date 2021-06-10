@@ -42,8 +42,12 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         $this->framework    = $framework;
     }
 
-    public function onGetContentElement(Model $model, string $result): string
+    public function onGetContentElement(Model $model, ?string $result): string
     {
+        if (null === $result) {
+            $result = "";
+        }
+
         if ($model->type !== 'module') {
             return $result;
         }

@@ -7,6 +7,7 @@ namespace Hofff\Contao\SocialTags\Data;
 use Contao\StringUtil;
 
 use function sprintf;
+use function strip_tags;
 
 class Property
 {

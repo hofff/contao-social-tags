@@ -7,6 +7,7 @@ namespace Hofff\Contao\SocialTags\Data;
 use Contao\StringUtil;
 
 use function sprintf;
+use function strip_tags;
 
 class Property
 {
@@ -50,14 +51,14 @@ class Property
                 '<meta%s property="%s" content="%s">',
                 sprintf(' prefix="%s"', StringUtil::specialchars($this->getNamespaceDeclaration())),
                 StringUtil::specialchars($this->getPrefixedName()),
-                StringUtil::specialchars($this->content)
+                StringUtil::specialchars(strip_tags($this->content))
             );
         }
 
         return sprintf(
             '<meta property="%s" content="%s">',
             StringUtil::specialchars($this->getPrefixedName()),
-            StringUtil::specialchars($this->content)
+            StringUtil::specialchars(strip_tags($this->content))
         );
     }
 

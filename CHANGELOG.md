@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## [1.1.2] - 2021-08-21
+
+### Fixed
+
+ - Strip meta tags for tags ([#21](https://github.com/hofff/contao-social-tags/pull/21)) [@fritzmg](https://github.com/fritzmg)
+
 ## [1.1.1] - 2021-06-10
 
 ### Fixed

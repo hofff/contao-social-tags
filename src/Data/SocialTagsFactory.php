@@ -109,9 +109,9 @@ final class SocialTagsFactory
             ->setParameter('trailSet', $trailSet)
             ->setParameter('modes', $modes, Connection::PARAM_STR_ARRAY)
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
 
-        $pageId = $statement->fetch(PDO::FETCH_COLUMN);
+        $pageId = $statement->fetchOne();
 
         return $this->framework->getAdapter(PageModel::class)->findByPK($pageId);
     }

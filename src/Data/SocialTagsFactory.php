@@ -108,7 +108,7 @@ final class SocialTagsFactory
             ->setParameter('trailSet', $trailSet)
             ->setParameter('modes', $modes, Connection::PARAM_STR_ARRAY)
             ->setMaxResults(1)
-            ->executeQuery();
+            ->execute();
 
         $pageId = $statement->fetchOne();
 

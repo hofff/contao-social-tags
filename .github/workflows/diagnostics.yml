@@ -61,16 +61,10 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: Install phpcq toolchain
-        run: $GITHUB_WORKSPACE/phpcq ${{ matrix.phpcq_install }} -v
+        run: $GITHUB_WORKSPACE/vendor/bin/phpcq ${{ matrix.phpcq_install }} -v
 
       - name: Run tests
-        run: $GITHUB_WORKSPACE/phpcq run -o github-action -o default
-
-      - name: Compile .phar file
-        run: $GITHUB_WORKSPACE/phpcq run build -v
-
-      - name: Run .phar file
-        run: $GITHUB_WORKSPACE/phpcq.phar -v
+        run: $GITHUB_WORKSPACE/vendor/bin/phpcq run -o github-action -o default
 
       - name: Upload build directory to artifact
         uses: actions/upload-artifact@v2

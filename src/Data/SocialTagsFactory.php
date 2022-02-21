@@ -8,7 +8,6 @@ use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\Model;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 use function array_slice;
 use function implode;
@@ -111,7 +110,7 @@ final class SocialTagsFactory
             ->setMaxResults(1)
             ->execute();
 
-        $pageId = $statement->fetch(PDO::FETCH_COLUMN);
+        $pageId = $statement->fetchOne();
 
         return $this->framework->getAdapter(PageModel::class)->findByPK($pageId);
     }

@@ -8,7 +8,6 @@ use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
 use Contao\Model;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
-use PDO;
 
 use function array_slice;
 use function implode;

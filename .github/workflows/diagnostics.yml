@@ -1,8 +1,5 @@
 name: Code Quality Diagnostics
 
-env:
-  PHPCQ_DIRECTORY: ./phpcq-runner
-
 on:
   pull_request:
   push:

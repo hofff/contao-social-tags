@@ -1,7 +1,8 @@
 {
   "name": "hofff/contao-social-tags",
-  "type": "contao-bundle",
   "description": "Define OpenGraph/twitter cards meta data in Contao",
+  "license": "LGPL-3.0-or-later",
+  "type": "contao-bundle",
   "keywords": [
     "facebook",
     "share",
@@ -14,7 +15,6 @@
     "meta data",
     "contao"
   ],
-  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Nicky Hoff",
@@ -29,6 +29,11 @@
       "role": "Developer"
     }
   ],
+  "support": {
+    "issues": "https://github.com/hofff/contao-social-tags/issues",
+    "irc": "irc://irc.freenode.org/contao.dev",
+    "source": "https://github.com/hofff/contao-social-tags"
+  },
   "require": {
     "php": "^7.1 || ^8.0",
     "ext-pdo": "*",
@@ -47,21 +52,22 @@
     "doctrine/coding-standard": "^8.0",
     "phpcq/runner-bootstrap": "^1.0@dev"
   },
+  "autoload": {
+    "psr-4": {
+      "Hofff\\Contao\\SocialTags\\": "src/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "contao-components/installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
   "extra": {
     "branch-alias": {
       "dev-develop": "1.2.x-dev",
       "dev-master": "1.1.x-dev"
     },
     "contao-manager-plugin": "Hofff\\Contao\\SocialTags\\ContaoManager\\Plugin"
-  },
-  "autoload": {
-    "psr-4": {
-      "Hofff\\Contao\\SocialTags\\": "src/"
-    }
-  },
-  "support": {
-    "issues": "https://github.com/hofff/contao-social-tags/issues",
-    "irc": "irc://irc.freenode.org/contao.dev",
-    "source": "https://github.com/hofff/contao-social-tags"
   }
 }

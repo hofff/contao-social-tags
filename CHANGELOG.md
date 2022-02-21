@@ -2,17 +2,26 @@
 
 ## Unreleased
 
+## [1.1.3] - 2022-02-21
+
+### Changed
+
+ - Allow `doctrine/dbal ^3.0` for Contao 4.13 compatibility
+
+
 ## [1.1.2] - 2021-08-21
 
 ### Fixed
 
  - Strip meta tags for tags ([#21](https://github.com/hofff/contao-social-tags/pull/21)) [@fritzmg](https://github.com/fritzmg)
 
+
 ## [1.1.1] - 2021-06-10
 
 ### Fixed
 
  - Fix PHP 8 support ([#17](https://github.com/hofff/contao-social-tags/pull/17)) [@rabauss](https://github.com/rabauss)
+
 
 ## [1.1.0] - 2021-03-14
 
@@ -35,12 +44,14 @@
  - Fix broken url for news, events, faqs having the same id like the current page
  - Correctly detect if twitter cards are enabled
 
+
 ## [1.0.6] - 2020-09-11
 
 ### Fixed
 
  - Recognize `hofff_st` checkbox before evaluating field content for news, events and calendars
  - Use `article` as default `og:type` for news, events and calendars
+
 
 ## [1.0.5] - 2020-09-11
 
@@ -61,6 +72,8 @@
  - Fix cross dependencies to the news bundle in the faq and event integration ([#6](https://github.com/hofff/contao-social-tags/pull/6)) thanks to[@fritzmg](https://github.com/fritzmg)
  - Recognize `pageTitle` fields for news and events, fallback to teaser as the description ([#5](https://github.com/hofff/contao-social-tags/pull/5)) thanks to [@fritzmg](https://github.com/fritzmg)
 
+[1.1.3]: https://github.com/hofff/contao-social-tags/compare/1.1.2...1.1.3
+[1.1.2]: https://github.com/hofff/contao-social-tags/compare/1.1.1...1.1.2
 [1.1.1]: https://github.com/hofff/contao-social-tags/compare/1.1.0...1.1.1
 [1.1.0]: https://github.com/hofff/contao-social-tags/compare/1.0.6...1.1.0
 [1.0.6]: https://github.com/hofff/contao-social-tags/compare/1.0.5...1.0.6

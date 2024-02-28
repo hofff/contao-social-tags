@@ -12,15 +12,11 @@ use function sprintf;
 
 class OpenGraphType extends Property
 {
-    private string|null $type;
-
-    private string|null $typeNamespace;
-
-    private string|null $typePrefix;
+    private string|null $typePrefix = null;
 
     public function __construct(
-        string|null $type = null,
-        string|null $typeNamespace = null,
+        private string|null $type = null,
+        private string|null $typeNamespace = null,
         string|null $typePrefix = null,
     ) {
         parent::__construct();
@@ -29,16 +25,17 @@ class OpenGraphType extends Property
 
         parent::setName('type');
 
-        $this->setType($type);
-        $this->setTypeNamespace($typeNamespace);
         $this->setTypePrefix($typePrefix);
     }
 
     public function getMetaTag(): string
     {
-        $prefix            = $this->getTypeNamespaceDeclaration();
-        $prefix && $prefix = ' ' . $prefix;
-        $prefix            = sprintf(
+        $prefix = $this->getTypeNamespaceDeclaration();
+        if ($prefix !== '') {
+            $prefix = ' ' . $prefix;
+        }
+
+        $prefix = sprintf(
             ' prefix="%s%s"',
             StringUtil::specialchars($this->getNamespaceDeclaration()),
             StringUtil::specialchars($prefix),
@@ -48,7 +45,7 @@ class OpenGraphType extends Property
             '<meta%s property="%s" content="%s" />',
             $prefix,
             StringUtil::specialchars($this->getPrefixedName()),
-            StringUtil::specialchars($this->getContent()),
+            StringUtil::specialchars((string) $this->getContent()),
         );
     }
 
@@ -61,8 +58,8 @@ class OpenGraphType extends Property
 
     protected function getTypeNamespaceDeclaration(): string
     {
-        return $this->typeNamespace
-            ? sprintf('%s: %s', $this->typePrefix, $this->typeNamespace)
+        return $this->typeNamespace !== null
+            ? sprintf('%s: %s', (string) $this->typePrefix, $this->typeNamespace)
             : '';
     }
 
@@ -75,7 +72,7 @@ class OpenGraphType extends Property
 
     public function setTypePrefix(string|null $typePrefix): self
     {
-        $this->typePrefix = $typePrefix ?: 't';
+        $this->typePrefix = $typePrefix ?? 't';
 
         return $this;
     }
@@ -102,8 +99,8 @@ class OpenGraphType extends Property
 
     protected function getContent(): string|null
     {
-        return $this->typeNamespace
-            ? sprintf('%s:%s', $this->typePrefix, $this->type)
+        return $this->typeNamespace !== null
+            ? sprintf('%s:%s', (string) $this->typePrefix, (string) $this->type)
             : $this->type;
     }
 }

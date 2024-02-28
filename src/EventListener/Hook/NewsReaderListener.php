@@ -41,7 +41,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
 
     public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request || ! $this->scopeMatcher->isFrontendRequest($request)) {
             return $result;
         }
@@ -75,6 +75,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
 
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         if (
             ($model->type === 'newsarchive' || $model->type === 'newslist')
             && $model->news_readerModule > 0

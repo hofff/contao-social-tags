@@ -8,5 +8,5 @@ use Contao\Model;
 
 interface DataFactory
 {
-    public function generate(Model $reference, Model|null $currentPage = null): Data;
+    public function generate(Model $reference, Model|null $fallback = null): Data;
 }

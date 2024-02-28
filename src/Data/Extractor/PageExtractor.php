@@ -45,7 +45,7 @@ final class PageExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterTitle(PageModel $referencePage, PageModel $currentPage): string|null
+    private function extractTwitterTitle(PageModel $referencePage, PageModel $currentPage): string
     {
         $title = $referencePage->hofff_st_twitter_title;
         if (TypeUtil::isStringWithContent($title)) {

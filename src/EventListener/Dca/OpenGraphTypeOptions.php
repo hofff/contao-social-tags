@@ -8,7 +8,7 @@ use Hofff\Contao\SocialTags\Util\TypeUtil;
 
 use function array_pad;
 use function explode;
-use function strpos;
+use function str_contains;
 
 final class OpenGraphTypeOptions
 {
@@ -17,21 +17,30 @@ final class OpenGraphTypeOptions
     {
     }
 
-    /** @return string[] */
+    /** @return array<string, list<string>> */
     public function __invoke(): array
     {
         $options = [];
-        foreach ($this->types as $strType) {
-            if (strpos($strType, ' ') === false) {
-                [$strGroup, $strName]                                = array_pad(explode('.', $strType), 2, null);
-                TypeUtil::isStringWithContent($strName) || $strGroup = 'general';
-                $options[$strGroup][]                                = $strType;
+        $custom  = [];
+
+        foreach ($this->types as $type) {
+            if (! str_contains($type, ' ')) {
+                /** @psalm-var string $group */
+                [$group, $name] = array_pad(explode('.', $type), 2, null);
+
+                if (! TypeUtil::isStringWithContent($name)) {
+                    $group = 'general';
+                }
+
+                $options[$group][] = $type;
             } else {
-                $custom[] = $strType;
+                $custom[] = $type;
             }
         }
 
-        isset($custom) && $custom && $options['custom'] = $custom;
+        if ($custom !== []) {
+            $options['custom'] = $custom;
+        }
 
         return $options;
     }

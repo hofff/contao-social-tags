@@ -45,6 +45,7 @@ class Protocol extends AbstractData
 
     public function append(Data $data): void
     {
+        /** @psalm-var Property $property */
         foreach ($data as $property) {
             $this->add(clone $property);
         }
@@ -65,7 +66,7 @@ class Protocol extends AbstractData
         return $this;
     }
 
-    /** @return Property[] */
+    /** {@inheritDoc} */
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->properties);

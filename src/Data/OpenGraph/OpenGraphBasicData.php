@@ -12,19 +12,15 @@ class OpenGraphBasicData extends AbstractData
 {
     protected string|null $siteName = null;
 
-    protected string|OpenGraphType|null $type = null;
-
     protected string|null $description = null;
 
     public function __construct(
         protected string|null $title = null,
-        OpenGraphType|null $type = null,
+        protected OpenGraphType|null $type = null,
         protected OpenGraphImageData|null $image = null,
         protected string|null $url = null,
     ) {
         parent::__construct();
-
-        $this->type = $type;
     }
 
     public function setTitle(string $title): self
@@ -42,7 +38,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->title) {
+        if ($this->title !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'title', $this->title));
         }
 
@@ -60,7 +56,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->type) {
+        if ($this->type !== null) {
             $protocol->add($this->type);
         }
 
@@ -106,7 +102,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->url) {
+        if ($this->url !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'url', $this->url));
         }
 
@@ -124,7 +120,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'description', $this->description));
         }
 
@@ -151,7 +147,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->siteName) {
+        if ($this->siteName !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'site_name', $this->siteName));
         }
 
@@ -160,19 +156,19 @@ class OpenGraphBasicData extends AbstractData
 
     public function isValid(): bool
     {
-        if (! $this->title) {
+        if ($this->title === null) {
             return false;
         }
 
-        if (! $this->type) {
+        if ($this->type === null) {
             return false;
         }
 
-        if (! $this->image) {
+        if ($this->image === null) {
             return false;
         }
 
-        if (! $this->url) {
+        if ($this->url === null) {
             return false;
         }
 

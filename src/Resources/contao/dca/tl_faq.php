@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+use Contao\Controller;
 use Hofff\Contao\SocialTags\EventListener\Dca\FaqDcaListener;
 use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 
-$this->loadLanguageFile('hofff_st');
+Controller::loadLanguageFile('hofff_st');
 
 // Config
 $GLOBALS['TL_DCA']['tl_faq']['config']['onload_callback'][] = [FaqDcaListener::class, 'initializePalette'];

@@ -10,6 +10,8 @@ use Hofff\Contao\SocialTags\Data\Protocol;
 
 abstract class CardData extends AbstractData
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment
+    /** @var string|null */
     protected const TYPE = null;
 
     public function __construct(
@@ -45,7 +47,7 @@ abstract class CardData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->site) {
+        if ($this->site !== null) {
             $protocol->add(new Property(null, 'site', $this->site, 'twitter'));
         }
 

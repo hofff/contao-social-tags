@@ -27,6 +27,9 @@ phpcq:
     composer-normalize:
       version: ^1.0
       signed: false
+    psalm:
+      version: ^1.0
+      signed: false
   trusted-keys:
     # sb@sebastian-bergmann.de
     - 4AA394086372C20A
@@ -59,6 +62,7 @@ tasks:
     - phpcpd
     - phpmd
     - phpcs
+    - psalm
 
   default:
     - verify
@@ -102,5 +106,14 @@ tasks:
       <<: *phpcs-config
       fix: true
 
+  composer-normalize:
+    config: &composer-normalize-config
+      ignore_output:
+        - '#> pre-command-run: Contao\\ManagerPlugin\\Composer\\ArtifactsPlugin->preCommandRun#'
+        - '#Root package is not of type "project" or "contao-theme", we will not be installing Contao extensions.#'
 
-
+  composer-normalize-fix:
+    plugin: composer-normalize
+    config:
+      <<: *composer-normalize-config
+      dry_run: false

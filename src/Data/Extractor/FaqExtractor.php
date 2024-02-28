@@ -17,7 +17,6 @@ use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
 use function array_pad;
-use function assert;
 use function explode;
 use function is_file;
 use function method_exists;
@@ -129,7 +128,7 @@ final class FaqExtractor extends AbstractExtractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(FaqModel $faqModel): string|null
+    private function extractOpenGraphTitle(FaqModel $faqModel): string
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_title)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_title);
@@ -187,8 +186,9 @@ final class FaqExtractor extends AbstractExtractor
 
     private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false): string|null
     {
+        /** @psalm-var FaqCategoryModel $faqCategory */
         $faqCategory = $faqModel->getRelated('pid');
-        assert($faqCategory instanceof FaqCategoryModel);
+        /** @psalm-suppress RedundantCastGivenDocblockType */
         $jumpTo = (int) $faqCategory->jumpTo;
 
         if ($jumpTo < 1) {

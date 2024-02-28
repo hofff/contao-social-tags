@@ -15,7 +15,7 @@ abstract class SocialTagsDataAwareListener
 
     protected function getSocialTagsData(): Data|null
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             return null;
         }
@@ -34,7 +34,7 @@ abstract class SocialTagsDataAwareListener
 
     protected function setSocialTagsData(Data $openGraphData): void
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             // Silently break. Shouldn't be the case for a regular call
             return;

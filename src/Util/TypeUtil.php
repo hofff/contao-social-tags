@@ -8,6 +8,7 @@ use function is_string;
 
 final class TypeUtil
 {
+    /** @psalm-assert-if-true string $value */
     public static function isStringWithContent(mixed $value): bool
     {
         if (! is_string($value)) {

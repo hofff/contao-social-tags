@@ -75,7 +75,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($eventModel->hofff_st_twitter_description);
         }
 
-        return $this->getEventDescription($eventModel) ?: null;
+        return $this->getEventDescription($eventModel) ?? null;
     }
 
     private function extractTwitterImage(
@@ -125,7 +125,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_title);
         }
 
-        return $this->getEventTitle($calendarEventsModel) ?: null;
+        return $this->getEventTitle($calendarEventsModel) ?? null;
     }
 
     private function extractOpenGraphUrl(CalendarEventsModel $calendarEventsModel): string
@@ -153,7 +153,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_description);
         }
 
-        return $this->getEventDescription($calendarEventsModel) ?: null;
+        return $this->getEventDescription($calendarEventsModel) ?? null;
     }
 
     private function extractOpenGraphSiteName(CalendarEventsModel $calendarEventsModel, PageModel $fallback): string
@@ -194,12 +194,11 @@ final class CalendarEventsExtractor extends AbstractExtractor
         }
 
         // Generate the description from the teaser the same way as the event reader does
-        $description = $this->replaceInsertTags($model->teaser ?? '', false);
+        $description = $this->replaceInsertTags($model->teaser);
         $description = strip_tags($description);
         $description = str_replace("\n", ' ', $description);
-        $description = StringUtil::substr($description, 320);
 
-        return $description;
+        return StringUtil::substr($description, 320);
     }
 
     /**

@@ -27,7 +27,7 @@ abstract class AbstractExtractor implements Extractor
             return $baseUrl;
         }
 
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             return '';
         }
@@ -39,7 +39,7 @@ abstract class AbstractExtractor implements Extractor
 
     protected function getRequestUri(): string
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             return '/';
         }

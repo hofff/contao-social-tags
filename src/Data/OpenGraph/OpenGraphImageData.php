@@ -8,7 +8,7 @@ use Hofff\Contao\SocialTags\Data\AbstractData;
 use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 
-use function strpos;
+use function str_starts_with;
 
 class OpenGraphImageData extends AbstractData
 {
@@ -40,7 +40,7 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->url) {
+        if ($this->url !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'image', $this->url));
         }
 
@@ -58,7 +58,7 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->secure) {
+        if ($this->secure !== null) {
             $protocol->add(
                 new Property(Protocol::NS_OG, 'image:secure_url', $this->secure),
             );
@@ -69,7 +69,7 @@ class OpenGraphImageData extends AbstractData
 
     public function setMIMEType(string|null $mime): self
     {
-        if ($mime === null || strpos($mime, 'image/') !== 0) {
+        if ($mime === null || ! str_starts_with($mime, 'image/')) {
             $this->mime = null;
 
             return $this;
@@ -84,7 +84,7 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->mime) {
+        if ($this->mime !== null) {
             $protocol->add(
                 new Property(Protocol::NS_OG, 'image:type', $this->mime),
             );
@@ -104,7 +104,7 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->width) {
+        if ($this->width !== null) {
             $protocol->add(
                 new Property(Protocol::NS_OG, 'image:width', (string) $this->width),
             );
@@ -124,7 +124,7 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->height) {
+        if ($this->height !== null) {
             $protocol->add(
                 new Property(Protocol::NS_OG, 'image:height', (string) $this->height),
             );

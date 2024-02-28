@@ -33,7 +33,7 @@ final class SummaryWithLargeImageCardData extends CardData
     {
         $protocol = new Protocol();
 
-        if ($this->creator) {
+        if ($this->creator !== null) {
             $protocol->add(new Property(null, 'creator', $this->creator, 'twitter'));
         }
 

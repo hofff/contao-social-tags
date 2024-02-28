@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use Contao\Controller;
 use Hofff\Contao\SocialTags\EventListener\Dca\CalendarEventsDcaListener;
 use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 
-$this->loadLanguageFile('hofff_st');
+Controller::loadLanguageFile('hofff_st');
+
 
 // Config
 $GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = [

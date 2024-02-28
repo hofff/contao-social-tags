@@ -7,6 +7,7 @@ namespace Hofff\Contao\SocialTags\Data;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Model;
 use Contao\PageModel;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 use function array_slice;
@@ -63,10 +64,13 @@ final class SocialTagsFactory
         return $protocol;
     }
 
-    /** @SuppressWarnings(PHPMD.Superglobals) */
+    /**
+     * @psalm-suppress InvalidReturnType
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
     private function getOriginPage(int $pageId): PageModel|null
     {
-        if ($pageId === $GLOBALS['objPage']->id) {
+        if ($pageId === (int) $GLOBALS['objPage']->id) {
             return $GLOBALS['objPage'];
         }
 
@@ -76,6 +80,10 @@ final class SocialTagsFactory
     /**
      * @param string[] $pageTrail
      * @param string[] $modes
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress PossiblyFalseArgument
      */
     private function loadReferencePage(array $pageTrail, array $modes): PageModel|null
     {
@@ -93,11 +101,11 @@ final class SocialTagsFactory
                             AND	   p2.hofff_st = \'hofff_st_parent\'
                         ))')
             ->orderBy('FIND_IN_SET(p.id, :trailSet)')
-            ->setParameter('trail', $pageTrail, Connection::PARAM_STR_ARRAY)
+            ->setParameter('trail', $pageTrail, ArrayParameterType::STRING)
             ->setParameter('trailSet', $trailSet)
-            ->setParameter('modes', $modes, Connection::PARAM_STR_ARRAY)
+            ->setParameter('modes', $modes, ArrayParameterType::STRING)
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
 
         $pageId = $statement->fetchOne();
 

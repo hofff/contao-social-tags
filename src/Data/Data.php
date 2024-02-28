@@ -7,6 +7,7 @@ namespace Hofff\Contao\SocialTags\Data;
 use Countable;
 use IteratorAggregate;
 
+/** @extends IteratorAggregate<Property> */
 interface Data extends IteratorAggregate, Countable
 {
     public function __toString(): string;

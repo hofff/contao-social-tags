@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+use Contao\Controller;
 use Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener;
 use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 
-$this->loadLanguageFile('hofff_st');
+Controller::loadLanguageFile('hofff_st');
 
 // Config
 $GLOBALS['TL_DCA']['tl_news']['config']['onload_callback'][] = [NewsDcaListener::class, 'initializePalette'];

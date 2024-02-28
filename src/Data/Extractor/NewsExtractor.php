@@ -75,7 +75,7 @@ final class NewsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_description);
         }
 
-        return $this->getNewsDescription($newsModel) ?: null;
+        return $this->getNewsDescription($newsModel) ?? null;
     }
 
     private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage): string|null
@@ -121,7 +121,7 @@ final class NewsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_title);
         }
 
-        return $this->getNewsTitle($newsModel) ?: null;
+        return $this->getNewsTitle($newsModel) ?? null;
     }
 
     private function extractOpenGraphUrl(NewsModel $newsModel): string
@@ -146,7 +146,7 @@ final class NewsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_description);
         }
 
-        return $this->getNewsDescription($newsModel) ?: null;
+        return $this->getNewsDescription($newsModel) ?? null;
     }
 
     private function extractOpenGraphSiteName(NewsModel $newsModel, PageModel $fallback): string
@@ -187,12 +187,11 @@ final class NewsExtractor extends AbstractExtractor
         }
 
         // Generate the description from the teaser the same way as the news reader does
-        $description = $this->replaceInsertTags($model->teaser ?? '', false);
+        $description = $this->replaceInsertTags($model->teaser);
         $description = strip_tags($description);
         $description = str_replace("\n", ' ', $description);
-        $description = StringUtil::substr($description, 320);
 
-        return $description;
+        return StringUtil::substr($description, 320);
     }
 
     /** Returns the meta title if present, otherwise the headline. */

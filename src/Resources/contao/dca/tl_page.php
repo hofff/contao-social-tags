@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+use Contao\Controller;
 use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 use Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener;
 
-$this->loadLanguageFile('hofff_st');
+Controller::loadLanguageFile('hofff_st');
 
 $GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_og_facebookLint'] = [
     'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'],

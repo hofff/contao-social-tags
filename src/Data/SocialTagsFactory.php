@@ -14,21 +14,12 @@ use function implode;
 
 final class SocialTagsFactory
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var ContaoFramework */
-    private $framework;
-
-    /** @var DataFactory[] */
-    private $dataFactories;
-
     /** @param DataFactory[] $dataFactories */
-    public function __construct(Connection $connection, ContaoFramework $framework, iterable $dataFactories)
-    {
-        $this->connection    = $connection;
-        $this->framework     = $framework;
-        $this->dataFactories = $dataFactories;
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly ContaoFramework $framework,
+        private readonly iterable $dataFactories,
+    ) {
     }
 
     public function generateByPageId(int $pageId): Protocol

@@ -9,13 +9,9 @@ use Hofff\Contao\SocialTags\Data\Extractor;
 
 final class CompositeExtractor implements Extractor
 {
-    /** @var Extractor[] */
-    private $extractors;
-
     /** @param Extractor[] $extractors */
-    public function __construct(iterable $extractors)
+    public function __construct(private readonly iterable $extractors)
     {
-        $this->extractors = $extractors;
     }
 
     public function supports(Model $reference, Model|null $fallback = null): bool

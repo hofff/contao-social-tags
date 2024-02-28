@@ -12,20 +12,15 @@ use function strpos;
 
 class OpenGraphImageData extends AbstractData
 {
-    /** @var string|null */
-    protected $url;
+    protected string|null $url;
 
-    /** @var string|null */
-    protected $mime;
+    protected string|null $mime = null;
 
-    /** @var int|null */
-    protected $height;
+    protected int|null $height = null;
 
-    /** @var int|null */
-    protected $width;
+    protected int|null $width = null;
 
-    /** @var string|null */
-    protected $secure;
+    protected string|null $secure = null;
 
     public function __construct(string|null $url = null)
     {

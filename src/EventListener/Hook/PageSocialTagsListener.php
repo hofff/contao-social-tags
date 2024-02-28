@@ -10,14 +10,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class PageSocialTagsListener extends SocialTagsDataAwareListener
 {
-    /** @var SocialTagsFactory */
-    private $factory;
-
-    public function __construct(RequestStack $requestStack, SocialTagsFactory $factory)
+    public function __construct(RequestStack $requestStack, private readonly SocialTagsFactory $factory)
     {
         parent::__construct($requestStack);
-
-        $this->factory = $factory;
     }
 
     public function onGeneratePage(PageModel $page): void

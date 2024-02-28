@@ -12,13 +12,9 @@ use function strpos;
 
 final class OpenGraphTypeOptions
 {
-    /** @var string[] */
-    private $types;
-
     /** @param string[] $types */
-    public function __construct(array $types)
+    public function __construct(private readonly array $types)
     {
-        $this->types = $types;
     }
 
     /** @return string[] */

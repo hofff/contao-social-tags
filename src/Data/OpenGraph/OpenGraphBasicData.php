@@ -10,36 +10,21 @@ use Hofff\Contao\SocialTags\Data\Protocol;
 
 class OpenGraphBasicData extends AbstractData
 {
-    /** @var string|null */
-    protected $siteName;
+    protected string|null $siteName = null;
 
-    /** @var string|null */
-    protected $title;
+    protected string|OpenGraphType|null $type = null;
 
-    /** @var string|null */
-    protected $url;
-
-    /** @var OpenGraphImageData|null */
-    protected $image;
-
-    /** @var string|null */
-    protected $type;
-
-    /** @var string|null */
-    protected $description;
+    protected string|null $description = null;
 
     public function __construct(
-        string|null $title = null,
+        protected string|null $title = null,
         OpenGraphType|null $type = null,
-        OpenGraphImageData|null $image = null,
-        string|null $url = null,
+        protected OpenGraphImageData|null $image = null,
+        protected string|null $url = null,
     ) {
         parent::__construct();
 
-        $this->title = $title;
-        $this->type  = $type;
-        $this->image = $image;
-        $this->url   = $url;
+        $this->type = $type;
     }
 
     public function setTitle(string $title): self

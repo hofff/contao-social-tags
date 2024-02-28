@@ -16,12 +16,8 @@ final class FacebookLintAction
 {
     private const FACEBOOK_LINT_URL = 'https://developers.facebook.com/tools/debug/?q=';
 
-    /** @var ContaoFramework */
-    private $framework;
-
-    public function __construct(ContaoFramework $framework)
+    public function __construct(private ContaoFramework $framework)
     {
-        $this->framework = $framework;
     }
 
     public function __invoke(int $pageId): Response

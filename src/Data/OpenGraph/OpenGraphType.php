@@ -12,14 +12,11 @@ use function sprintf;
 
 class OpenGraphType extends Property
 {
-    /** @var string|null */
-    private $type;
+    private string|null $type;
 
-    /** @var string|null */
-    private $typeNamespace;
+    private string|null $typeNamespace;
 
-    /** @var string|null */
-    private $typePrefix;
+    private string|null $typePrefix;
 
     public function __construct(
         string|null $type = null,

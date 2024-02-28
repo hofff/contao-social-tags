@@ -12,12 +12,8 @@ use Hofff\Contao\SocialTags\Data\Protocol;
 
 final class TwitterCardsFactory implements DataFactory
 {
-    /** @var Extractor */
-    private $extractor;
-
-    public function __construct(Extractor $extractor)
+    public function __construct(private readonly Extractor $extractor)
     {
-        $this->extractor = $extractor;
     }
 
     public function generate(Model $reference, Model|null $fallback = null): Data

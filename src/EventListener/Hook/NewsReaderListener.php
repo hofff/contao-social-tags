@@ -16,26 +16,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class NewsReaderListener extends SocialTagsDataAwareListener
 {
-    /** @var SocialTagsFactory */
-    private $factory;
-
-    /** @var ScopeMatcher */
-    private $scopeMatcher;
-
-    /** @var ContaoFramework */
-    private $framework;
-
     public function __construct(
         RequestStack $requestStack,
-        SocialTagsFactory $factory,
-        ScopeMatcher $scopeMatcher,
-        ContaoFramework $framework,
+        private readonly SocialTagsFactory $factory,
+        private readonly ScopeMatcher $scopeMatcher,
+        private readonly ContaoFramework $framework,
     ) {
         parent::__construct($requestStack);
-
-        $this->factory      = $factory;
-        $this->scopeMatcher = $scopeMatcher;
-        $this->framework    = $framework;
     }
 
     public function onGetContentElement(Model $model, string $result): string

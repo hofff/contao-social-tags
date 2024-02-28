@@ -12,20 +12,11 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class AbstractExtractor implements Extractor
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    /** @var ContaoFramework */
-    protected $framework;
-
-    /** @var string */
-    protected $projectDir;
-
-    public function __construct(ContaoFramework $framework, RequestStack $requestStack, string $projectDir)
-    {
-        $this->framework    = $framework;
-        $this->projectDir   = $projectDir;
-        $this->requestStack = $requestStack;
+    public function __construct(
+        protected ContaoFramework $framework,
+        protected RequestStack $requestStack,
+        protected string $projectDir,
+    ) {
     }
 
     protected function getBaseUrl(): string

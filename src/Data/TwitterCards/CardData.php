@@ -12,30 +12,13 @@ abstract class CardData extends AbstractData
 {
     protected const TYPE = null;
 
-    /** @var string */
-    private $title;
-
-    /** @var string|null */
-    private $site;
-
-    /** @var string|null */
-    private $description;
-
-    /** @var string|null */
-    private $image;
-
     public function __construct(
-        string $title,
-        string|null $site = null,
-        string|null $description = null,
-        string|null $image = null,
+        private readonly string $title,
+        private readonly string|null $site = null,
+        private readonly string|null $description = null,
+        private readonly string|null $image = null,
     ) {
         parent::__construct();
-
-        $this->title       = $title;
-        $this->site        = $site;
-        $this->description = $description;
-        $this->image       = $image;
     }
 
     public function getProtocol(): Protocol

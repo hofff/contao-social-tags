@@ -11,17 +11,13 @@ use function strip_tags;
 
 class Property
 {
-    /** @var string|null */
-    private $namespace;
+    private string|null $namespace;
 
-    /** @var string|null */
-    private $name;
+    private string|null $name;
 
-    /** @var string|null */
-    private $content;
+    private string|null $content;
 
-    /** @var string|null */
-    private $prefix;
+    private string|null $prefix;
 
     public function __construct(
         string|null $namespace = null,

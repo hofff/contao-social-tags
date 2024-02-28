@@ -12,12 +12,8 @@ use function sprintf;
 
 final class PageDcaListener
 {
-    /** @var RouterInterface */
-    private $router;
-
-    public function __construct(RouterInterface $router)
+    public function __construct(private readonly RouterInterface $router)
     {
-        $this->router = $router;
     }
 
     /**

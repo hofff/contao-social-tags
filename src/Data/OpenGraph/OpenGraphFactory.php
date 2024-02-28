@@ -11,12 +11,8 @@ use Hofff\Contao\SocialTags\Data\Extractor;
 
 final class OpenGraphFactory implements DataFactory
 {
-    /** @var Extractor */
-    private $extractor;
-
-    public function __construct(Extractor $extractor)
+    public function __construct(private readonly Extractor $extractor)
     {
-        $this->extractor = $extractor;
     }
 
     public function generate(Model $referencePage, Model|null $currentPage = null): Data

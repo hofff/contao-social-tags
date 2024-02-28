@@ -35,20 +35,20 @@
     "source": "https://github.com/hofff/contao-social-tags"
   },
   "require": {
-    "php": "^7.1 || ^8.0",
+    "php": "^8.1",
     "ext-pdo": "*",
-    "contao/core-bundle": "^4.4",
-    "doctrine/dbal": "^2.11 || ^3.0",
-    "symfony/config": "^3.4 || ^4.0 || ^5.0",
-    "symfony/dependency-injection": "^3.4 || ^4.0 || ^5.0",
-    "symfony/http-foundation": "^3.4 || ^4.0 || ^5.0",
-    "symfony/http-kernel": "^3.4 || ^4.0 || ^5.0",
-    "symfony/routing": "^3.4 || ^4.0 || ^5.0"
+    "contao/core-bundle": "^4.13 || ^5.3",
+    "doctrine/dbal": "^3.6",
+    "symfony/config": "^5.4 || ^6.4",
+    "symfony/dependency-injection": "^5.4 || ^6.4",
+    "symfony/http-foundation": "^5.4 || ^6.4",
+    "symfony/http-kernel": "^5.4 || ^6.4",
+    "symfony/routing": "^5.4 || ^6.4"
   },
   "require-dev": {
-    "contao/calendar-bundle": "^4.4",
-    "contao/faq-bundle": "^4.4",
-    "contao/news-bundle": "^4.4",
+    "contao/calendar-bundle": "^4.13 || ^5.3",
+    "contao/faq-bundle": "^4.13 || ^5.3",
+    "contao/news-bundle": "^4.13 || ^5.3",
     "doctrine/coding-standard": "^8.0",
     "phpcq/runner-bootstrap": "^1.0@dev"
   },
@@ -60,7 +60,8 @@
   "config": {
     "allow-plugins": {
       "contao-components/installer": true,
-      "dealerdirect/phpcodesniffer-composer-installer": true
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "php-http/discovery": true
     }
   },
   "extra": {

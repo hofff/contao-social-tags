@@ -11,6 +11,7 @@ use Contao\File;
 use Contao\FilesModel;
 use Contao\Model;
 use Contao\PageModel;
+use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
@@ -205,7 +206,7 @@ final class FaqExtractor extends AbstractExtractor
 
         $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($faqModel->alias ?: $faqModel->id);
 
-        return ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
+        return StringUtil::ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
     }
 
     /**

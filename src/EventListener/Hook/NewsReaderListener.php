@@ -14,10 +14,6 @@ use Contao\StringUtil;
 use Hofff\Contao\SocialTags\Data\SocialTagsFactory;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-use function version_compare;
-
-use const VERSION;
-
 final class NewsReaderListener extends SocialTagsDataAwareListener
 {
     /** @var SocialTagsFactory */
@@ -93,7 +89,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
         if (
-            ($model->type === 'newsarchive' || (version_compare(VERSION, '4.7', '>=') && $model->type === 'newslist'))
+            ($model->type === 'newsarchive' || $model->type === 'newslist')
             && $model->news_readerModule > 0
             && $this->framework->getAdapter(Input::class)->get('items')
         ) {

@@ -29,7 +29,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         RequestStack $requestStack,
         SocialTagsFactory $factory,
         ScopeMatcher $scopeMatcher,
-        ContaoFramework $framework
+        ContaoFramework $framework,
     ) {
         parent::__construct($requestStack);
 
@@ -78,11 +78,11 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         return $model->type === 'newsreader';
     }
 
-    private function getNewsModel(ModuleModel $model): ?NewsModel
+    private function getNewsModel(ModuleModel $model): NewsModel|null
     {
         return NewsModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('items'),
-            StringUtil::deserialize($model->news_archives, true)
+            StringUtil::deserialize($model->news_archives, true),
         );
     }
 

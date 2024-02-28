@@ -16,10 +16,10 @@ final class SummaryWithLargeImageCardData extends CardData
 
     public function __construct(
         string $title,
-        ?string $site = null,
-        ?string $description = null,
-        ?string $image = null,
-        ?string $creator = null
+        string|null $site = null,
+        string|null $description = null,
+        string|null $image = null,
+        string|null $creator = null,
     ) {
         parent::__construct($title, $site, $description, $image);
 

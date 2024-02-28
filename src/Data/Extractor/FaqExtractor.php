@@ -30,7 +30,7 @@ use function ucfirst;
  */
 final class FaqExtractor extends AbstractExtractor
 {
-    public function supports(Model $reference, ?Model $fallback = null): bool
+    public function supports(Model $reference, Model|null $fallback = null): bool
     {
         if (! $reference instanceof FaqModel) {
             return false;
@@ -39,8 +39,7 @@ final class FaqExtractor extends AbstractExtractor
         return $fallback instanceof PageModel;
     }
 
-    /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null)
+    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null): mixed
     {
         $methodName = 'extract' . ucfirst($type) . ucfirst($field);
 
@@ -51,7 +50,7 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterTitle(FaqModel $faqModel): ?string
+    private function extractTwitterTitle(FaqModel $faqModel): string|null
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_title)) {
             return $this->replaceInsertTags($faqModel->hofff_st_twitter_title);
@@ -65,7 +64,7 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterSite(FaqModel $faqModel, PageModel $referencePage): ?string
+    private function extractTwitterSite(FaqModel $faqModel, PageModel $referencePage): string|null
     {
         if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_site) {
             return $faqModel->hofff_st_twitter_site;
@@ -74,7 +73,7 @@ final class FaqExtractor extends AbstractExtractor
         return $referencePage->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(FaqModel $faqModel): ?string
+    private function extractTwitterDescription(FaqModel $faqModel): string|null
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_twitter_description);
@@ -83,7 +82,7 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterImage(FaqModel $faqModel): ?string
+    private function extractTwitterImage(FaqModel $faqModel): string|null
     {
         if (! $faqModel->hofff_st) {
             return null;
@@ -100,7 +99,7 @@ final class FaqExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(FaqModel $faqModel, PageModel $referencePage): ?string
+    private function extractTwitterCreator(FaqModel $faqModel, PageModel $referencePage): string|null
     {
         if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_creator) {
             return $faqModel->hofff_st_twitter_creator;
@@ -109,9 +108,7 @@ final class FaqExtractor extends AbstractExtractor
         return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
-    /**
-     * @param string|resource $strImage
-     */
+    /** @param string|resource $strImage */
     private function extractOpenGraphImageData(FaqModel $faqModel): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
@@ -132,7 +129,7 @@ final class FaqExtractor extends AbstractExtractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(FaqModel $faqModel): ?string
+    private function extractOpenGraphTitle(FaqModel $faqModel): string|null
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_title)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_title);
@@ -146,7 +143,7 @@ final class FaqExtractor extends AbstractExtractor
         return '';
     }
 
-    private function extractOpenGraphUrl(FaqModel $faqModel): ?string
+    private function extractOpenGraphUrl(FaqModel $faqModel): string|null
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_url);
@@ -155,7 +152,7 @@ final class FaqExtractor extends AbstractExtractor
         return self::generateFaqUrl($faqModel, true);
     }
 
-    private function extractOpenGraphDescription(FaqModel $faqModel): ?string
+    private function extractOpenGraphDescription(FaqModel $faqModel): string|null
     {
         if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_description)) {
             return $this->replaceInsertTags($faqModel->hofff_st_og_description);
@@ -188,7 +185,7 @@ final class FaqExtractor extends AbstractExtractor
         return new OpenGraphType('website');
     }
 
-    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false): ?string
+    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false): string|null
     {
         $faqCategory = $faqModel->getRelated('pid');
         assert($faqCategory instanceof FaqCategoryModel);
@@ -212,9 +209,8 @@ final class FaqExtractor extends AbstractExtractor
     /**
      * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
      */
-    private function getImage(string $key, FaqModel $faqModel, PageModel $referencePage): ?FilesModel
+    private function getImage(string $key, FaqModel $faqModel, PageModel $referencePage): FilesModel|null
     {
-        $image = null;
         if ($faqModel->hofff_st && $faqModel->{$key}) {
             $image = $faqModel->{$key};
         } elseif ($faqModel->addImage && $faqModel->singleSRC) {

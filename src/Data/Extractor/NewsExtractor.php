@@ -31,7 +31,7 @@ use function ucfirst;
  */
 final class NewsExtractor extends AbstractExtractor
 {
-    public function supports(Model $reference, ?Model $fallback = null): bool
+    public function supports(Model $reference, Model|null $fallback = null): bool
     {
         if (! $reference instanceof NewsModel) {
             return false;
@@ -40,8 +40,7 @@ final class NewsExtractor extends AbstractExtractor
         return $fallback instanceof PageModel;
     }
 
-    /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null)
+    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null): mixed
     {
         $methodName = 'extract' . ucfirst($type) . ucfirst($field);
 
@@ -52,7 +51,7 @@ final class NewsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterTitle(NewsModel $newsModel): ?string
+    private function extractTwitterTitle(NewsModel $newsModel): string|null
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_twitter_title)) {
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_title);
@@ -61,7 +60,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsTitle($newsModel);
     }
 
-    private function extractTwitterSite(NewsModel $newsModel, PageModel $referencePage): ?string
+    private function extractTwitterSite(NewsModel $newsModel, PageModel $referencePage): string|null
     {
         if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_site) {
             return $newsModel->hofff_st_twitter_site;
@@ -70,7 +69,7 @@ final class NewsExtractor extends AbstractExtractor
         return $referencePage->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(NewsModel $newsModel): ?string
+    private function extractTwitterDescription(NewsModel $newsModel): string|null
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($newsModel->hofff_st_twitter_description);
@@ -79,7 +78,7 @@ final class NewsExtractor extends AbstractExtractor
         return $this->getNewsDescription($newsModel) ?: null;
     }
 
-    private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage): ?string
+    private function extractTwitterImage(NewsModel $newsModel, PageModel $referencePage): string|null
     {
         $file = $this->getImage('hofff_st_twitter_image', $newsModel, $referencePage);
 
@@ -90,7 +89,7 @@ final class NewsExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(NewsModel $newsModel, PageModel $referencePage): ?string
+    private function extractTwitterCreator(NewsModel $newsModel, PageModel $referencePage): string|null
     {
         if ($newsModel->hofff_st && $newsModel->hofff_st_twitter_creator) {
             return $newsModel->hofff_st_twitter_creator;
@@ -99,9 +98,7 @@ final class NewsExtractor extends AbstractExtractor
         return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
-    /**
-     * @param string|resource $strImage
-     */
+    /** @param string|resource $strImage */
     private function extractOpenGraphImageData(NewsModel $newsModel, PageModel $referencePage): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
@@ -118,7 +115,7 @@ final class NewsExtractor extends AbstractExtractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(NewsModel $newsModel): ?string
+    private function extractOpenGraphTitle(NewsModel $newsModel): string|null
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_title)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_title);
@@ -143,7 +140,7 @@ final class NewsExtractor extends AbstractExtractor
         return $newsUrl;
     }
 
-    private function extractOpenGraphDescription(NewsModel $newsModel): ?string
+    private function extractOpenGraphDescription(NewsModel $newsModel): string|null
     {
         if ($newsModel->hofff_st && TypeUtil::isStringWithContent($newsModel->hofff_st_og_description)) {
             return $this->replaceInsertTags($newsModel->hofff_st_og_description);
@@ -179,7 +176,7 @@ final class NewsExtractor extends AbstractExtractor
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */
-    private function getNewsDescription(NewsModel $model): ?string
+    private function getNewsDescription(NewsModel $model): string|null
     {
         if (TypeUtil::isStringWithContent($model->description)) {
             return $this->replaceInsertTags(trim(str_replace(["\n", "\r"], [' ', ''], $model->description)));
@@ -198,10 +195,8 @@ final class NewsExtractor extends AbstractExtractor
         return $description;
     }
 
-    /**
-     * Returns the meta title if present, otherwise the headline.
-     */
-    private function getNewsTitle(NewsModel $model): ?string
+    /** Returns the meta title if present, otherwise the headline. */
+    private function getNewsTitle(NewsModel $model): string|null
     {
         $title = $model->pageTitle ?: $model->headline;
         if (TypeUtil::isStringWithContent($title)) {
@@ -212,11 +207,12 @@ final class NewsExtractor extends AbstractExtractor
     }
 
     /**
-     * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
+     * Retrieves an image from the news for a given key.
+     *
+     * It fallbacks to the news image or page image if not defined.
      */
-    private function getImage(string $key, NewsModel $newsModel, PageModel $referencePage): ?FilesModel
+    private function getImage(string $key, NewsModel $newsModel, PageModel $referencePage): FilesModel|null
     {
-        $image = null;
         if ($newsModel->hofff_st && $newsModel->{$key}) {
             $image = $newsModel->{$key};
         } elseif ($newsModel->addImage && $newsModel->singleSRC) {

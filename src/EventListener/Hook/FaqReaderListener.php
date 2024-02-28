@@ -29,7 +29,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         RequestStack $requestStack,
         SocialTagsFactory $factory,
         ScopeMatcher $scopeMatcher,
-        ContaoFramework $framework
+        ContaoFramework $framework,
     ) {
         parent::__construct($requestStack);
 
@@ -78,11 +78,11 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         return $model->type === 'faqreader';
     }
 
-    private function getFaqModel(ModuleModel $model): ?FaqModel
+    private function getFaqModel(ModuleModel $model): FaqModel|null
     {
         return FaqModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('items'),
-            StringUtil::deserialize($model->faq_categories, true)
+            StringUtil::deserialize($model->faq_categories, true),
         );
     }
 

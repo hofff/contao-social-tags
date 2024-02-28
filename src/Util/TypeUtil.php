@@ -8,8 +8,7 @@ use function is_string;
 
 final class TypeUtil
 {
-    /** @param mixed $value */
-    public static function isStringWithContent($value): bool
+    public static function isStringWithContent(mixed $value): bool
     {
         if (! is_string($value)) {
             return false;

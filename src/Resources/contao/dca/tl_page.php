@@ -25,7 +25,7 @@ foreach ($GLOBALS['TL_DCA']['tl_page']['palettes'] as $strKey => &$strPalette) {
     $strPalette = preg_replace(
         '@(\{meta_legend\}[^;]*;)@',
         '$1{hofff_st_legend},hofff_st;',
-        $strPalette
+        $strPalette,
     );
 }
 

@@ -49,7 +49,7 @@
     "contao/calendar-bundle": "^4.13 || ^5.3",
     "contao/faq-bundle": "^4.13 || ^5.3",
     "contao/news-bundle": "^4.13 || ^5.3",
-    "doctrine/coding-standard": "^8.0",
+    "doctrine/coding-standard": "^12.0",
     "phpcq/runner-bootstrap": "^1.0@dev"
   },
   "autoload": {

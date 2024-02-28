@@ -29,10 +29,10 @@ class OpenGraphBasicData extends AbstractData
     protected $description;
 
     public function __construct(
-        ?string $title = null,
-        ?OpenGraphType $type = null,
-        ?OpenGraphImageData $image = null,
-        ?string $url = null
+        string|null $title = null,
+        OpenGraphType|null $type = null,
+        OpenGraphImageData|null $image = null,
+        string|null $url = null,
     ) {
         parent::__construct();
 
@@ -64,7 +64,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setType(?OpenGraphType $type = null): self
+    public function setType(OpenGraphType|null $type = null): self
     {
         $this->type = $type;
 
@@ -82,7 +82,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setImage(?string $url): self
+    public function setImage(string|null $url): self
     {
         if ($url === null) {
             $this->image = $url;
@@ -105,14 +105,14 @@ class OpenGraphBasicData extends AbstractData
         return $this->image ? $this->image : new OpenGraphImageData();
     }
 
-    public function setURL(?string $url): self
+    public function setURL(string|null $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function getURL(): ?string
+    public function getURL(): string|null
     {
         return $this->url;
     }
@@ -128,7 +128,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string|null $description): self
     {
         $this->description = $description;
 
@@ -146,7 +146,7 @@ class OpenGraphBasicData extends AbstractData
         return $protocol;
     }
 
-    public function setSiteName(?string $site): self
+    public function setSiteName(string|null $site): self
     {
         if ($site !== '') {
             $this->siteName = $site;
@@ -157,7 +157,7 @@ class OpenGraphBasicData extends AbstractData
         return $this;
     }
 
-    public function getSiteName(): ?string
+    public function getSiteName(): string|null
     {
         return $this->siteName;
     }

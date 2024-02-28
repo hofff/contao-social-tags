@@ -20,7 +20,7 @@ final class TwitterCardsFactory implements DataFactory
         $this->extractor = $extractor;
     }
 
-    public function generate(Model $reference, ?Model $fallback = null): Data
+    public function generate(Model $reference, Model|null $fallback = null): Data
     {
         if (! $this->extractor->supports($reference, $fallback)) {
             return new Protocol();
@@ -37,7 +37,7 @@ final class TwitterCardsFactory implements DataFactory
                     $this->extractor->extract('twitter', 'title', $reference, $fallback),
                     $this->extractor->extract('twitter', 'site', $reference, $fallback),
                     $this->extractor->extract('twitter', 'description', $reference, $fallback),
-                    $this->extractor->extract('twitter', 'image', $reference, $fallback)
+                    $this->extractor->extract('twitter', 'image', $reference, $fallback),
                 );
 
             case 'hofff_st_twitter_summary_large_image':
@@ -46,7 +46,7 @@ final class TwitterCardsFactory implements DataFactory
                     $this->extractor->extract('twitter', 'site', $reference, $fallback),
                     $this->extractor->extract('twitter', 'description', $reference, $fallback),
                     $this->extractor->extract('twitter', 'image', $reference, $fallback),
-                    $this->extractor->extract('twitter', 'creator', $reference, $fallback)
+                    $this->extractor->extract('twitter', 'creator', $reference, $fallback),
                 );
 
             default:

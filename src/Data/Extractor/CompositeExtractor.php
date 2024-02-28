@@ -18,7 +18,7 @@ final class CompositeExtractor implements Extractor
         $this->extractors = $extractors;
     }
 
-    public function supports(Model $reference, ?Model $fallback = null): bool
+    public function supports(Model $reference, Model|null $fallback = null): bool
     {
         foreach ($this->extractors as $extractor) {
             if ($extractor->supports($reference, $fallback)) {
@@ -29,8 +29,7 @@ final class CompositeExtractor implements Extractor
         return false;
     }
 
-    /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null)
+    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null): mixed
     {
         foreach ($this->extractors as $extractor) {
             if ($extractor->supports($reference, $fallback)) {

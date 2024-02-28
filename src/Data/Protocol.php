@@ -49,7 +49,7 @@ class Protocol extends AbstractData
         }
     }
 
-    public function get(int $index): ?Property
+    public function get(int $index): Property|null
     {
         return $this->properties[$index] ?? null;
     }

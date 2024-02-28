@@ -24,10 +24,10 @@ class Property
     private $prefix;
 
     public function __construct(
-        ?string $namespace = null,
-        ?string $name = null,
-        ?string $content = null,
-        ?string $prefix = null
+        string|null $namespace = null,
+        string|null $name = null,
+        string|null $content = null,
+        string|null $prefix = null,
     ) {
         $this->setNamespace($namespace);
         $this->setName($name);
@@ -51,14 +51,14 @@ class Property
                 '<meta%s property="%s" content="%s">',
                 sprintf(' prefix="%s"', StringUtil::specialchars($this->getNamespaceDeclaration())),
                 StringUtil::specialchars($this->getPrefixedName()),
-                StringUtil::specialchars(strip_tags($this->content))
+                StringUtil::specialchars(strip_tags($this->content)),
             );
         }
 
         return sprintf(
             '<meta property="%s" content="%s">',
             StringUtil::specialchars($this->getPrefixedName()),
-            StringUtil::specialchars(strip_tags($this->content))
+            StringUtil::specialchars(strip_tags($this->content)),
         );
     }
 
@@ -77,28 +77,28 @@ class Property
         return $this->name && $this->content;
     }
 
-    public function setNamespace(?string $namespace): self
+    public function setNamespace(string|null $namespace): self
     {
         $this->namespace = $namespace;
 
         return $this;
     }
 
-    public function setName(?string $name): self
+    public function setName(string|null $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(string|null $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setPrefix(?string $prefix): self
+    public function setPrefix(string|null $prefix): self
     {
         $this->prefix = $prefix ?: 'og';
 

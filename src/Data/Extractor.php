@@ -8,8 +8,9 @@ use Contao\Model;
 
 interface Extractor
 {
-    public function supports(Model $reference, ?Model $fallback = null): bool;
+    public function supports(Model $reference, Model|null $fallback = null): bool;
 
     /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null);
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null);
 }

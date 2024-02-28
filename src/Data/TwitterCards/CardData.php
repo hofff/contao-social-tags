@@ -24,8 +24,12 @@ abstract class CardData extends AbstractData
     /** @var string|null */
     private $image;
 
-    public function __construct(string $title, ?string $site = null, ?string $description = null, ?string $image = null)
-    {
+    public function __construct(
+        string $title,
+        string|null $site = null,
+        string|null $description = null,
+        string|null $image = null,
+    ) {
         parent::__construct();
 
         $this->title       = $title;

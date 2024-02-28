@@ -27,18 +27,18 @@ final class PageDcaListener
      */
     public function facebookLinkButton(
         array $row,
-        ?string $href,
+        string|null $href,
         string $label,
         string $title,
         string $icon,
-        string $attributes
+        string $attributes,
     ): string {
         return sprintf(
             '<a href="%s" title="%s"%s>%s</a>',
             $this->router->generate('hofff_contao_social_tags_facebook_lint', ['pageId' => $row['id']]),
             StringUtil::specialchars($title),
             $attributes,
-            Image::getHtml($icon, $label)
+            Image::getHtml($icon, $label),
         );
     }
 }

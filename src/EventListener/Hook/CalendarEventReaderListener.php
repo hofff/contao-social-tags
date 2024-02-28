@@ -29,7 +29,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         RequestStack $requestStack,
         SocialTagsFactory $factory,
         ScopeMatcher $scopeMatcher,
-        ContaoFramework $framework
+        ContaoFramework $framework,
     ) {
         parent::__construct($requestStack);
 
@@ -78,11 +78,11 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $model->type === 'eventreader';
     }
 
-    private function getEventModel(ModuleModel $model): ?CalendarEventsModel
+    private function getEventModel(ModuleModel $model): CalendarEventsModel|null
     {
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias(
             $this->framework->getAdapter(Input::class)->get('events'),
-            StringUtil::deserialize($model->cal_calendar, true)
+            StringUtil::deserialize($model->cal_calendar, true),
         );
     }
 

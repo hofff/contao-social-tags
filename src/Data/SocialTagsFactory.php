@@ -23,9 +23,7 @@ final class SocialTagsFactory
     /** @var DataFactory[] */
     private $dataFactories;
 
-    /**
-     * @param DataFactory[] $dataFactories
-     */
+    /** @param DataFactory[] $dataFactories */
     public function __construct(Connection $connection, ContaoFramework $framework, iterable $dataFactories)
     {
         $this->connection    = $connection;
@@ -75,7 +73,7 @@ final class SocialTagsFactory
     }
 
     /** @SuppressWarnings(PHPMD.Superglobals) */
-    private function getOriginPage(int $pageId): ?PageModel
+    private function getOriginPage(int $pageId): PageModel|null
     {
         if ($pageId === $GLOBALS['objPage']->id) {
             return $GLOBALS['objPage'];
@@ -88,7 +86,7 @@ final class SocialTagsFactory
      * @param string[] $pageTrail
      * @param string[] $modes
      */
-    private function loadReferencePage(array $pageTrail, array $modes): ?PageModel
+    private function loadReferencePage(array $pageTrail, array $modes): PageModel|null
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $trailSet     = implode(',', $pageTrail);
@@ -116,7 +114,7 @@ final class SocialTagsFactory
     }
 
     /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
-    private function getReferencePage(PageModel $currentPage): ?PageModel
+    private function getReferencePage(PageModel $currentPage): PageModel|null
     {
         $referencePage = $currentPage;
         $modes         = ['hofff_st_tree'];

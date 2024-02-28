@@ -17,7 +17,7 @@ abstract class SocialTagsDataAwareListener
         $this->requestStack = $requestStack;
     }
 
-    protected function getSocialTagsData(): ?Data
+    protected function getSocialTagsData(): Data|null
     {
         $request = $this->requestStack->getMasterRequest();
         if (! $request) {

@@ -22,12 +22,10 @@ use function substr;
 use function trim;
 use function ucfirst;
 
-/**
- * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
- */
+/** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
 final class PageExtractor extends AbstractExtractor
 {
-    public function supports(Model $reference, ?Model $fallback = null): bool
+    public function supports(Model $reference, Model|null $fallback = null): bool
     {
         if (! $reference instanceof PageModel) {
             return false;
@@ -36,8 +34,7 @@ final class PageExtractor extends AbstractExtractor
         return $fallback instanceof PageModel;
     }
 
-    /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null)
+    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null): mixed
     {
         $methodName = 'extract' . ucfirst($type) . ucfirst($field);
 
@@ -48,7 +45,7 @@ final class PageExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterTitle(PageModel $referencePage, PageModel $currentPage): ?string
+    private function extractTwitterTitle(PageModel $referencePage, PageModel $currentPage): string|null
     {
         $title = $referencePage->hofff_st_twitter_title;
         if (TypeUtil::isStringWithContent($title)) {
@@ -63,12 +60,12 @@ final class PageExtractor extends AbstractExtractor
         return strip_tags($currentPage->title);
     }
 
-    private function extractTwitterSite(PageModel $referencePage): ?string
+    private function extractTwitterSite(PageModel $referencePage): string|null
     {
         return $referencePage->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(PageModel $referencePage, PageModel $currentPage): ?string
+    private function extractTwitterDescription(PageModel $referencePage, PageModel $currentPage): string|null
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_twitter_description)) {
             return $this->replaceInsertTags($referencePage->hofff_st_twitter_description);
@@ -80,7 +77,7 @@ final class PageExtractor extends AbstractExtractor
         return $description ?: null;
     }
 
-    private function extractTwitterImage(PageModel $referencePage): ?string
+    private function extractTwitterImage(PageModel $referencePage): string|null
     {
         $file = $this->framework
             ->getAdapter(FilesModel::class)
@@ -93,14 +90,12 @@ final class PageExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(PageModel $referencePage): ?string
+    private function extractTwitterCreator(PageModel $referencePage): string|null
     {
         return $referencePage->hofff_st_twitter_creator ?: null;
     }
 
-    /**
-     * @param string|resource $strImage
-     */
+    /** @param string|resource $strImage */
     private function extractOpenGraphImageData(PageModel $referencePage): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
@@ -147,7 +142,7 @@ final class PageExtractor extends AbstractExtractor
         return $currentPage->getAbsoluteUrl();
     }
 
-    private function extractOpenGraphDescription(PageModel $referencePage, PageModel $currentPage): ?string
+    private function extractOpenGraphDescription(PageModel $referencePage, PageModel $currentPage): string|null
     {
         if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_description)) {
             return $this->replaceInsertTags($referencePage->hofff_st_og_description);

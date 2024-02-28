@@ -27,13 +27,14 @@ class OpenGraphImageData extends AbstractData
     /** @var string|null */
     protected $secure;
 
-    public function __construct(?string $url = null)
+    public function __construct(string|null $url = null)
     {
         parent::__construct();
+
         $this->setURL($url);
     }
 
-    public function setURL(?string $url): self
+    public function setURL(string|null $url): self
     {
         $this->url = $url;
 
@@ -51,7 +52,7 @@ class OpenGraphImageData extends AbstractData
         return $protocol;
     }
 
-    public function setSecureURL(?string $secure): self
+    public function setSecureURL(string|null $secure): self
     {
         $this->secure = $secure;
 
@@ -64,14 +65,14 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->secure) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:secure_url', $this->secure)
+                new Property(Protocol::NS_OG, 'image:secure_url', $this->secure),
             );
         }
 
         return $protocol;
     }
 
-    public function setMIMEType(?string $mime): self
+    public function setMIMEType(string|null $mime): self
     {
         if ($mime === null || strpos($mime, 'image/') !== 0) {
             $this->mime = null;
@@ -90,14 +91,14 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->mime) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:type', $this->mime)
+                new Property(Protocol::NS_OG, 'image:type', $this->mime),
             );
         }
 
         return $protocol;
     }
 
-    public function setWidth(?int $width): self
+    public function setWidth(int|null $width): self
     {
         $this->width = $width;
 
@@ -110,14 +111,14 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->width) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:width', (string) $this->width)
+                new Property(Protocol::NS_OG, 'image:width', (string) $this->width),
             );
         }
 
         return $protocol;
     }
 
-    public function setHeight(?int $height): self
+    public function setHeight(int|null $height): self
     {
         $this->height = $height;
 
@@ -130,7 +131,7 @@ class OpenGraphImageData extends AbstractData
 
         if ($this->height) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:height', (string) $this->height)
+                new Property(Protocol::NS_OG, 'image:height', (string) $this->height),
             );
         }
 

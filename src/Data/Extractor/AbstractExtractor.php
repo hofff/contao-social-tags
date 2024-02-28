@@ -56,7 +56,7 @@ abstract class AbstractExtractor implements Extractor
         return $request->getRequestUri();
     }
 
-    protected function getFileModel(string $uuid): ?FilesModel
+    protected function getFileModel(string $uuid): FilesModel|null
     {
         return $this->framework
             ->getAdapter(FilesModel::class)

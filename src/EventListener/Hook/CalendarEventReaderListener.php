@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
 use Contao\CalendarEventsModel;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\Input;
 use Contao\Model;
@@ -22,14 +22,14 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
     /** @var ScopeMatcher */
     private $scopeMatcher;
 
-    /** @var ContaoFrameworkInterface */
+    /** @var ContaoFramework */
     private $framework;
 
     public function __construct(
         RequestStack $requestStack,
         SocialTagsFactory $factory,
         ScopeMatcher $scopeMatcher,
-        ContaoFrameworkInterface $framework
+        ContaoFramework $framework
     ) {
         parent::__construct($requestStack);
 

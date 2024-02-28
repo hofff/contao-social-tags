@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\Model;
 use Contao\PageModel;
 use Doctrine\DBAL\Connection;
@@ -17,7 +17,7 @@ final class SocialTagsFactory
     /** @var Connection */
     private $connection;
 
-    /** @var ContaoFrameworkInterface */
+    /** @var ContaoFramework */
     private $framework;
 
     /** @var DataFactory[] */
@@ -26,7 +26,7 @@ final class SocialTagsFactory
     /**
      * @param DataFactory[] $dataFactories
      */
-    public function __construct(Connection $connection, ContaoFrameworkInterface $framework, iterable $dataFactories)
+    public function __construct(Connection $connection, ContaoFramework $framework, iterable $dataFactories)
     {
         $this->connection    = $connection;
         $this->framework     = $framework;

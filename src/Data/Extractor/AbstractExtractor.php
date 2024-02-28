@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
 use Contao\Controller;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\FilesModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -15,13 +15,13 @@ abstract class AbstractExtractor implements Extractor
     /** @var RequestStack */
     protected $requestStack;
 
-    /** @var ContaoFrameworkInterface */
+    /** @var ContaoFramework */
     protected $framework;
 
     /** @var string */
     protected $projectDir;
 
-    public function __construct(ContaoFrameworkInterface $framework, RequestStack $requestStack, string $projectDir)
+    public function __construct(ContaoFramework $framework, RequestStack $requestStack, string $projectDir)
     {
         $this->framework    = $framework;
         $this->projectDir   = $projectDir;

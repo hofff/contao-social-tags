@@ -120,7 +120,7 @@ final class FaqExtractor extends AbstractExtractor
 
         $file = FilesModel::findByUuid($faqModel->hofff_st_og_image);
 
-        if ($file && is_file(TL_ROOT . '/' . $file->path)) {
+        if ($file && is_file($this->projectDir . '/' . $file->path)) {
             $objImage = new File($file->path);
             $imageData->setURL($this->getBaseUrl() . $file->path);
             $imageData->setMIMEType($objImage->mime);

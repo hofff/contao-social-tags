@@ -109,7 +109,7 @@ final class CalendarEventsExtractor extends AbstractExtractor
         $imageData = new OpenGraphImageData();
         $file      = $this->getImage('hofff_st_og_image', $calendarEventsModel, $referencePage);
 
-        if ($file && is_file(TL_ROOT . '/' . $file->path)) {
+        if ($file && is_file($this->projectDir . '/' . $file->path)) {
             $objImage = new File($file->path);
             $imageData->setURL($this->getBaseUrl() . $file->path);
             $imageData->setMIMEType($objImage->mime);

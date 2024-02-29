@@ -136,6 +136,12 @@ final class PageExtractor extends AbstractExtractor
         }
 
         if ($currentPage->id === $GLOBALS['objPage']->id) {
+            $canonical = $this->getCanonicalUrlForRequest();
+
+            if ($referencePage->enableCanonical && $canonical !== null) {
+                return $canonical;
+            }
+
             return $this->getBaseUrl() . substr($this->getRequestUri(), 1);
         }
 

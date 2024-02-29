@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 final class HofffContaoSocialTagsExtension extends Extension
 {
     /**
-     * @param mixed[][] $configs
+     * {@inheritDoc}
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */

@@ -130,6 +130,13 @@ final class NewsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($newsModel->hofff_st_og_url);
         }
 
+        if ($newsModel->canonicalLink) {
+            $canonical = $this->getCanonicalUrlForRequest();
+            if ($canonical !== null) {
+                return $canonical;
+            }
+        }
+
         $newsUrl = News::generateNewsUrl($newsModel, false, true);
 
         // Prepend scheme and host if URL is not absolute

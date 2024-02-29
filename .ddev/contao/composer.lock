@@ -987,16 +987,16 @@
         },
         {
             "name": "contao-components/tinymce4",
-            "version": "6.8.3",
+            "version": "6.8.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/contao-components/tinymce4.git",
-                "reference": "3c0d160bedf1825fdc7a9a04d79008356cdf7a8e"
+                "reference": "5fa80d9154040991850628e2c37a950e5918cd2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/contao-components/tinymce4/zipball/3c0d160bedf1825fdc7a9a04d79008356cdf7a8e",
-                "reference": "3c0d160bedf1825fdc7a9a04d79008356cdf7a8e",
+                "url": "https://api.github.com/repos/contao-components/tinymce4/zipball/5fa80d9154040991850628e2c37a950e5918cd2d",
+                "reference": "5fa80d9154040991850628e2c37a950e5918cd2d",
                 "shasum": ""
             },
             "require": {
@@ -1016,9 +1016,9 @@
             "description": "TinyMCE integration for Contao Open Source CMS",
             "support": {
                 "issues": "https://github.com/contao-components/tinymce4/issues",
-                "source": "https://github.com/contao-components/tinymce4/tree/6.8.3"
+                "source": "https://github.com/contao-components/tinymce4/tree/6.8.3.1"
             },
-            "time": "2024-02-09T09:54:31+00:00"
+            "time": "2024-02-28T14:13:49+00:00"
         },
         {
             "name": "contao-components/tristen-tablesort",
@@ -3690,7 +3690,7 @@
             "dist": {
                 "type": "path",
                 "url": "../..",
-                "reference": "66c0b4ec40ab8300de6d2c82eef8e6f1622d86a3"
+                "reference": "7c85cc85d2cb09cd609e244ca1590cf6cb729127"
             },
             "require": {
                 "contao/core-bundle": "^4.13 || ^5.3",
@@ -3703,11 +3703,15 @@
                 "symfony/http-kernel": "^5.4 || ^6.4",
                 "symfony/routing": "^5.4 || ^6.4"
             },
+            "conflict": {
+                "contao/manager-plugin": "<2.1 || >= 3.0"
+            },
             "require-dev": {
                 "contao/calendar-bundle": "^4.13 || ^5.3",
                 "contao/faq-bundle": "^4.13 || ^5.3",
+                "contao/manager-plugin": "^2.1",
                 "contao/news-bundle": "^4.13 || ^5.3",
-                "doctrine/coding-standard": "^8.0",
+                "doctrine/coding-standard": "^12.0",
                 "phpcq/runner-bootstrap": "^1.0@dev"
             },
             "type": "contao-bundle",

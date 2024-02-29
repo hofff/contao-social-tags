@@ -4,17 +4,22 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
-use Contao\Controller;
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
+use Contao\CoreBundle\Routing\ResponseContext\HtmlHeadBag\HtmlHeadBag;
+use Contao\CoreBundle\Routing\ResponseContext\ResponseContextAccessor;
 use Contao\FilesModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+/** @SuppressWarnings(PHPMD.LongVariable) */
 abstract class AbstractExtractor implements Extractor
 {
     public function __construct(
         protected ContaoFramework $framework,
         protected RequestStack $requestStack,
+        protected ResponseContextAccessor $responseContextAccessor,
+        protected InsertTagParser $insertTagParser,
         protected string $projectDir,
     ) {
     }
@@ -56,11 +61,22 @@ abstract class AbstractExtractor implements Extractor
 
     protected function replaceInsertTags(string $content): string
     {
-        $controller = $this->framework->getAdapter(Controller::class);
+        return $this->insertTagParser->replaceInline($content);
+    }
 
-        $content = $controller->__call('replaceInsertTags', [$content, false]);
-        $content = $controller->__call('replaceInsertTags', [$content, true]);
+    protected function getCanonicalUrlForRequest(): string|null
+    {
+        $responseContext = $this->responseContextAccessor->getResponseContext();
 
-        return $content;
+        if (! $responseContext?->has(HtmlHeadBag::class)) {
+            return null;
+        }
+
+        $request = $this->requestStack->getCurrentRequest();
+        if (! $request) {
+            return null;
+        }
+
+        return $responseContext->get(HtmlHeadBag::class)->getCanonicalUriForRequest($request);
     }
 }

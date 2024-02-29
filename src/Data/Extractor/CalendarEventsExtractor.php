@@ -134,6 +134,13 @@ final class CalendarEventsExtractor extends AbstractExtractor
             return $this->replaceInsertTags($calendarEventsModel->hofff_st_og_url);
         }
 
+        if ($calendarEventsModel->canonicalLink) {
+            $canonical = $this->getCanonicalUrlForRequest();
+            if ($canonical !== null) {
+                return $canonical;
+            }
+        }
+
         $eventUrl = Events::generateEventUrl($calendarEventsModel, true);
 
         // Prepend scheme and host if URL is not absolute

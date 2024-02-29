@@ -19,6 +19,8 @@
         <service id="Hofff\Contao\SocialTags\Data\Extractor\PageExtractor">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="contao.routing.response_context_accessor"/>
+            <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
             <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
@@ -26,6 +28,8 @@
         <service id="Hofff\Contao\SocialTags\Data\Extractor\NewsExtractor">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="contao.routing.response_context_accessor"/>
+            <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
             <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
@@ -33,6 +37,8 @@
         <service id="Hofff\Contao\SocialTags\Data\Extractor\CalendarEventsExtractor">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="contao.routing.response_context_accessor"/>
+            <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
             <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
@@ -40,6 +46,8 @@
         <service id="Hofff\Contao\SocialTags\Data\Extractor\FaqExtractor">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
+            <argument type="service" id="contao.routing.response_context_accessor"/>
+            <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
             <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>

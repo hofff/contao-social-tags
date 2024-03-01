@@ -6,26 +6,30 @@ namespace Hofff\Contao\SocialTags\Data\Extractor;
 
 use Contao\File;
 use Contao\FilesModel;
-use Contao\Model;
 use Contao\PageModel;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractor;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
+use Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractor;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
 use function array_pad;
 use function explode;
 use function is_file;
-use function method_exists;
 use function str_replace;
 use function strip_tags;
 use function substr;
 use function trim;
-use function ucfirst;
 
-/** @SuppressWarnings(PHPMD.UnusedPrivateMethod) */
-final class PageExtractor extends AbstractExtractor
+/**
+ * @implements OpenGraphExtractor<PageModel, PageModel>
+ * @implements TwitterCardsExtractor<PageModel, PageModel>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
+ */
+final class PageExtractor extends AbstractExtractor implements OpenGraphExtractor, TwitterCardsExtractor
 {
-    public function supports(Model $reference, Model|null $fallback = null): bool
+    public function supports(object $reference, object|null $fallback = null): bool
     {
         if (! $reference instanceof PageModel) {
             return false;
@@ -34,54 +38,47 @@ final class PageExtractor extends AbstractExtractor
         return $fallback instanceof PageModel;
     }
 
-    public function extract(string $type, string $field, Model $reference, Model|null $fallback = null): mixed
+    public function extractTwitterTitle(object $reference, object|null $fallback = null): string
     {
-        $methodName = 'extract' . ucfirst($type) . ucfirst($field);
-
-        if ($methodName !== __FUNCTION__ && method_exists($this, $methodName)) {
-            return $this->$methodName($reference, $fallback);
-        }
-
-        return null;
-    }
-
-    private function extractTwitterTitle(PageModel $referencePage, PageModel $currentPage): string
-    {
-        $title = $referencePage->hofff_st_twitter_title;
+        $title = $reference->hofff_st_twitter_title;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        $title = $currentPage->pageTitle;
+        if (! $fallback) {
+            return '';
+        }
+
+        $title = $fallback->pageTitle;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        return strip_tags($currentPage->title);
+        return strip_tags($fallback->title);
     }
 
-    private function extractTwitterSite(PageModel $referencePage): string|null
+    public function extractTwitterSite(object $reference, object|null $fallback = null): string|null
     {
-        return $referencePage->hofff_st_twitter_site ?: null;
+        return $reference->hofff_st_twitter_site ?: null;
     }
 
-    private function extractTwitterDescription(PageModel $referencePage, PageModel $currentPage): string|null
+    public function extractTwitterDescription(object $reference, object|null $fallback = null): string|null
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_twitter_description)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_twitter_description);
+        if (TypeUtil::isStringWithContent($reference->hofff_st_twitter_description)) {
+            return $this->replaceInsertTags($reference->hofff_st_twitter_description);
         }
 
-        $description = $currentPage->description ?? '';
+        $description = $fallback->description ?? '';
         $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
 
         return $description ?: null;
     }
 
-    private function extractTwitterImage(PageModel $referencePage): string|null
+    public function extractTwitterImage(object $reference, object|null $fallback = null): string|null
     {
         $file = $this->framework
             ->getAdapter(FilesModel::class)
-            ->findByUuid($referencePage->hofff_st_twitter_image);
+            ->findByUuid($reference->hofff_st_twitter_image);
 
         if ($file && is_file($this->projectDir . '/' . $file->path)) {
             return $this->getBaseUrl() . $file->path;
@@ -90,17 +87,16 @@ final class PageExtractor extends AbstractExtractor
         return null;
     }
 
-    private function extractTwitterCreator(PageModel $referencePage): string|null
+    public function extractTwitterCreator(object $reference, object|null $fallback = null): string|null
     {
-        return $referencePage->hofff_st_twitter_creator ?: null;
+        return $reference->hofff_st_twitter_creator ?: null;
     }
 
-    /** @param string|resource $strImage */
-    private function extractOpenGraphImageData(PageModel $referencePage): OpenGraphImageData
+    public function extractOpenGraphImageData(object $reference, object|null $fallback = null): OpenGraphImageData
     {
         $imageData = new OpenGraphImageData();
 
-        $file = FilesModel::findByUuid($referencePage->hofff_st_og_image);
+        $file = FilesModel::findByUuid($reference->hofff_st_og_image);
 
         if ($file && is_file($this->projectDir . '/' . $file->path)) {
             $objImage = new File($file->path);
@@ -113,66 +109,70 @@ final class PageExtractor extends AbstractExtractor
         return $imageData;
     }
 
-    private function extractOpenGraphTitle(PageModel $referencePage, PageModel $currentPage): string
+    public function extractOpenGraphTitle(object $reference, object|null $fallback = null): string
     {
-        $title = $referencePage->hofff_st_og_title;
+        $title = $reference->hofff_st_og_title;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        $title = $currentPage->pageTitle;
+        if (! $fallback) {
+            return '';
+        }
+
+        $title = $fallback->pageTitle;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        return strip_tags($currentPage->title);
+        return strip_tags($fallback->title);
     }
 
     /** @SuppressWarnings(PHPMD.Superglobals) */
-    private function extractOpenGraphUrl(PageModel $referencePage, PageModel $currentPage): string
+    public function extractOpenGraphUrl(object $reference, object|null $fallback = null): string
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_url)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_og_url);
+        if (TypeUtil::isStringWithContent($reference->hofff_st_og_url)) {
+            return $this->replaceInsertTags($reference->hofff_st_og_url);
         }
 
-        if ($currentPage->id === $GLOBALS['objPage']->id) {
+        if ($reference->id === $GLOBALS['objPage']->id) {
             $canonical = $this->getCanonicalUrlForRequest();
 
-            if ($referencePage->enableCanonical && $canonical !== null) {
+            if ($reference->enableCanonical && $canonical !== null) {
                 return $canonical;
             }
 
             return $this->getBaseUrl() . substr($this->getRequestUri(), 1);
         }
 
-        return $currentPage->getAbsoluteUrl();
+        return $reference->getAbsoluteUrl();
     }
 
-    private function extractOpenGraphDescription(PageModel $referencePage, PageModel $currentPage): string|null
+    public function extractOpenGraphDescription(object $reference, object|null $fallback = null): string|null
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_description)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_og_description);
+        if (TypeUtil::isStringWithContent($reference->hofff_st_og_description)) {
+            return $this->replaceInsertTags($reference->hofff_st_og_description);
         }
 
-        $description = $currentPage->description ?? '';
+        $description = $fallback->description ?? '';
         $description = trim(str_replace(["\n", "\r"], [' ', ''], $description));
 
         return $description ?: null;
     }
 
-    private function extractOpenGraphSiteName(PageModel $referencePage, PageModel $currentPage): string
+    public function extractOpenGraphSiteName(object $reference, object|null $fallback = null): string
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_site)) {
-            return $this->replaceInsertTags($referencePage->hofff_st_og_site);
+        if (TypeUtil::isStringWithContent($reference->hofff_st_og_site)) {
+            return $this->replaceInsertTags($reference->hofff_st_og_site);
         }
 
-        return strip_tags($currentPage->rootTitle);
+        return strip_tags((string) $fallback?->rootTitle);
     }
 
-    private function extractOpenGraphType(PageModel $referencePage): OpenGraphType
+    public function extractOpenGraphType(object $reference, object|null $fallback = null): OpenGraphType
     {
-        if (TypeUtil::isStringWithContent($referencePage->hofff_st_og_type)) {
-            [$namespace, $type] = array_pad(explode(' ', $referencePage->hofff_st_og_type, 2), 2, null);
+        if (TypeUtil::isStringWithContent($reference->hofff_st_og_type)) {
+            [$namespace, $type] = array_pad(explode(' ', $reference->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
                 return new OpenGraphType($namespace);

@@ -75,6 +75,8 @@ tasks:
         - src/EventListener/Hook/CalendarEventReaderListener.php
         - src/EventListener/Hook/FaqReaderListener.php
         - src/EventListener/Hook/NewsReaderListener.php
+        - src/Data/Extractor/CalendarEventsExtractor.php
+        - src/Data/Extractor/NewsExtractor.php
 
   phpmd:
     plugin: phpmd

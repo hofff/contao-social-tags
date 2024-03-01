@@ -12,7 +12,7 @@
         </service>
 
         <!-- Extractors -->
-        <service id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor">
+        <service id="Hofff\Contao\SocialTags\Data\ExtractorResolver">
             <argument type="tagged" tag="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
@@ -60,12 +60,12 @@
         </service>
 
         <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory">
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver" />
             <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
 
         <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory">
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\Extractor\CompositeExtractor" />
+            <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver" />
             <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
     </services>

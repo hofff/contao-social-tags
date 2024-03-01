@@ -12,6 +12,8 @@ use Contao\FilesModel;
 use Hofff\Contao\SocialTags\Data\Extractor;
 use Symfony\Component\HttpFoundation\RequestStack;
 
+use function is_file;
+
 /** @SuppressWarnings(PHPMD.LongVariable) */
 abstract class AbstractExtractor implements Extractor
 {
@@ -52,6 +54,41 @@ abstract class AbstractExtractor implements Extractor
         return $request->getRequestUri();
     }
 
+    /**
+     * Retrieves an image from the reference or fallback object.
+     *
+     * Resolving an image is done by following steps:
+     *  - Check if reference object enables hofff_st and has an image configured by $key
+     *  - Check if reference object enables addImage and has an image configured by singleSRC
+     *  - Check if fallback object provides an image by $key
+     */
+    protected function getImage(
+        string $key,
+        object $reference,
+        object|null $fallback = null,
+    ): FilesModel|null {
+        if ($reference->hofff_st && $reference->{$key}) {
+            $image = $reference->{$key};
+        } elseif ($reference->addImage && $reference->singleSRC) {
+            $image = $reference->singleSRC;
+        } elseif ($fallback && $fallback->{$key}) {
+            $image = $fallback->{$key};
+        } else {
+            return null;
+        }
+
+        return $this->getFileModel($image);
+    }
+
+    protected function getFileUrl(FilesModel|null $file = null): string|null
+    {
+        if ($file && is_file($this->projectDir . '/' . $file->path)) {
+            return $this->getBaseUrl() . $file->path;
+        }
+
+        return null;
+    }
+
     protected function getFileModel(string $uuid): FilesModel|null
     {
         return $this->framework
@@ -59,16 +96,16 @@ abstract class AbstractExtractor implements Extractor
             ->findByUuid($uuid);
     }
 
-    protected function replaceInsertTags(string $content): string
+    protected function replaceInsertTags(string $value): string
     {
-        return $this->insertTagParser->replaceInline($content);
+        return $this->insertTagParser->replaceInline($value);
     }
 
     protected function getCanonicalUrlForRequest(): string|null
     {
         $responseContext = $this->responseContextAccessor->getResponseContext();
 
-        if (! $responseContext?->has(HtmlHeadBag::class)) {
+        if (! $responseContext || ! $responseContext->has(HtmlHeadBag::class)) {
             return null;
         }
 

@@ -7,29 +7,30 @@ namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 use Contao\Model;
 use Hofff\Contao\SocialTags\Data\Data;
 use Hofff\Contao\SocialTags\Data\DataFactory;
-use Hofff\Contao\SocialTags\Data\Extractor;
+use Hofff\Contao\SocialTags\Data\ExtractorResolver;
 
 final class OpenGraphFactory implements DataFactory
 {
-    public function __construct(private readonly Extractor $extractor)
+    public function __construct(private readonly ExtractorResolver $resolver)
     {
     }
 
     public function generate(Model $reference, Model|null $fallback = null): Data
     {
         $basicData = new OpenGraphBasicData();
+        $extractor = $this->resolver->resolve(OpenGraphExtractor::class, $reference, $fallback);
 
-        if (! $this->extractor->supports($reference, $fallback)) {
+        if (! $extractor instanceof OpenGraphExtractor) {
             return $basicData;
         }
 
         $basicData
-            ->setTitle($this->extractor->extract('openGraph', 'title', $reference, $fallback))
-            ->setType($this->extractor->extract('openGraph', 'type', $reference, $fallback))
-            ->setImageData($this->extractor->extract('openGraph', 'imageData', $reference, $fallback))
-            ->setURL($this->extractor->extract('openGraph', 'url', $reference, $fallback))
-            ->setDescription($this->extractor->extract('openGraph', 'description', $reference, $fallback))
-            ->setSiteName($this->extractor->extract('openGraph', 'siteName', $reference, $fallback));
+            ->setTitle($extractor->extractOpenGraphTitle($reference, $fallback))
+            ->setType($extractor->extractOpenGraphType($reference, $fallback))
+            ->setImageData($extractor->extractOpenGraphImageData($reference, $fallback))
+            ->setURL($extractor->extractOpenGraphUrl($reference, $fallback))
+            ->setDescription($extractor->extractOpenGraphDescription($reference, $fallback))
+            ->setSiteName($extractor->extractOpenGraphSiteName($reference, $fallback));
 
         return $basicData;
     }

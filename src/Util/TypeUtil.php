@@ -17,4 +17,13 @@ final class TypeUtil
 
         return $value !== '';
     }
+
+    public static function stringOrNull(mixed $value): string|null
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return (string) $value;
+    }
 }

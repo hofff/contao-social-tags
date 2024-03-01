@@ -32,14 +32,10 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getReferencePage($currentPage);
-
-        if (! $referencePage) {
-            return $protocol;
-        }
+        $fallbackPage = $this->getFallbackPage($currentPage);
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($referencePage, $currentPage));
+            $protocol->append($factory->generate($currentPage, $fallbackPage));
         }
 
         return $protocol;
@@ -55,7 +51,7 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getReferencePage($currentPage) ?? $currentPage;
+        $referencePage = $this->getFallbackPage($currentPage) ?? $currentPage;
 
         foreach ($this->dataFactories as $factory) {
             $protocol->append($factory->generate($model, $referencePage));
@@ -113,7 +109,7 @@ final class SocialTagsFactory
     }
 
     /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
-    private function getReferencePage(PageModel $currentPage): PageModel|null
+    private function getFallbackPage(PageModel $currentPage): PageModel|null
     {
         $referencePage = $currentPage;
         $modes         = ['hofff_st_tree'];
@@ -123,8 +119,6 @@ final class SocialTagsFactory
             case 'hofff_st_disablePage':
             case 'hofff_st_disableTree':
                 return null;
-
-                break;
 
             case 'hofff_st_page':
             case 'hofff_st_tree':

@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\Extractor;
 
-use Contao\File;
-use Contao\FilesModel;
 use Contao\PageModel;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractor;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractorImagePlugin;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
 use Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractor;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
 use function array_pad;
 use function explode;
-use function is_file;
 use function str_replace;
 use function strip_tags;
 use function substr;
@@ -29,6 +26,9 @@ use function trim;
  */
 final class PageExtractor extends AbstractExtractor implements OpenGraphExtractor, TwitterCardsExtractor
 {
+    /** @use OpenGraphExtractorImagePlugin<PageModel, PageModel> */
+    use OpenGraphExtractorImagePlugin;
+
     public function supports(object $reference, object|null $fallback = null): bool
     {
         if (! $reference instanceof PageModel) {
@@ -45,21 +45,18 @@ final class PageExtractor extends AbstractExtractor implements OpenGraphExtracto
             return $this->replaceInsertTags($title);
         }
 
-        if (! $fallback) {
-            return '';
-        }
-
-        $title = $fallback->pageTitle;
+        $title = $reference->pageTitle;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        return strip_tags($fallback->title);
+        return strip_tags($reference->title);
     }
 
     public function extractTwitterSite(object $reference, object|null $fallback = null): string|null
     {
-        return $reference->hofff_st_twitter_site ?: null;
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
+        return $reference->hofff_st_twitter_site ?: ($fallback?->hofff_st_twitter_site ?: null);
     }
 
     public function extractTwitterDescription(object $reference, object|null $fallback = null): string|null
@@ -76,37 +73,14 @@ final class PageExtractor extends AbstractExtractor implements OpenGraphExtracto
 
     public function extractTwitterImage(object $reference, object|null $fallback = null): string|null
     {
-        $file = $this->framework
-            ->getAdapter(FilesModel::class)
-            ->findByUuid($reference->hofff_st_twitter_image);
+        $file = $this->getImage('hofff_st_twitter_image', $reference, $fallback);
 
-        if ($file && is_file($this->projectDir . '/' . $file->path)) {
-            return $this->getBaseUrl() . $file->path;
-        }
-
-        return null;
+        return $this->getFileUrl($file);
     }
 
     public function extractTwitterCreator(object $reference, object|null $fallback = null): string|null
     {
         return $reference->hofff_st_twitter_creator ?: null;
-    }
-
-    public function extractOpenGraphImageData(object $reference, object|null $fallback = null): OpenGraphImageData
-    {
-        $imageData = new OpenGraphImageData();
-
-        $file = FilesModel::findByUuid($reference->hofff_st_og_image);
-
-        if ($file && is_file($this->projectDir . '/' . $file->path)) {
-            $objImage = new File($file->path);
-            $imageData->setURL($this->getBaseUrl() . $file->path);
-            $imageData->setMIMEType($objImage->mime);
-            $imageData->setWidth($objImage->width);
-            $imageData->setHeight($objImage->height);
-        }
-
-        return $imageData;
     }
 
     public function extractOpenGraphTitle(object $reference, object|null $fallback = null): string

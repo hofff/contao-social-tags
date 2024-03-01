@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
 use Contao\File;
-use Contao\FilesModel;
-use Contao\PageModel;
-use Hofff\Contao\SocialTags\Data\Extractor\AbstractExtractor;
 use Hofff\Contao\SocialTags\Util\TypeUtil;
 
 use function array_pad;
@@ -21,6 +18,9 @@ use function strip_tags;
  */
 trait OpenGraphExtractorPlugin
 {
+    /** @use OpenGraphExtractorImagePlugin<TReference, TFallback> */
+    use OpenGraphExtractorImagePlugin;
+
     /**
      * @param TReference     $reference
      * @param TFallback|null $fallback
@@ -143,20 +143,7 @@ trait OpenGraphExtractorPlugin
 
     abstract protected function replaceInsertTags(string $value): string;
 
-    abstract protected function getFileUrl(FilesModel|null $file): string|null;
-
     abstract protected function getCanonicalUrlForRequest(): string|null;
 
     abstract protected function defaultOpenGraphType(): OpenGraphType;
-
-    /**
-     * @see AbstractExtractor::getImage()
-     *
-     * @param TReference $reference
-     */
-    abstract protected function getImage(
-        string $key,
-        object $reference,
-        PageModel|null $fallback = null,
-    ): FilesModel|null;
 }

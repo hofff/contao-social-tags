@@ -68,7 +68,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
     private function getFaqModel(ModuleModel $model): FaqModel|null
     {
         return FaqModel::findPublishedByParentAndIdOrAlias(
-            $this->framework->getAdapter(Input::class)->get('items'),
+            $this->framework->getAdapter(Input::class)->get('auto_item'),
             StringUtil::deserialize($model->faq_categories, true),
         );
     }
@@ -79,7 +79,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
         if (
             $model->type === 'faqlist'
             && $model->faq_readerModule > 0
-            && $this->framework->getAdapter(Input::class)->get('items')
+            && $this->framework->getAdapter(Input::class)->get('auto_item')
         ) {
             $readerModel = ModuleModel::findByPk($model->faq_readerModule);
             if ($readerModel) {

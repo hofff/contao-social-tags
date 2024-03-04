@@ -68,7 +68,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
     private function getEventModel(ModuleModel $model): CalendarEventsModel|null
     {
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias(
-            $this->framework->getAdapter(Input::class)->get('events'),
+            $this->framework->getAdapter(Input::class)->get('auto_item'),
             StringUtil::deserialize($model->cal_calendar, true),
         );
     }
@@ -79,7 +79,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         if (
             $model->type === 'eventlist'
             && $model->cal_readerModule > 0
-            && $this->framework->getAdapter(Input::class)->get('events')
+            && $this->framework->getAdapter(Input::class)->get('auto_item')
         ) {
             $readerModel = ModuleModel::findByPk($model->cal_readerModule);
             if ($readerModel) {

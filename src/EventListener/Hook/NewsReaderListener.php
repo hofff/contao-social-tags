@@ -54,7 +54,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
 
         $newsModel = $this->getNewsModel($model);
         if ($newsModel) {
-            $this->setSocialTagsData($this->factory->generateByModel($newsModel));
+            $this->setSocialTagsData($this->factory->generate($newsModel));
         }
 
         return $result;

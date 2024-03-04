@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
-use Contao\Model;
 use Hofff\Contao\SocialTags\Data\Data;
 use Hofff\Contao\SocialTags\Data\DataFactory;
 use Hofff\Contao\SocialTags\Data\ExtractorResolver;
@@ -15,7 +14,7 @@ final class OpenGraphFactory implements DataFactory
     {
     }
 
-    public function generate(Model $reference, Model|null $fallback = null): Data
+    public function generate(object $reference, object|null $fallback = null): Data
     {
         $basicData = new OpenGraphBasicData();
         $extractor = $this->resolver->resolve(OpenGraphExtractor::class, $reference, $fallback);

@@ -26,8 +26,17 @@ public function extract(
 
 ```
 
+### Changed signature for data factories
+
+Data factories signature has changed to `public function generate(object $reference, object|null $fallback = null): Data;`.
+
 Each method required for a specific social tag is part of the interface now which provides more robust type safe 
 implementations. 
+
+### Changed signature of the social tags factory
+
+The social tags factory method `generateByModel` got replaced by a generic `generate` method to reflect the new 
+option to generate social tags for any type of object.
 
 ## Removed
 

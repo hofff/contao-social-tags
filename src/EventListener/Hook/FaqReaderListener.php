@@ -54,7 +54,7 @@ final class FaqReaderListener extends SocialTagsDataAwareListener
 
         $newsModel = $this->getFaqModel($model);
         if ($newsModel) {
-            $this->setSocialTagsData($this->factory->generateByModel($newsModel));
+            $this->setSocialTagsData($this->factory->generate($newsModel));
         }
 
         return $result;

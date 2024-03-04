@@ -54,7 +54,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
 
         $eventModel = $this->getEventModel($model);
         if ($eventModel) {
-            $this->setSocialTagsData($this->factory->generateByModel($eventModel));
+            $this->setSocialTagsData($this->factory->generate($eventModel));
         }
 
         return $result;

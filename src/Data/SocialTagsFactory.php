@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
-use Contao\Model;
 use Contao\PageModel;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
@@ -42,7 +41,7 @@ final class SocialTagsFactory
     }
 
     /** @SuppressWarnings(PHPMD.Superglobals) */
-    public function generateByModel(Model $model): Protocol
+    public function generate(object $reference, object|null $fallback = null): Protocol
     {
         $protocol    = new Protocol();
         $currentPage = $GLOBALS['objPage'];
@@ -51,10 +50,10 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getFallbackPage($currentPage) ?? $currentPage;
+        $fallback = $fallback ?? ($this->getFallbackPage($currentPage) ?? $currentPage);
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($model, $referencePage));
+            $protocol->append($factory->generate($reference, $fallback));
         }
 
         return $protocol;

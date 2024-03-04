@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\TwitterCards;
 
-use Contao\Model;
 use Hofff\Contao\SocialTags\Data\Data;
 use Hofff\Contao\SocialTags\Data\DataFactory;
 use Hofff\Contao\SocialTags\Data\ExtractorResolver;
@@ -16,7 +15,7 @@ final class TwitterCardsFactory implements DataFactory
     {
     }
 
-    public function generate(Model $reference, Model|null $fallback = null): Data
+    public function generate(object $reference, object|null $fallback = null): Data
     {
         $extractor = $this->resolver->resolve(TwitterCardsExtractor::class, $reference, $fallback);
         if (! $extractor instanceof TwitterCardsExtractor) {

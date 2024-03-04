@@ -38,6 +38,12 @@ final class PageExtractor extends AbstractExtractor implements OpenGraphExtracto
         return $fallback instanceof PageModel;
     }
 
+    /** {@inheritDoc} */
+    public function supportedDataContainers(): array
+    {
+        return ['tl_page'];
+    }
+
     public function extractTwitterTitle(object $reference, object|null $fallback = null): string
     {
         $title = $reference->hofff_st_twitter_title;

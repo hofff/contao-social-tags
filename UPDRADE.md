@@ -17,13 +17,8 @@ type, there has to be implemented interface. Right now there are the interfaces 
 
 public function supports(object $reference, object|null $fallback = null): bool;
 
-public function extract(
-    string $type,
-    string $field,
-    object $reference,
-    object|null $fallback = null,
-): Data|string|null;
-
+/** @return list<string> */
+public function supportedDataContainers(): array;
 ```
 
 ### Changed signature for data factories

@@ -38,6 +38,12 @@ final class FaqExtractor extends AbstractExtractor implements OpenGraphExtractor
         return $fallback instanceof PageModel;
     }
 
+    /** {@inheritDoc} */
+    public function supportedDataContainers(): array
+    {
+        return ['tl_faq'];
+    }
+
     protected function getContentTitle(object $reference): string
     {
         return (string) $reference->question;

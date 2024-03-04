@@ -8,9 +8,9 @@
 
         <service id="Hofff\Contao\SocialTags\EventListener\Dca\CalendarEventsDcaListener"/>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener" />
-
         <service id="Hofff\Contao\SocialTags\EventListener\Dca\FaqDcaListener"/>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener" />
 
         <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener">
             <argument type="service" id="router" />
@@ -18,6 +18,11 @@
 
         <service id="Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions">
             <argument>%hofff.contao_social_tags.open_graph_types%</argument>
+        </service>
+
+        <service id="Hofff\Contao\SocialTags\EventListener\Hook\LoadLanguageFileListener">
+          <argument type="service" id="contao.framework"/>
+          <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver"/>
         </service>
 
         <service id="Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener">

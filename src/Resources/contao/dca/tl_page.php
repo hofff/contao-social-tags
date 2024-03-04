@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use Contao\Controller;
-
-Controller::loadLanguageFile('hofff_st');
-
 $GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_og_facebookLint'] = [
     'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'],
     'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',

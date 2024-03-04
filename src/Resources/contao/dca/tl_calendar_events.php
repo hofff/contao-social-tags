@@ -2,10 +2,6 @@
 
 declare(strict_types=1);
 
-use Contao\Controller;
-
-Controller::loadLanguageFile('hofff_st');
-
 // Palettes
 $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['__selector__'][] = 'hofff_st';
 $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['__selector__'][] = 'hofff_st_twitter_type';

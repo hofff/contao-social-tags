@@ -7,4 +7,7 @@ namespace Hofff\Contao\SocialTags\Data;
 interface Extractor
 {
     public function supports(object $reference, object|null $fallback = null): bool;
+
+    /** @return list<string> */
+    public function supportedDataContainers(): array;
 }

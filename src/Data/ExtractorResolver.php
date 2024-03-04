@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
+use function array_unique;
+use function array_values;
+
 final class ExtractorResolver
 {
     /** @param iterable<Extractor> $extractors */
@@ -33,5 +36,25 @@ final class ExtractorResolver
         }
 
         return null;
+    }
+
+    /** @return list<string> */
+    public function supportedDataContainers(): array
+    {
+        static $dataContainers = null;
+
+        if ($dataContainers !== null) {
+            return $dataContainers;
+        }
+
+        $dataContainers = [];
+
+        foreach ($this->extractors as $extractor) {
+            foreach ($extractor->supportedDataContainers() as $dataContainer) {
+                $dataContainers[] = $dataContainer;
+            }
+        }
+
+        return array_values(array_unique($dataContainers));
     }
 }

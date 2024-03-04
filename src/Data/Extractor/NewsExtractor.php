@@ -43,6 +43,12 @@ final class NewsExtractor extends AbstractExtractor implements OpenGraphExtracto
         return $fallback instanceof PageModel;
     }
 
+    /** {@inheritDoc} */
+    public function supportedDataContainers(): array
+    {
+        return ['tl_news'];
+    }
+
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */

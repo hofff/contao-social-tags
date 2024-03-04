@@ -42,6 +42,12 @@ final class CalendarEventsExtractor extends AbstractExtractor implements OpenGra
         return $fallback instanceof PageModel;
     }
 
+    /** {@inheritDoc} */
+    public function supportedDataContainers(): array
+    {
+        return ['tl_calendar_events'];
+    }
+
     /**
      * Returns the meta description if present, otherwise the shortened teaser.
      */

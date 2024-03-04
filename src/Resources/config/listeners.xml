@@ -3,56 +3,56 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-    <services>
-        <defaults public="true" autoconfigure="true" autowire="false" />
+  <services>
+    <defaults public="true" autoconfigure="true" autowire="false"/>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\CalendarEventsDcaListener"/>
+    <service id="Hofff\Contao\SocialTags\EventListener\Dca\CalendarEventsDcaListener"/>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\FaqDcaListener"/>
+    <service id="Hofff\Contao\SocialTags\EventListener\Dca\FaqDcaListener"/>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener" />
+    <service id="Hofff\Contao\SocialTags\EventListener\Dca\NewsDcaListener"/>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener">
-            <argument type="service" id="router" />
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener">
+      <argument type="service" id="router"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions">
-            <argument>%hofff.contao_social_tags.open_graph_types%</argument>
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions">
+      <argument>%hofff.contao_social_tags.open_graph_types%</argument>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\LoadLanguageFileListener">
-          <argument type="service" id="contao.framework"/>
-          <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver"/>
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\LoadLanguageFileListener">
+      <argument type="service" id="contao.framework"/>
+      <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener">
-            <argument type="service" id="request_stack" />
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\SocialTagsDataInjectionListener">
+      <argument type="service" id="request_stack"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener">
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\PageSocialTagsListener">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\NewsReaderListener">
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
-            <argument type="service" id="contao.routing.scope_matcher" />
-            <argument type="service" id="contao.framework" />
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\NewsReaderListener">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory"/>
+      <argument type="service" id="contao.routing.scope_matcher"/>
+      <argument type="service" id="contao.framework"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\CalendarEventReaderListener">
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
-            <argument type="service" id="contao.routing.scope_matcher" />
-            <argument type="service" id="contao.framework" />
-        </service>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\CalendarEventReaderListener">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory"/>
+      <argument type="service" id="contao.routing.scope_matcher"/>
+      <argument type="service" id="contao.framework"/>
+    </service>
 
-        <service id="Hofff\Contao\SocialTags\EventListener\Hook\FaqReaderListener">
-            <argument type="service" id="request_stack" />
-            <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory" />
-            <argument type="service" id="contao.routing.scope_matcher" />
-            <argument type="service" id="contao.framework" />
-        </service>
-    </services>
+    <service id="Hofff\Contao\SocialTags\EventListener\Hook\FaqReaderListener">
+      <argument type="service" id="request_stack"/>
+      <argument type="service" id="Hofff\Contao\SocialTags\Data\SocialTagsFactory"/>
+      <argument type="service" id="contao.routing.scope_matcher"/>
+      <argument type="service" id="contao.framework"/>
+    </service>
+  </services>
 </container>

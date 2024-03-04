@@ -6,9 +6,9 @@
 
 ### Rework of extractors
 
-The interface `Hofff\Contao\SocialTags\Data\Extractor` got changed. It only provides supports() method. For every data
-type, there has to be implemented another `\Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractor` or
-`\Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractor` interface.
+The interface `Hofff\Contao\SocialTags\Data\Extractor` got changed. It only provides a supports() method. For every data
+type, there has to be implemented interface. Right now there are the interfaces `\Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractor` and
+`\Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractor`.
 
 
 ```php

@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+## [2.0.0] - 2024-03-04
+
+### Added
+
+ - Added support for Contao 5
+
+### Changed
+
+ - Raise minimum PHP version to 8.1
+ - Rework the extractors (See [Upgrade](UPDRADE.md))
+
 ## [1.1.3] - 2022-02-21
 
 ### Changed

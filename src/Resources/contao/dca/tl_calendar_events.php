@@ -3,17 +3,8 @@
 declare(strict_types=1);
 
 use Contao\Controller;
-use Hofff\Contao\SocialTags\EventListener\Dca\CalendarEventsDcaListener;
-use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 
 Controller::loadLanguageFile('hofff_st');
-
-
-// Config
-$GLOBALS['TL_DCA']['tl_calendar_events']['config']['onload_callback'][] = [
-    CalendarEventsDcaListener::class,
-    'initializePalette',
-];
 
 // Palettes
 $GLOBALS['TL_DCA']['tl_calendar_events']['palettes']['__selector__'][] = 'hofff_st';
@@ -57,7 +48,6 @@ $GLOBALS['TL_DCA']['tl_calendar_events']['fields']['hofff_st_og_type'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'article',
-    'options_callback'   => [OpenGraphTypeOptions::class, '__invoke'],
     'reference' => &$GLOBALS['TL_LANG']['hofff_st']['types'],
     'eval'      => [
         'mandatory'      => true,

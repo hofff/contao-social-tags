@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Contao\Controller;
-use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
-use Hofff\Contao\SocialTags\EventListener\Dca\PageDcaListener;
 
 Controller::loadLanguageFile('hofff_st');
 
@@ -12,7 +10,6 @@ $GLOBALS['TL_DCA']['tl_page']['list']['operations']['hofff_st_og_facebookLint'] 
     'label'      => &$GLOBALS['TL_LANG']['tl_page']['hofff_st_og_facebookLint'],
     'icon'       => 'bundles/hofffcontaosocialtags/images/og.png',
     'attributes' => ' onclick="window.open(this.href); return false;"',
-    'button_callback' => [PageDcaListener::class, 'facebookLinkButton'],
 ];
 
 $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'hofff_st';
@@ -79,7 +76,6 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['hofff_st_og_type'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'website',
-    'options_callback'   => [OpenGraphTypeOptions::class, '__invoke'],
     'reference' => &$GLOBALS['TL_LANG']['hofff_st']['types'],
     'eval'      => [
         'mandatory'      => true,

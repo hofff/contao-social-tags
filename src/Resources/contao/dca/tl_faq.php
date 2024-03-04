@@ -3,13 +3,8 @@
 declare(strict_types=1);
 
 use Contao\Controller;
-use Hofff\Contao\SocialTags\EventListener\Dca\FaqDcaListener;
-use Hofff\Contao\SocialTags\EventListener\Dca\OpenGraphTypeOptions;
 
 Controller::loadLanguageFile('hofff_st');
-
-// Config
-$GLOBALS['TL_DCA']['tl_faq']['config']['onload_callback'][] = [FaqDcaListener::class, 'initializePalette'];
 
 // Palettes
 $GLOBALS['TL_DCA']['tl_faq']['palettes']['__selector__'][] = 'hofff_st';
@@ -53,7 +48,6 @@ $GLOBALS['TL_DCA']['tl_faq']['fields']['hofff_st_og_type'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'default'   => 'article',
-    'options_callback'   => [OpenGraphTypeOptions::class, '__invoke'],
     'reference' => &$GLOBALS['TL_LANG']['hofff_st']['types'],
     'eval'      => [
         'mandatory'      => true,

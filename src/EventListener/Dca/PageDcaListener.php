@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\EventListener\Dca;
 
+use Contao\CoreBundle\DependencyInjection\Attribute\AsCallback;
 use Contao\Image;
 use Contao\StringUtil;
 use Symfony\Component\Routing\RouterInterface;
@@ -21,6 +22,7 @@ final class PageDcaListener
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
+    #[AsCallback('tl_page', 'list.operations.hofff_st_og_facebookLint.button')]
     public function facebookLinkButton(
         array $row,
         string|null $href,

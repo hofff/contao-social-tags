@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
 use Contao\CalendarEventsModel;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
 use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\Input;
@@ -25,6 +26,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         parent::__construct($requestStack);
     }
 
+    #[AsHook('getContentElement')]
     public function onGetContentElement(Model $model, string $result): string
     {
         if ($model->type !== 'module') {
@@ -39,6 +41,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $this->onGetFrontendModule($module, $result);
     }
 
+    #[AsHook('getFrontendModule')]
     public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
         $request = $this->requestStack->getMainRequest();

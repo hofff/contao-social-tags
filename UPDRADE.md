@@ -33,6 +33,11 @@ Data factories signature has changed to `public function generate(object $refere
 Each method required for a specific social tag is part of the interface now which provides more robust type safe 
 implementations. 
 
+### Tags of data factories
+
+Data factories has to be tagged by `Hofff\Contao\SocialTags\Data\DataFactory` now insteadof 
+`Hofff\Contao\SocialTags\DataFactory`.
+
 ### Changed signature of the social tags factory
 
 The social tags factory method `generateByModel` got replaced by a generic `generate` method to reflect the new 

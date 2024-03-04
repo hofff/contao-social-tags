@@ -16,57 +16,51 @@
             <argument type="tagged" tag="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\Extractor\PageExtractor">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\PageExtractor" autoconfigure="true">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="contao.routing.response_context_accessor"/>
             <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
-            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\Extractor\NewsExtractor">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\NewsExtractor" autoconfigure="true">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="contao.routing.response_context_accessor"/>
             <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
-            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\Extractor\CalendarEventsExtractor">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\CalendarEventsExtractor" autoconfigure="true">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="contao.routing.response_context_accessor"/>
             <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
-            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\Extractor\FaqExtractor">
+        <service id="Hofff\Contao\SocialTags\Data\Extractor\FaqExtractor" autoconfigure="true">
             <argument type="service" id="contao.framework" />
             <argument type="service" id="request_stack" />
             <argument type="service" id="contao.routing.response_context_accessor"/>
             <argument type="service" id="contao.insert_tag.parser"/>
             <argument>%kernel.project_dir%</argument>
-            <tag name="Hofff\Contao\SocialTags\Data\Extractor"/>
         </service>
 
         <!-- Factories -->
         <service id="Hofff\Contao\SocialTags\Data\SocialTagsFactory">
             <argument type="service" id="database_connection" />
             <argument type="service" id="contao.framework" />
-            <argument type="tagged" tag="Hofff\Contao\SocialTags\DataFactory" />
+            <argument type="tagged" tag="Hofff\Contao\SocialTags\Data\DataFactory" />
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory">
+        <service id="Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphFactory" autoconfigure="true">
             <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver" />
-            <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
 
-        <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory">
+        <service id="Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsFactory" autoconfigure="true">
             <argument type="service" id="Hofff\Contao\SocialTags\Data\ExtractorResolver" />
-            <tag name="Hofff\Contao\SocialTags\DataFactory" />
         </service>
     </services>
 </container>

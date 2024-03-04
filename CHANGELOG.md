@@ -7,6 +7,7 @@
 ### Added
 
  - Added support for Contao 5
+ - Add support for auto configuration of data factories and extractors
 
 ### Changed
 

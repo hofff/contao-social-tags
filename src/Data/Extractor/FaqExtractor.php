@@ -7,29 +7,29 @@ namespace Hofff\Contao\SocialTags\Data\Extractor;
 use Contao\Config;
 use Contao\FaqCategoryModel;
 use Contao\FaqModel;
-use Contao\File;
-use Contao\FilesModel;
-use Contao\Model;
 use Contao\PageModel;
-use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphImageData;
+use Contao\StringUtil;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractor;
+use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphExtractorPlugin;
 use Hofff\Contao\SocialTags\Data\OpenGraph\OpenGraphType;
-use Hofff\Contao\SocialTags\Util\TypeUtil;
-
-use function array_pad;
-use function assert;
-use function explode;
-use function is_file;
-use function method_exists;
-use function strip_tags;
-use function ucfirst;
+use Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractor;
+use Hofff\Contao\SocialTags\Data\TwitterCards\TwitterCardsExtractorPlugin;
 
 /**
+ * @implements OpenGraphExtractor<FaqModel, PageModel>
+ * @implements TwitterCardsExtractor<FaqModel, PageModel>
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-final class FaqExtractor extends AbstractExtractor
+final class FaqExtractor extends AbstractExtractor implements OpenGraphExtractor, TwitterCardsExtractor
 {
-    public function supports(Model $reference, ?Model $fallback = null): bool
+    /** @use OpenGraphExtractorPlugin<FaqModel, PageModel> */
+    use OpenGraphExtractorPlugin;
+    /** @use TwitterCardsExtractorPlugin<FaqModel, PageModel> */
+    use TwitterCardsExtractorPlugin;
+
+    public function supports(object $reference, object|null $fallback = null): bool
     {
         if (! $reference instanceof FaqModel) {
             return false;
@@ -38,194 +38,47 @@ final class FaqExtractor extends AbstractExtractor
         return $fallback instanceof PageModel;
     }
 
-    /** @return mixed */
-    public function extract(string $type, string $field, Model $reference, ?Model $fallback = null)
+    /** {@inheritDoc} */
+    public function supportedDataContainers(): array
     {
-        $methodName = 'extract' . ucfirst($type) . ucfirst($field);
+        return ['tl_faq'];
+    }
 
-        if ($methodName !== __FUNCTION__ && method_exists($this, $methodName)) {
-            return $this->$methodName($reference, $fallback);
-        }
+    protected function getContentTitle(object $reference): string
+    {
+        return (string) $reference->question;
+    }
 
+    /** @SuppressWarnings(PHPMD.UnusedFormalParameter) */
+    protected function getContentDescription(object $reference): string|null
+    {
         return null;
     }
 
-    private function extractTwitterTitle(FaqModel $faqModel): ?string
+    protected function getContentUrl(object $reference): string
     {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_title)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_twitter_title);
-        }
-
-        $title = $faqModel->question;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return null;
-    }
-
-    private function extractTwitterSite(FaqModel $faqModel, PageModel $referencePage): ?string
-    {
-        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_site) {
-            return $faqModel->hofff_st_twitter_site;
-        }
-
-        return $referencePage->hofff_st_twitter_site ?: null;
-    }
-
-    private function extractTwitterDescription(FaqModel $faqModel): ?string
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_twitter_description)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_twitter_description);
-        }
-
-        return null;
-    }
-
-    private function extractTwitterImage(FaqModel $faqModel): ?string
-    {
-        if (! $faqModel->hofff_st) {
-            return null;
-        }
-
-        $file = $this->framework
-            ->getAdapter(FilesModel::class)
-            ->findByUuid($faqModel->hofff_st_twitter_image);
-
-        if ($file && is_file($this->projectDir . '/' . $file->path)) {
-            return $this->getBaseUrl() . $file->path;
-        }
-
-        return null;
-    }
-
-    private function extractTwitterCreator(FaqModel $faqModel, PageModel $referencePage): ?string
-    {
-        if ($faqModel->hofff_st && $faqModel->hofff_st_twitter_creator) {
-            return $faqModel->hofff_st_twitter_creator;
-        }
-
-        return $referencePage->hofff_st_twitter_creator ?: null;
-    }
-
-    /**
-     * @param string|resource $strImage
-     */
-    private function extractOpenGraphImageData(FaqModel $faqModel): OpenGraphImageData
-    {
-        $imageData = new OpenGraphImageData();
-        if (! $faqModel->hofff_st) {
-            return $imageData;
-        }
-
-        $file = FilesModel::findByUuid($faqModel->hofff_st_og_image);
-
-        if ($file && is_file(TL_ROOT . '/' . $file->path)) {
-            $objImage = new File($file->path);
-            $imageData->setURL($this->getBaseUrl() . $file->path);
-            $imageData->setMIMEType($objImage->mime);
-            $imageData->setWidth($objImage->width);
-            $imageData->setHeight($objImage->height);
-        }
-
-        return $imageData;
-    }
-
-    private function extractOpenGraphTitle(FaqModel $faqModel): ?string
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_title)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_og_title);
-        }
-
-        $title = $faqModel->question;
-        if (TypeUtil::isStringWithContent($title)) {
-            return $this->replaceInsertTags($title);
-        }
-
-        return '';
-    }
-
-    private function extractOpenGraphUrl(FaqModel $faqModel): ?string
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_url)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_og_url);
-        }
-
-        return self::generateFaqUrl($faqModel, true);
-    }
-
-    private function extractOpenGraphDescription(FaqModel $faqModel): ?string
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_description)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_og_description);
-        }
-
-        return null;
-    }
-
-    private function extractOpenGraphSiteName(FaqModel $faqModel, PageModel $fallback): string
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_site)) {
-            return $this->replaceInsertTags($faqModel->hofff_st_og_site);
-        }
-
-        return strip_tags($fallback->rootTitle);
-    }
-
-    private function extractOpenGraphType(FaqModel $faqModel): OpenGraphType
-    {
-        if ($faqModel->hofff_st && TypeUtil::isStringWithContent($faqModel->hofff_st_og_type)) {
-            [$namespace, $type] = array_pad(explode(' ', $faqModel->hofff_st_og_type, 2), 2, null);
-
-            if ($type === null) {
-                return new OpenGraphType($namespace);
-            }
-
-            return new OpenGraphType($type, $namespace);
-        }
-
-        return new OpenGraphType('website');
-    }
-
-    private static function generateFaqUrl(FaqModel $faqModel, bool $absolute = false): ?string
-    {
-        $faqCategory = $faqModel->getRelated('pid');
-        assert($faqCategory instanceof FaqCategoryModel);
+        /** @psalm-var FaqCategoryModel $faqCategory */
+        $faqCategory = $reference->getRelated('pid');
+        /** @psalm-suppress RedundantCastGivenDocblockType */
         $jumpTo = (int) $faqCategory->jumpTo;
 
         if ($jumpTo < 1) {
-            return null;
+            return '';
         }
 
         $target = PageModel::findByPk($jumpTo);
 
         if ($target === null) {
-            return null;
+            return '';
         }
 
-        $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($faqModel->alias ?: $faqModel->id);
+        $params = (Config::get('useAutoItem') ? '/' : '/items/') . ($reference->alias ?: $reference->id);
 
-        return ampersand($absolute ? $target->getAbsoluteUrl($params) : $target->getFrontendUrl($params));
+        return StringUtil::ampersand($target->getAbsoluteUrl($params));
     }
 
-    /**
-     * Retrieves an image from the news for a given key. It fallbacks to the news image or page image if not defined.
-     */
-    private function getImage(string $key, FaqModel $faqModel, PageModel $referencePage): ?FilesModel
+    protected function defaultOpenGraphType(): OpenGraphType
     {
-        $image = null;
-        if ($faqModel->hofff_st && $faqModel->{$key}) {
-            $image = $faqModel->{$key};
-        } elseif ($faqModel->addImage && $faqModel->singleSRC) {
-            $image = $faqModel->singleSRC;
-        } elseif ($referencePage->{$key}) {
-            $image = $referencePage->{$key};
-        } else {
-            return null;
-        }
-
-        return $this->framework
-            ->getAdapter(FilesModel::class)
-            ->findByUuid($image);
+        return new OpenGraphType('website');
     }
 }

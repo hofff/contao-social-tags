@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\EventListener\Hook;
 
 use Contao\CalendarEventsModel;
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
+use Contao\CoreBundle\DependencyInjection\Attribute\AsHook;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ScopeMatcher;
 use Contao\Input;
 use Contao\Model;
@@ -16,28 +17,16 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class CalendarEventReaderListener extends SocialTagsDataAwareListener
 {
-    /** @var SocialTagsFactory */
-    private $factory;
-
-    /** @var ScopeMatcher */
-    private $scopeMatcher;
-
-    /** @var ContaoFrameworkInterface */
-    private $framework;
-
     public function __construct(
         RequestStack $requestStack,
-        SocialTagsFactory $factory,
-        ScopeMatcher $scopeMatcher,
-        ContaoFrameworkInterface $framework
+        private readonly SocialTagsFactory $factory,
+        private readonly ScopeMatcher $scopeMatcher,
+        private readonly ContaoFramework $framework,
     ) {
         parent::__construct($requestStack);
-
-        $this->factory      = $factory;
-        $this->scopeMatcher = $scopeMatcher;
-        $this->framework    = $framework;
     }
 
+    #[AsHook('getContentElement')]
     public function onGetContentElement(Model $model, string $result): string
     {
         if ($model->type !== 'module') {
@@ -52,9 +41,10 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $this->onGetFrontendModule($module, $result);
     }
 
+    #[AsHook('getFrontendModule')]
     public function onGetFrontendModule(ModuleModel $model, string $result): string
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request || ! $this->scopeMatcher->isFrontendRequest($request)) {
             return $result;
         }
@@ -67,7 +57,7 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
 
         $eventModel = $this->getEventModel($model);
         if ($eventModel) {
-            $this->setSocialTagsData($this->factory->generateByModel($eventModel));
+            $this->setSocialTagsData($this->factory->generate($eventModel));
         }
 
         return $result;
@@ -78,20 +68,21 @@ final class CalendarEventReaderListener extends SocialTagsDataAwareListener
         return $model->type === 'eventreader';
     }
 
-    private function getEventModel(ModuleModel $model): ?CalendarEventsModel
+    private function getEventModel(ModuleModel $model): CalendarEventsModel|null
     {
         return CalendarEventsModel::findPublishedByParentAndIdOrAlias(
-            $this->framework->getAdapter(Input::class)->get('events'),
-            StringUtil::deserialize($model->cal_calendar, true)
+            $this->framework->getAdapter(Input::class)->get('auto_item'),
+            StringUtil::deserialize($model->cal_calendar, true),
         );
     }
 
     private function determineModuleModel(ModuleModel $model): ModuleModel
     {
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         if (
             $model->type === 'eventlist'
             && $model->cal_readerModule > 0
-            && $this->framework->getAdapter(Input::class)->get('events')
+            && $this->framework->getAdapter(Input::class)->get('auto_item')
         ) {
             $readerModel = ModuleModel::findByPk($model->cal_readerModule);
             if ($readerModel) {

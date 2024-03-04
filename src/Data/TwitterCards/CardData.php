@@ -10,28 +10,17 @@ use Hofff\Contao\SocialTags\Data\Protocol;
 
 abstract class CardData extends AbstractData
 {
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.UselessConstantTypeHint.UselessDocComment
+    /** @var string|null */
     protected const TYPE = null;
 
-    /** @var string */
-    private $title;
-
-    /** @var string|null */
-    private $site;
-
-    /** @var string|null */
-    private $description;
-
-    /** @var string|null */
-    private $image;
-
-    public function __construct(string $title, ?string $site = null, ?string $description = null, ?string $image = null)
-    {
+    public function __construct(
+        private readonly string $title,
+        private readonly string|null $site = null,
+        private readonly string|null $description = null,
+        private readonly string|null $image = null,
+    ) {
         parent::__construct();
-
-        $this->title       = $title;
-        $this->site        = $site;
-        $this->description = $description;
-        $this->image       = $image;
     }
 
     public function getProtocol(): Protocol
@@ -58,7 +47,7 @@ abstract class CardData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->site) {
+        if ($this->site !== null) {
             $protocol->add(new Property(null, 'site', $this->site, 'twitter'));
         }
 

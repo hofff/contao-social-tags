@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hofff\Contao\SocialTags\Data;
 
 use ArrayIterator;
+use Traversable;
 
 use function array_splice;
 use function count;
@@ -20,7 +21,7 @@ class Protocol extends AbstractData
     public const NS_WEBSITE = 'http://ogp.me/ns/website#';
 
     /** @var Property[] */
-    protected $properties = [];
+    protected array $properties = [];
 
     public function __construct()
     {
@@ -44,12 +45,13 @@ class Protocol extends AbstractData
 
     public function append(Data $data): void
     {
+        /** @psalm-var Property $property */
         foreach ($data as $property) {
             $this->add(clone $property);
         }
     }
 
-    public function get(int $index): ?Property
+    public function get(int $index): Property|null
     {
         return $this->properties[$index] ?? null;
     }
@@ -64,8 +66,8 @@ class Protocol extends AbstractData
         return $this;
     }
 
-    /** @return Property[] */
-    public function getIterator(): iterable
+    /** {@inheritDoc} */
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->properties);
     }

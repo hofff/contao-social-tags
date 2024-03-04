@@ -17,18 +17,16 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - php: 7.4
-            phpcq_install: 'install'
-          - php: 8.0
+          - php: '8.1'
             phpcq_install: 'update'
-          - php: 8.1
+            phpcq_flags: ''
+          - php: '8.2'
             phpcq_install: 'update'
-          - php: 8.2
-            phpcq_install: 'update'
+            phpcq_flags: ''
 
     steps:
       - name: Pull source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup PHP with PECL extension
         uses: shivammathur/setup-php@v2
@@ -37,7 +35,7 @@ jobs:
           coverage: xdebug2
 
       - name: Cache composer cache directory
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         env:
           cache-name: composer-cache-dir-${{ matrix.php }}
         with:
@@ -48,7 +46,7 @@ jobs:
         run: composer install
 
       - name: Cache vendor directory of phpcq tool runner
-        uses: actions/cache@v1
+        uses: actions/cache@v4
         env:
           cache-name: vendor-${{ matrix.php }}
         with:
@@ -57,14 +55,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-${{ env.cache-name }}-
 
+      - name: Update phpcq
+        run: $GITHUB_WORKSPACE/vendor/bin/phpcq self-update --unsigned
+
       - name: Install phpcq toolchain
         run: $GITHUB_WORKSPACE/vendor/bin/phpcq ${{ matrix.phpcq_install }} -v
 
       - name: Run tests
-        run: $GITHUB_WORKSPACE/vendor/bin/phpcq run -o github-action -o default
+        run: $GITHUB_WORKSPACE/vendor/bin/phpcq run -o github-action -o default ${{ matrix.phpcq_flags }} -v
 
       - name: Upload build directory to artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: ${{ success() }} || ${{ failure() }}
         with:
           name: phpcq-builds-php-${{ matrix.php }}

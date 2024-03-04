@@ -10,36 +10,17 @@ use Hofff\Contao\SocialTags\Data\Protocol;
 
 class OpenGraphBasicData extends AbstractData
 {
-    /** @var string|null */
-    protected $siteName;
+    protected string|null $siteName = null;
 
-    /** @var string|null */
-    protected $title;
-
-    /** @var string|null */
-    protected $url;
-
-    /** @var OpenGraphImageData|null */
-    protected $image;
-
-    /** @var string|null */
-    protected $type;
-
-    /** @var string|null */
-    protected $description;
+    protected string|null $description = null;
 
     public function __construct(
-        ?string $title = null,
-        ?OpenGraphType $type = null,
-        ?OpenGraphImageData $image = null,
-        ?string $url = null
+        protected string|null $title = null,
+        protected OpenGraphType|null $type = null,
+        protected OpenGraphImageData|null $image = null,
+        protected string|null $url = null,
     ) {
         parent::__construct();
-
-        $this->title = $title;
-        $this->type  = $type;
-        $this->image = $image;
-        $this->url   = $url;
     }
 
     public function setTitle(string $title): self
@@ -57,14 +38,14 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->title) {
+        if ($this->title !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'title', $this->title));
         }
 
         return $protocol;
     }
 
-    public function setType(?OpenGraphType $type = null): self
+    public function setType(OpenGraphType|null $type = null): self
     {
         $this->type = $type;
 
@@ -75,14 +56,14 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->type) {
+        if ($this->type !== null) {
             $protocol->add($this->type);
         }
 
         return $protocol;
     }
 
-    public function setImage(?string $url): self
+    public function setImage(string|null $url): self
     {
         if ($url === null) {
             $this->image = $url;
@@ -105,14 +86,14 @@ class OpenGraphBasicData extends AbstractData
         return $this->image ? $this->image : new OpenGraphImageData();
     }
 
-    public function setURL(?string $url): self
+    public function setURL(string|null $url): self
     {
         $this->url = $url;
 
         return $this;
     }
 
-    public function getURL(): ?string
+    public function getURL(): string|null
     {
         return $this->url;
     }
@@ -121,14 +102,14 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->url) {
+        if ($this->url !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'url', $this->url));
         }
 
         return $protocol;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string|null $description): self
     {
         $this->description = $description;
 
@@ -139,14 +120,14 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->description) {
+        if ($this->description !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'description', $this->description));
         }
 
         return $protocol;
     }
 
-    public function setSiteName(?string $site): self
+    public function setSiteName(string|null $site): self
     {
         if ($site !== '') {
             $this->siteName = $site;
@@ -157,7 +138,7 @@ class OpenGraphBasicData extends AbstractData
         return $this;
     }
 
-    public function getSiteName(): ?string
+    public function getSiteName(): string|null
     {
         return $this->siteName;
     }
@@ -166,7 +147,7 @@ class OpenGraphBasicData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->siteName) {
+        if ($this->siteName !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'site_name', $this->siteName));
         }
 
@@ -175,19 +156,19 @@ class OpenGraphBasicData extends AbstractData
 
     public function isValid(): bool
     {
-        if (! $this->title) {
+        if ($this->title === null) {
             return false;
         }
 
-        if (! $this->type) {
+        if ($this->type === null) {
             return false;
         }
 
-        if (! $this->image) {
+        if ($this->image === null) {
             return false;
         }
 
-        if (! $this->url) {
+        if ($this->url === null) {
             return false;
         }
 

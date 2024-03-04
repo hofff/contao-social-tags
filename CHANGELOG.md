@@ -2,6 +2,19 @@
 
 ## Unreleased
 
+## [2.0.0] - 2024-03-04
+
+### Added
+
+ - Added support for Contao 5
+ - Add support for auto configuration of data factories and extractors
+
+### Changed
+
+ - Raise minimum PHP version to 8.1
+ - Rework the extractors (See [Upgrade](UPDRADE.md))
+ - Changed signature of data factories (See [Upgrade](UPDRADE.md))
+
 ## [1.1.3] - 2022-02-21
 
 ### Changed

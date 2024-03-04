@@ -4,36 +4,32 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data\OpenGraph;
 
-use Contao\Model;
 use Hofff\Contao\SocialTags\Data\Data;
 use Hofff\Contao\SocialTags\Data\DataFactory;
-use Hofff\Contao\SocialTags\Data\Extractor;
+use Hofff\Contao\SocialTags\Data\ExtractorResolver;
 
 final class OpenGraphFactory implements DataFactory
 {
-    /** @var Extractor */
-    private $extractor;
-
-    public function __construct(Extractor $extractor)
+    public function __construct(private readonly ExtractorResolver $resolver)
     {
-        $this->extractor = $extractor;
     }
 
-    public function generate(Model $referencePage, ?Model $currentPage = null): Data
+    public function generate(object $reference, object|null $fallback = null): Data
     {
         $basicData = new OpenGraphBasicData();
+        $extractor = $this->resolver->resolve(OpenGraphExtractor::class, $reference, $fallback);
 
-        if (! $this->extractor->supports($referencePage, $currentPage)) {
+        if (! $extractor instanceof OpenGraphExtractor) {
             return $basicData;
         }
 
         $basicData
-            ->setTitle($this->extractor->extract('openGraph', 'title', $referencePage, $currentPage))
-            ->setType($this->extractor->extract('openGraph', 'type', $referencePage, $currentPage))
-            ->setImageData($this->extractor->extract('openGraph', 'imageData', $referencePage, $currentPage))
-            ->setURL($this->extractor->extract('openGraph', 'url', $referencePage, $currentPage))
-            ->setDescription($this->extractor->extract('openGraph', 'description', $referencePage, $currentPage))
-            ->setSiteName($this->extractor->extract('openGraph', 'siteName', $referencePage, $currentPage));
+            ->setTitle($extractor->extractOpenGraphTitle($reference, $fallback))
+            ->setType($extractor->extractOpenGraphType($reference, $fallback))
+            ->setImageData($extractor->extractOpenGraphImageData($reference, $fallback))
+            ->setURL($extractor->extractOpenGraphUrl($reference, $fallback))
+            ->setDescription($extractor->extractOpenGraphDescription($reference, $fallback))
+            ->setSiteName($extractor->extractOpenGraphSiteName($reference, $fallback));
 
         return $basicData;
     }

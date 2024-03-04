@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
+use Traversable;
+
 abstract class AbstractData implements Data
 {
     protected function __construct()
@@ -15,8 +17,8 @@ abstract class AbstractData implements Data
         return $this->getProtocol()->getMetaTags();
     }
 
-    /** @return Data[] */
-    public function getIterator(): iterable
+    /** @return Traversable<Property> */
+    public function getIterator(): Traversable
     {
         return $this->getProtocol()->getIterator();
     }

@@ -11,19 +11,14 @@ final class SummaryWithLargeImageCardData extends CardData
 {
     protected const TYPE = 'summary_large_image';
 
-    /** @var string|null */
-    private $creator;
-
     public function __construct(
         string $title,
-        ?string $site = null,
-        ?string $description = null,
-        ?string $image = null,
-        ?string $creator = null
+        string|null $site = null,
+        string|null $description = null,
+        string|null $image = null,
+        private readonly string|null $creator = null,
     ) {
         parent::__construct($title, $site, $description, $image);
-
-        $this->creator = $creator;
     }
 
     public function getProtocol(): Protocol
@@ -38,7 +33,7 @@ final class SummaryWithLargeImageCardData extends CardData
     {
         $protocol = new Protocol();
 
-        if ($this->creator) {
+        if ($this->creator !== null) {
             $protocol->add(new Property(null, 'creator', $this->creator, 'twitter'));
         }
 

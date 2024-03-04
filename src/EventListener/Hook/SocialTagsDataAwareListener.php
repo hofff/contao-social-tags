@@ -9,17 +9,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class SocialTagsDataAwareListener
 {
-    /** @var RequestStack */
-    protected $requestStack;
-
-    public function __construct(RequestStack $requestStack)
+    public function __construct(protected RequestStack $requestStack)
     {
-        $this->requestStack = $requestStack;
     }
 
-    protected function getSocialTagsData(): ?Data
+    protected function getSocialTagsData(): Data|null
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             return null;
         }
@@ -38,7 +34,7 @@ abstract class SocialTagsDataAwareListener
 
     protected function setSocialTagsData(Data $openGraphData): void
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         if (! $request) {
             // Silently break. Shouldn't be the case for a regular call
             return;

@@ -8,13 +8,22 @@ use function is_string;
 
 final class TypeUtil
 {
-    /** @param mixed $value */
-    public static function isStringWithContent($value): bool
+    /** @psalm-assert-if-true string $value */
+    public static function isStringWithContent(mixed $value): bool
     {
         if (! is_string($value)) {
             return false;
         }
 
         return $value !== '';
+    }
+
+    public static function stringOrNull(mixed $value): string|null
+    {
+        if ($value === null || $value === '') {
+            return null;
+        }
+
+        return (string) $value;
     }
 }

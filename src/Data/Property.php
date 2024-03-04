@@ -11,27 +11,14 @@ use function strip_tags;
 
 class Property
 {
-    /** @var string|null */
-    private $namespace;
-
-    /** @var string|null */
-    private $name;
-
-    /** @var string|null */
-    private $content;
-
-    /** @var string|null */
-    private $prefix;
+    private string|null $prefix = null;
 
     public function __construct(
-        ?string $namespace = null,
-        ?string $name = null,
-        ?string $content = null,
-        ?string $prefix = null
+        private string|null $namespace = null,
+        private string|null $name = null,
+        private string|null $content = null,
+        string|null $prefix = null,
     ) {
-        $this->setNamespace($namespace);
-        $this->setName($name);
-        $this->setContent($content);
         $this->setPrefix($prefix);
     }
 
@@ -46,61 +33,61 @@ class Property
             return '';
         }
 
-        if ($this->namespace && $this->prefix) {
+        if ($this->namespace !== null && $this->prefix !== null) {
             return sprintf(
                 '<meta%s property="%s" content="%s">',
                 sprintf(' prefix="%s"', StringUtil::specialchars($this->getNamespaceDeclaration())),
                 StringUtil::specialchars($this->getPrefixedName()),
-                StringUtil::specialchars(strip_tags($this->content))
+                StringUtil::specialchars(strip_tags((string) $this->content)),
             );
         }
 
         return sprintf(
             '<meta property="%s" content="%s">',
             StringUtil::specialchars($this->getPrefixedName()),
-            StringUtil::specialchars(strip_tags($this->content))
+            StringUtil::specialchars(strip_tags((string) $this->content)),
         );
     }
 
     protected function getNamespaceDeclaration(): string
     {
-        return sprintf('%s: %s', $this->prefix, $this->namespace);
+        return sprintf('%s: %s', (string) $this->prefix, (string) $this->namespace);
     }
 
     protected function getPrefixedName(): string
     {
-        return sprintf('%s:%s', $this->prefix, $this->name);
+        return sprintf('%s:%s', (string) $this->prefix, (string) $this->name);
     }
 
     public function isValid(): bool
     {
-        return $this->name && $this->content;
+        return $this->name !== null && $this->content !== null;
     }
 
-    public function setNamespace(?string $namespace): self
+    public function setNamespace(string|null $namespace): self
     {
         $this->namespace = $namespace;
 
         return $this;
     }
 
-    public function setName(?string $name): self
+    public function setName(string|null $name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setContent(?string $content): self
+    public function setContent(string|null $content): self
     {
         $this->content = $content;
 
         return $this;
     }
 
-    public function setPrefix(?string $prefix): self
+    public function setPrefix(string|null $prefix): self
     {
-        $this->prefix = $prefix ?: 'og';
+        $this->prefix = $prefix ?? 'og';
 
         return $this;
     }

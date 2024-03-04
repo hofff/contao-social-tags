@@ -15,8 +15,6 @@
     "Contao\\FaqCategoryModel",
     "Contao\\FaqModel",
     "Contao\\NewsModel",
-    "Contao\\News",
-    "ampersand",
-    "VERSION"
+    "Contao\\News"
   ]
 }

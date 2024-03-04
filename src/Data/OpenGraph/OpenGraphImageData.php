@@ -8,32 +8,28 @@ use Hofff\Contao\SocialTags\Data\AbstractData;
 use Hofff\Contao\SocialTags\Data\Property;
 use Hofff\Contao\SocialTags\Data\Protocol;
 
-use function strpos;
+use function str_starts_with;
 
 class OpenGraphImageData extends AbstractData
 {
-    /** @var string|null */
-    protected $url;
+    protected string|null $url;
 
-    /** @var string|null */
-    protected $mime;
+    protected string|null $mime = null;
 
-    /** @var int|null */
-    protected $height;
+    protected int|null $height = null;
 
-    /** @var int|null */
-    protected $width;
+    protected int|null $width = null;
 
-    /** @var string|null */
-    protected $secure;
+    protected string|null $secure = null;
 
-    public function __construct(?string $url = null)
+    public function __construct(string|null $url = null)
     {
         parent::__construct();
+
         $this->setURL($url);
     }
 
-    public function setURL(?string $url): self
+    public function setURL(string|null $url): self
     {
         $this->url = $url;
 
@@ -44,14 +40,14 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->url) {
+        if ($this->url !== null) {
             $protocol->add(new Property(Protocol::NS_OG, 'image', $this->url));
         }
 
         return $protocol;
     }
 
-    public function setSecureURL(?string $secure): self
+    public function setSecureURL(string|null $secure): self
     {
         $this->secure = $secure;
 
@@ -62,18 +58,18 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->secure) {
+        if ($this->secure !== null) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:secure_url', $this->secure)
+                new Property(Protocol::NS_OG, 'image:secure_url', $this->secure),
             );
         }
 
         return $protocol;
     }
 
-    public function setMIMEType(?string $mime): self
+    public function setMIMEType(string|null $mime): self
     {
-        if ($mime === null || strpos($mime, 'image/') !== 0) {
+        if ($mime === null || ! str_starts_with($mime, 'image/')) {
             $this->mime = null;
 
             return $this;
@@ -88,16 +84,16 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->mime) {
+        if ($this->mime !== null) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:type', $this->mime)
+                new Property(Protocol::NS_OG, 'image:type', $this->mime),
             );
         }
 
         return $protocol;
     }
 
-    public function setWidth(?int $width): self
+    public function setWidth(int|null $width): self
     {
         $this->width = $width;
 
@@ -108,16 +104,16 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->width) {
+        if ($this->width !== null) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:width', (string) $this->width)
+                new Property(Protocol::NS_OG, 'image:width', (string) $this->width),
             );
         }
 
         return $protocol;
     }
 
-    public function setHeight(?int $height): self
+    public function setHeight(int|null $height): self
     {
         $this->height = $height;
 
@@ -128,9 +124,9 @@ class OpenGraphImageData extends AbstractData
     {
         $protocol = new Protocol();
 
-        if ($this->height) {
+        if ($this->height !== null) {
             $protocol->add(
-                new Property(Protocol::NS_OG, 'image:height', (string) $this->height)
+                new Property(Protocol::NS_OG, 'image:height', (string) $this->height),
             );
         }
 

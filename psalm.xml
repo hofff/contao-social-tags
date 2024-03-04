@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<psalm
+  errorLevel="3"
+  hideExternalErrors="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://getpsalm.org/schema/config"
+  xsi:schemaLocation="https://getpsalm.org/schema/config https://getpsalm.org/schema/config"
+>
+  <projectFiles>
+    <directory name="src"/>
+  </projectFiles>
+
+  <issueHandlers>
+    <DeprecatedMethod>
+      <errorLevel type="suppress">
+        <referencedMethod name="Contao\PageModel::getAbsoluteUrl"/>
+        <referencedMethod name="Contao\PageModel::getFrontendUrl"/>
+        <referencedMethod name="Contao\News::generateNewsUrl"/>
+        <referencedMethod name="Contao\Events::generateEventUrl"/>
+      </errorLevel>
+    </DeprecatedMethod>
+    <InternalMethod>
+      <errorLevel type="suppress">
+        <referencedMethod name="Contao\CoreBundle\Framework\ContaoFramework::initialize"/>
+        <referencedMethod name="Contao\CoreBundle\Framework\ContaoFramework::getAdapter"/>
+        <referencedMethod name="Contao\CoreBundle\Framework\Adapter::__call"/>
+      </errorLevel>
+    </InternalMethod>
+  </issueHandlers>
+  <universalObjectCrates>
+    <class name="Contao\PageModel"/>
+    <class name="Contao\ModuleModel"/>
+    <class name="Contao\Model"/>
+    <class name="Contao\FaqModel"/>
+    <class name="Contao\NewsModel"/>
+    <class name="Contao\CalendarEventsModel"/>
+  </universalObjectCrates>
+</psalm>

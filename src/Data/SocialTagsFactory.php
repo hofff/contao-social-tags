@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Hofff\Contao\SocialTags\Data;
 
-use Contao\CoreBundle\Framework\ContaoFrameworkInterface;
-use Contao\Model;
+use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\PageModel;
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 use function array_slice;
@@ -14,23 +14,12 @@ use function implode;
 
 final class SocialTagsFactory
 {
-    /** @var Connection */
-    private $connection;
-
-    /** @var ContaoFrameworkInterface */
-    private $framework;
-
-    /** @var DataFactory[] */
-    private $dataFactories;
-
-    /**
-     * @param DataFactory[] $dataFactories
-     */
-    public function __construct(Connection $connection, ContaoFrameworkInterface $framework, iterable $dataFactories)
-    {
-        $this->connection    = $connection;
-        $this->framework     = $framework;
-        $this->dataFactories = $dataFactories;
+    /** @param DataFactory[] $dataFactories */
+    public function __construct(
+        private readonly Connection $connection,
+        private readonly ContaoFramework $framework,
+        private readonly iterable $dataFactories,
+    ) {
     }
 
     public function generateByPageId(int $pageId): Protocol
@@ -42,21 +31,17 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getReferencePage($currentPage);
-
-        if (! $referencePage) {
-            return $protocol;
-        }
+        $fallbackPage = $this->getFallbackPage($currentPage);
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($referencePage, $currentPage));
+            $protocol->append($factory->generate($currentPage, $fallbackPage));
         }
 
         return $protocol;
     }
 
     /** @SuppressWarnings(PHPMD.Superglobals) */
-    public function generateByModel(Model $model): Protocol
+    public function generate(object $reference, object|null $fallback = null): Protocol
     {
         $protocol    = new Protocol();
         $currentPage = $GLOBALS['objPage'];
@@ -65,19 +50,22 @@ final class SocialTagsFactory
             return $protocol;
         }
 
-        $referencePage = $this->getReferencePage($currentPage) ?? $currentPage;
+        $fallback = $fallback ?? ($this->getFallbackPage($currentPage) ?? $currentPage);
 
         foreach ($this->dataFactories as $factory) {
-            $protocol->append($factory->generate($model, $referencePage));
+            $protocol->append($factory->generate($reference, $fallback));
         }
 
         return $protocol;
     }
 
-    /** @SuppressWarnings(PHPMD.Superglobals) */
-    private function getOriginPage(int $pageId): ?PageModel
+    /**
+     * @psalm-suppress InvalidReturnType
+     * @SuppressWarnings(PHPMD.Superglobals)
+     */
+    private function getOriginPage(int $pageId): PageModel|null
     {
-        if ($pageId === $GLOBALS['objPage']->id) {
+        if ($pageId === (int) $GLOBALS['objPage']->id) {
             return $GLOBALS['objPage'];
         }
 
@@ -87,8 +75,12 @@ final class SocialTagsFactory
     /**
      * @param string[] $pageTrail
      * @param string[] $modes
+     *
+     * @psalm-suppress InvalidReturnType
+     * @psalm-suppress InvalidReturnStatement
+     * @psalm-suppress PossiblyFalseArgument
      */
-    private function loadReferencePage(array $pageTrail, array $modes): ?PageModel
+    private function loadReferencePage(array $pageTrail, array $modes): PageModel|null
     {
         $queryBuilder = $this->connection->createQueryBuilder();
         $trailSet     = implode(',', $pageTrail);
@@ -104,11 +96,11 @@ final class SocialTagsFactory
                             AND	   p2.hofff_st = \'hofff_st_parent\'
                         ))')
             ->orderBy('FIND_IN_SET(p.id, :trailSet)')
-            ->setParameter('trail', $pageTrail, Connection::PARAM_STR_ARRAY)
+            ->setParameter('trail', $pageTrail, ArrayParameterType::STRING)
             ->setParameter('trailSet', $trailSet)
-            ->setParameter('modes', $modes, Connection::PARAM_STR_ARRAY)
+            ->setParameter('modes', $modes, ArrayParameterType::STRING)
             ->setMaxResults(1)
-            ->execute();
+            ->executeQuery();
 
         $pageId = $statement->fetchOne();
 
@@ -116,7 +108,7 @@ final class SocialTagsFactory
     }
 
     /** @SuppressWarnings(PHPMD.CyclomaticComplexity) */
-    private function getReferencePage(PageModel $currentPage): ?PageModel
+    private function getFallbackPage(PageModel $currentPage): PageModel|null
     {
         $referencePage = $currentPage;
         $modes         = ['hofff_st_tree'];
@@ -126,8 +118,6 @@ final class SocialTagsFactory
             case 'hofff_st_disablePage':
             case 'hofff_st_disableTree':
                 return null;
-
-                break;
 
             case 'hofff_st_page':
             case 'hofff_st_tree':

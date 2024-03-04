@@ -12,46 +12,44 @@ use function sprintf;
 
 class OpenGraphType extends Property
 {
-    /** @var string|null */
-    private $type;
+    private string|null $typePrefix = null;
 
-    /** @var string|null */
-    private $typeNamespace;
-
-    /** @var string|null */
-    private $typePrefix;
-
-    public function __construct(?string $type = null, ?string $typeNamespace = null, ?string $typePrefix = null)
-    {
+    public function __construct(
+        private string|null $type = null,
+        private string|null $typeNamespace = null,
+        string|null $typePrefix = null,
+    ) {
         parent::__construct();
 
         parent::setNamespace(Protocol::NS_OG);
+
         parent::setName('type');
 
-        $this->setType($type);
-        $this->setTypeNamespace($typeNamespace);
         $this->setTypePrefix($typePrefix);
     }
 
     public function getMetaTag(): string
     {
-        $prefix            = $this->getTypeNamespaceDeclaration();
-        $prefix && $prefix = ' ' . $prefix;
-        $prefix            = sprintf(
+        $prefix = $this->getTypeNamespaceDeclaration();
+        if ($prefix !== '') {
+            $prefix = ' ' . $prefix;
+        }
+
+        $prefix = sprintf(
             ' prefix="%s%s"',
             StringUtil::specialchars($this->getNamespaceDeclaration()),
-            StringUtil::specialchars($prefix)
+            StringUtil::specialchars($prefix),
         );
 
         return sprintf(
             '<meta%s property="%s" content="%s" />',
             $prefix,
             StringUtil::specialchars($this->getPrefixedName()),
-            StringUtil::specialchars($this->getContent())
+            StringUtil::specialchars((string) $this->getContent()),
         );
     }
 
-    public function setType(?string $type): self
+    public function setType(string|null $type): self
     {
         $this->type = $type;
 
@@ -60,49 +58,49 @@ class OpenGraphType extends Property
 
     protected function getTypeNamespaceDeclaration(): string
     {
-        return $this->typeNamespace
-            ? sprintf('%s: %s', $this->typePrefix, $this->typeNamespace)
+        return $this->typeNamespace !== null
+            ? sprintf('%s: %s', (string) $this->typePrefix, $this->typeNamespace)
             : '';
     }
 
-    public function setTypeNamespace(?string $typeNamespace): self
+    public function setTypeNamespace(string|null $typeNamespace): self
     {
         $this->typeNamespace = $typeNamespace;
 
         return $this;
     }
 
-    public function setTypePrefix(?string $typePrefix): self
+    public function setTypePrefix(string|null $typePrefix): self
     {
-        $this->typePrefix = $typePrefix ?: 't';
+        $this->typePrefix = $typePrefix ?? 't';
 
         return $this;
     }
 
     /** @return $this */
-    public function setNamespace(?string $namespace): Property
+    public function setNamespace(string|null $namespace): Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setName(?string $name): Property
+    public function setName(string|null $name): Property
     {
         return $this;
     }
 
     /** @return $this */
-    public function setContent(?string $content): Property
+    public function setContent(string|null $content): Property
     {
         $this->setType($content);
 
         return $this;
     }
 
-    protected function getContent(): ?string
+    protected function getContent(): string|null
     {
-        return $this->typeNamespace
-            ? sprintf('%s:%s', $this->typePrefix, $this->type)
+        return $this->typeNamespace !== null
+            ? sprintf('%s:%s', (string) $this->typePrefix, (string) $this->type)
             : $this->type;
     }
 }

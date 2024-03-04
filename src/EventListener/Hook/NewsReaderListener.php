@@ -67,8 +67,9 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
 
     private function getNewsModel(ModuleModel $model): NewsModel|null
     {
+        /** @psalm-suppress RiskyTruthyFalsyComparison */
         return NewsModel::findPublishedByParentAndIdOrAlias(
-            $this->framework->getAdapter(Input::class)->get('items'),
+            $this->framework->getAdapter(Input::class)->get('auto_item'),
             StringUtil::deserialize($model->news_archives, true),
         );
     }
@@ -79,7 +80,7 @@ final class NewsReaderListener extends SocialTagsDataAwareListener
         if (
             ($model->type === 'newsarchive' || $model->type === 'newslist')
             && $model->news_readerModule > 0
-            && $this->framework->getAdapter(Input::class)->get('items')
+            && $this->framework->getAdapter(Input::class)->get('auto_item')
         ) {
             $readerModel = ModuleModel::findByPk($model->news_readerModule);
             if ($readerModel) {

@@ -96,16 +96,12 @@ final class PageExtractor extends AbstractExtractor implements OpenGraphExtracto
             return $this->replaceInsertTags($title);
         }
 
-        if (! $fallback) {
-            return '';
-        }
-
-        $title = $fallback->pageTitle;
+        $title = $reference->pageTitle;
         if (TypeUtil::isStringWithContent($title)) {
             return $this->replaceInsertTags($title);
         }
 
-        return strip_tags($fallback->title);
+        return strip_tags($reference->title);
     }
 
     /** @SuppressWarnings(PHPMD.Superglobals) */

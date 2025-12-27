@@ -48,7 +48,7 @@ trait OpenGraphExtractorPlugin
      */
     public function extractOpenGraphTitle(object $reference, object|null $fallback = null): string
     {
-        if ($reference->hofff_st && TypeUtil::isStringWithContent($reference->hofff_st_og_title)) {
+        if (isset($reference->hofff_st) && TypeUtil::isStringWithContent($reference->hofff_st_og_title)) {
             return $this->replaceInsertTags($reference->hofff_st_og_title);
         }
 
@@ -61,11 +61,11 @@ trait OpenGraphExtractorPlugin
      */
     public function extractOpenGraphUrl(object $reference, object|null $fallback = null): string
     {
-        if ($reference->hofff_st && TypeUtil::isStringWithContent($reference->hofff_st_og_url)) {
+        if (isset($reference->hofff_st) && TypeUtil::isStringWithContent($reference->hofff_st_og_url)) {
             return $this->replaceInsertTags($reference->hofff_st_og_url);
         }
 
-        if ($reference->canonicalLink) {
+        if (isset($reference->canonicalLink)) {
             $canonical = $this->getCanonicalUrlForRequest();
             if ($canonical !== null) {
                 return $canonical;
@@ -81,7 +81,7 @@ trait OpenGraphExtractorPlugin
      */
     public function extractOpenGraphDescription(object $reference, object|null $fallback = null): string|null
     {
-        $description = $reference->hofff_st && TypeUtil::isStringWithContent($reference->hofff_st_og_description)
+        $description = isset($reference->hofff_st) && TypeUtil::isStringWithContent($reference->hofff_st_og_description)
             ? $reference->hofff_st_og_description
             : $this->getContentDescription($reference);
 
@@ -98,7 +98,7 @@ trait OpenGraphExtractorPlugin
      */
     public function extractOpenGraphSiteName(object $reference, object|null $fallback = null): string
     {
-        if ($reference->hofff_st && TypeUtil::isStringWithContent($reference->hofff_st_og_site)) {
+        if (isset($reference->hofff_st) && TypeUtil::isStringWithContent($reference->hofff_st_og_site)) {
             return $this->replaceInsertTags($reference->hofff_st_og_site);
         }
 
@@ -107,7 +107,7 @@ trait OpenGraphExtractorPlugin
 
     public function extractOpenGraphType(object $reference, object|null $fallback = null): OpenGraphType
     {
-        if ($reference->hofff_st && TypeUtil::isStringWithContent($reference->hofff_st_og_type)) {
+        if (isset($reference->hofff_st) && TypeUtil::isStringWithContent($reference->hofff_st_og_type)) {
             [$namespace, $type] = array_pad(explode(' ', $reference->hofff_st_og_type, 2), 2, null);
 
             if ($type === null) {
